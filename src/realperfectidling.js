@@ -58,6 +58,10 @@
 var RPI = {};
 
 RPI.supportedVersion = "1.0465"
+if (RPI.supportedVersion != Game.version)
+{
+	Game.Notify('Unsupported version','Real Perfect Idling has not been tested on this version of Cookie Clicker. Continue on your own peril!',[3,5],6);
+}
 
 RPI.calcGCSpawnTime = function()
 {

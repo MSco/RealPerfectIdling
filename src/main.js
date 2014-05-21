@@ -1,6 +1,5 @@
 // Global Variables
-
-var	baseUrl = 'https://raw.githubusercontent.com/MSco/RealPerfectIdling/master/src/'
+var baseUrl = 'https://raw.githubusercontent.com/MSco/RealPerfectIdling/master/src/'
 
 // Load external libraries
 var script_list = [
@@ -18,20 +17,27 @@ loadInterval = setInterval(function() {
 
 function loadScript(id) 
 {
-    var url = script_list[id];
-    if (/\.js$/.exec(url)) 
+    if (id >= script_list.length) 
     {
-        $.getScript(url, function() {loadScript(id + 1);});
-    } 
-    else if (/\.css$/.exec(url)) 
-    {
-        $('<link>').attr({rel: 'stylesheet', type: 'text/css', href: url}).appendTo($('head'));
-        loadScript(id + 1);
+        // main stuff
     } 
     else 
-    {
-        console.log('Error loading script: ' + url);
-        loadScript(id + 1);
+    { 
+        var url = script_list[id];
+        if (/\.js$/.exec(url)) 
+        {
+            $.getScript(url, function() {loadScript(id + 1);});
+        } 
+        else if (/\.css$/.exec(url)) 
+        {
+            $('<link>').attr({rel: 'stylesheet', type: 'text/css', href: url}).appendTo($('head'));
+            loadScript(id + 1);
+        } 
+        else 
+        {
+            console.log('Error loading script: ' + url);
+            loadScript(id + 1);
+        }
     }
 }
 

@@ -70,10 +70,6 @@ RPI.calcGCSpawnTime = function()
 	}    
 
 	return max;
-
-
-
-//	return (Game.goldenCookie.getMaxTime()+Game.goldenCookie.getMinTime())/2;
 }
 
 RPI.addMissedGoldenCookies = function(durationFrames)

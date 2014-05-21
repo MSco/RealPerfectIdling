@@ -57,6 +57,8 @@
 
 var RPI = {};
 
+RPI.supportedVersion = "1.0465"
+
 RPI.calcGCSpawnTime = function()
 {
 	var min=Game.goldenCookie.getMinTime();

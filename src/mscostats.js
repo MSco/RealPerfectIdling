@@ -2,7 +2,7 @@
     MSco Cookie Stats - A Cookie Clicker plugin
 
     Version: 0.9.4
-    Pastebin:  https://pastebin.com/WSdHqJg2
+    GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
 
@@ -205,51 +205,51 @@ if(!statsdone)
 	l('sectionRight').style.right = '0px';
 	*/
 
-	var addonString;
+	var statsString;
 
 	// Title
-	addonString = '\'<br><div class="subsection">\' + \'<div class="title">MSco Stats</div>\'';
+	statsString = '\'<br><div class="subsection">\' + \'<div class="title">MSco Stats</div>\'';
 
 	// Frenzy + Lucky bank
-	addonString += ' + \'<div class="listing"><b>Bank for Frenzy Lucky:</b> <div class="price plain">\' + Beautify(bankFrenzyLucky()) + \'</div></div>\'';
+	statsString += ' + \'<div class="listing"><b>Bank for Frenzy Lucky:</b> <div class="price plain">\' + Beautify(bankFrenzyLucky()) + \'</div></div>\'';
 
 	// Frenzy + Lucky reward
-	addonString += ' + \'<div class="listing"><b>Max. reward of Frenzy Lucky:</b> <div class="price plain">\' + Beautify(rewardFrenzyLucky()) + \'</div></div>\'';
+	statsString += ' + \'<div class="listing"><b>Max. reward of Frenzy Lucky:</b> <div class="price plain">\' + Beautify(rewardFrenzyLucky()) + \'</div></div>\'';
 
 	// Cookies to spend
-	addonString += ' + \'<div class="listing"><b>Max. cookies to spend (FL bank):</b> <div class="price plain">\' + Beautify(cookiesToSpend()) + \'</div></div>\'';
+	statsString += ' + \'<div class="listing"><b>Max. cookies to spend (FL bank):</b> <div class="price plain">\' + Beautify(cookiesToSpend()) + \'</div></div>\'';
 
 	// Rewarded by Wrinklers
-	addonString += ' + \'<div class="listing"><b>Cookies Rewarded killing Wrinklers:</b> <div class="price plain">\' + Beautify(wrinklersreward()) + \'</div></div>\'';
+	statsString += ' + \'<div class="listing"><b>Cookies Rewarded killing Wrinklers:</b> <div class="price plain">\' + Beautify(wrinklersreward()) + \'</div></div>\'';
 
 	// Real Withered Cookies Per Hour
-	addonString += ' + \'<div class="listing"><b>Real Withered Cookies Per Hour:</b> <div class="price plain">\' + Beautify(wrinklersCPH()) + \'</div></div>\'';
+	statsString += ' + \'<div class="listing"><b>Real Withered Cookies Per Hour:</b> <div class="price plain">\' + Beautify(wrinklersCPH()) + \'</div></div>\'';
 
 	// add blank line
-	addonString += ' + \'<br>\'';
+	statsString += ' + \'<br>\'';
 
 	// HCs earned this game
-	addonString += ' + \'<div class="listing"><b>HCs earned this game:</b> \' + Beautify(hcThisGame()) + \' (\' + Beautify(hcFactor()) + \'% of current HC) </div>\'';
+	statsString += ' + \'<div class="listing"><b>HCs earned this game:</b> \' + Beautify(hcThisGame()) + \' (\' + Beautify(hcFactor()) + \'% of current HC) </div>\'';
 	
 	// add blank line
-	addonString += ' + \'<br>\'';
+	statsString += ' + \'<br>\'';
 
 	// BCI
-	addonString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[0].name + ':</b> \' + Beautify(efc=calcEfficiency(Game.ObjectsById[0], (best_bci=calcBestBCI()))) + \'%\'+ \'</div>\'';
-	addonString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[1].name + ':</b> \' + Beautify(calcEfficiency(Game.ObjectsById[1], best_bci)) + \'%\'+ \'</div>\'';
-	addonString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[2].name + ':</b> \' + Beautify(calcEfficiency(Game.ObjectsById[2], best_bci)) + \'%\'+ \'</div>\'';
-	addonString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[3].name + ':</b> \' + Beautify(calcEfficiency(Game.ObjectsById[3], best_bci)) + \'%\'+ \'</div>\'';
-	addonString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[4].name + ':</b> \' + Beautify(calcEfficiency(Game.ObjectsById[4], best_bci)) + \'%\'+ \'</div>\'';
-	addonString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[5].name + ':</b> \' + Beautify(calcEfficiency(Game.ObjectsById[5], best_bci)) + \'%\'+ \'</div>\'';
-	addonString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[6].name + ':</b> \' + Beautify(calcEfficiency(Game.ObjectsById[6], best_bci)) + \'%\'+ \'</div>\'';
-	addonString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[7].name + ':</b> \' + Beautify(calcEfficiency(Game.ObjectsById[7], best_bci)) + \'%\'+ \'</div>\'';
-	addonString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[8].name + ':</b> \' + Beautify(calcEfficiency(Game.ObjectsById[8], best_bci)) + \'%\'+ \'</div>\'';
-	addonString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[9].name + ':</b> \' + Beautify(calcEfficiency(Game.ObjectsById[9], best_bci)) + \'%\'+ \'</div>\'';
-	addonString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[10].name + ':</b> \' + Beautify(calcEfficiency(Game.ObjectsById[10], best_bci)) + \'%\'+ \'</div>\'';
+	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[0].name + ':</b> \' + Beautify(efc=calcEfficiency(Game.ObjectsById[0], (best_bci=calcBestBCI()))) + \'%\'+ \'</div>\'';
+	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[1].name + ':</b> \' + Beautify(calcEfficiency(Game.ObjectsById[1], best_bci)) + \'%\'+ \'</div>\'';
+	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[2].name + ':</b> \' + Beautify(calcEfficiency(Game.ObjectsById[2], best_bci)) + \'%\'+ \'</div>\'';
+	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[3].name + ':</b> \' + Beautify(calcEfficiency(Game.ObjectsById[3], best_bci)) + \'%\'+ \'</div>\'';
+	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[4].name + ':</b> \' + Beautify(calcEfficiency(Game.ObjectsById[4], best_bci)) + \'%\'+ \'</div>\'';
+	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[5].name + ':</b> \' + Beautify(calcEfficiency(Game.ObjectsById[5], best_bci)) + \'%\'+ \'</div>\'';
+	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[6].name + ':</b> \' + Beautify(calcEfficiency(Game.ObjectsById[6], best_bci)) + \'%\'+ \'</div>\'';
+	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[7].name + ':</b> \' + Beautify(calcEfficiency(Game.ObjectsById[7], best_bci)) + \'%\'+ \'</div>\'';
+	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[8].name + ':</b> \' + Beautify(calcEfficiency(Game.ObjectsById[8], best_bci)) + \'%\'+ \'</div>\'';
+	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[9].name + ':</b> \' + Beautify(calcEfficiency(Game.ObjectsById[9], best_bci)) + \'%\'+ \'</div>\'';
+	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[10].name + ':</b> \' + Beautify(calcEfficiency(Game.ObjectsById[10], best_bci)) + \'%\'+ \'</div>\'';
 
 	
 	// Paste string into the menu
-	eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('Game.version+\'</div>\'+', 'Game.version+\'</div>\' + ' + addonString + ' + '));
+	eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('Game.version+\'</div>\'+', 'Game.version+\'</div>\' + ' + statsString + ' + '));
 
 	var statsdone = 1;
 }

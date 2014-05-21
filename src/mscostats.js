@@ -2,7 +2,7 @@
     MSco Cookie Stats - A Cookie Clicker plugin
 
     Version: 0.9.4
-    Pastebin:  https://pastebin.com/WSdHqJg2
+    GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
 

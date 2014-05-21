@@ -46,6 +46,8 @@
 
 ================================================ */
 
+var MS = {};
+
 Game.sayTime=function(time,detail)
 {	
 	var str='';
@@ -88,17 +90,17 @@ Game.sayTime=function(time,detail)
 	return str;
 }
 
-var hcThisGame = function()
+MS.hcThisGame = function()
 {
 	return Game.HowMuchPrestige(Game.cookiesEarned+Game.cookiesReset+wrinklersreward()) - Game.prestige['Heavenly chips'];	
 }
 
-var hcFactor = function()
+MS.hcFactor = function()
 {
-	return Math.round(hcThisGame()/Game.prestige['Heavenly chips'] * 100);	
+	return Math.round(MS.hcThisGame()/Game.prestige['Heavenly chips'] * 100);	
 }
 
-var wrinklersreward = function()
+MS.wrinklersreward = function()
 {
 	var suckFactor = 1.1;
 	if (Game.Has('Wrinklerspawn'))
@@ -106,7 +108,7 @@ var wrinklersreward = function()
 	return Game.wrinklers.reduce(function(p,c){return p + suckFactor*c.sucked},0);	
 }
 
-var wrinklersCPH = function()
+MS.wrinklersCPH = function()
 {
 	var frenzyMod = (Game.frenzy > 0) ? Game.frenzyPower : 1;
 	var wrinkFactor = 10*0.5*1.1
@@ -117,7 +119,7 @@ var wrinklersCPH = function()
 	return Game.cookiesPs / frenzyMod * wrinkFactor * 3600;
 }
 
-var simulateToggle = function(building, buyOrReverse)
+MS.simulateToggle = function(building, buyOrReverse)
 {
 	if (buyOrReverse) 
 	{
@@ -131,31 +133,31 @@ var simulateToggle = function(building, buyOrReverse)
         }
 }
 
-var getBuildingWorth = function(building)
+MS.getBuildingWorth = function(building)
 {
-	simulateToggle(building, true);
+	MS.simulateToggle(building, true);
 	Game.CalculateGains();
 
 	var frenzyMod = (Game.frenzy > 0) ? Game.frenzyPower : 1;
 	var income = Game['cookiesPs']/frenzyMod;
 
-	simulateToggle(building, false);
+	MS.simulateToggle(building, false);
 	Game.CalculateGains();
 
 	return income - Game['cookiesPs']/frenzyMod;
 }
 
-var getBCI = function(building)
+MS.getBCI = function(building)
 {
-	return building.price/getBuildingWorth(building);
+	return building.price/MS.getBuildingWorth(building);
 }
 
-var calcBestBCI = function()
+MS.calcBestBCI = function()
 {
 	var best_bci = Number.POSITIVE_INFINITY;
 	for (var i=0; i<Game.ObjectsN; i++) 
 	{
-		var bci = getBCI(Game.ObjectsById[i]);
+		var bci = MS.getBCI(Game.ObjectsById[i]);
 		if (bci > -1)
 		{
 			best_bci = Math.min(bci, best_bci);
@@ -165,9 +167,9 @@ var calcBestBCI = function()
 	return best_bci;
 }
 
-var calcEfficiency = function(building, bestbci)
+MS.calcEfficiency = function(building, bestbci)
 {
-	var bci = getBCI(building);
+	var bci = MS.getBCI(building);
 	if (bci < 0) 
 	{
 		return 0;
@@ -178,21 +180,21 @@ var calcEfficiency = function(building, bestbci)
 	}
 }
 
-var bankFrenzyLucky = function()
+MS.bankFrenzyLucky = function()
 {
 	var frenzyMod = (Game.frenzy > 0) ? Game.frenzyPower : 1;
 	return Game.cookiesPs / frenzyMod * 1200 * 10 * 7 + 13;
 }
 
-var rewardFrenzyLucky = function()
+MS.rewardFrenzyLucky = function()
 {
         var frenzyMod = (Game.frenzy > 0) ? Game.frenzyPower : 1;
         return Game.cookiesPs / frenzyMod * 1200 * 7 + 13;
 }
 
-var cookiesToSpend = function()
+MS.cookiesToSpend = function()
 {
-        return Game.cookies - bankFrenzyLucky();
+        return Game.cookies - MS.bankFrenzyLucky();
 }
 
 if(!statsdone)
@@ -211,41 +213,41 @@ if(!statsdone)
 	statsString = '\'<br><div class="subsection">\' + \'<div class="title">MSco Stats</div>\'';
 
 	// Frenzy + Lucky bank
-	statsString += ' + \'<div class="listing"><b>Bank for Frenzy Lucky:</b> <div class="price plain">\' + Beautify(bankFrenzyLucky()) + \'</div></div>\'';
+	statsString += ' + \'<div class="listing"><b>Bank for Frenzy Lucky:</b> <div class="price plain">\' + Beautify(MS.bankFrenzyLucky()) + \'</div></div>\'';
 
 	// Frenzy + Lucky reward
-	statsString += ' + \'<div class="listing"><b>Max. reward of Frenzy Lucky:</b> <div class="price plain">\' + Beautify(rewardFrenzyLucky()) + \'</div></div>\'';
+	statsString += ' + \'<div class="listing"><b>Max. reward of Frenzy Lucky:</b> <div class="price plain">\' + Beautify(MS.rewardFrenzyLucky()) + \'</div></div>\'';
 
 	// Cookies to spend
-	statsString += ' + \'<div class="listing"><b>Max. cookies to spend (FL bank):</b> <div class="price plain">\' + Beautify(cookiesToSpend()) + \'</div></div>\'';
+	statsString += ' + \'<div class="listing"><b>Max. cookies to spend (FL bank):</b> <div class="price plain">\' + Beautify(MS.cookiesToSpend()) + \'</div></div>\'';
 
 	// Rewarded by Wrinklers
-	statsString += ' + \'<div class="listing"><b>Cookies Rewarded killing Wrinklers:</b> <div class="price plain">\' + Beautify(wrinklersreward()) + \'</div></div>\'';
+	statsString += ' + \'<div class="listing"><b>Cookies Rewarded killing Wrinklers:</b> <div class="price plain">\' + Beautify(MS.wrinklersreward()) + \'</div></div>\'';
 
 	// Real Withered Cookies Per Hour
-	statsString += ' + \'<div class="listing"><b>Real Withered Cookies Per Hour:</b> <div class="price plain">\' + Beautify(wrinklersCPH()) + \'</div></div>\'';
+	statsString += ' + \'<div class="listing"><b>Real Withered Cookies Per Hour:</b> <div class="price plain">\' + Beautify(MS.wrinklersCPH()) + \'</div></div>\'';
 
 	// add blank line
 	statsString += ' + \'<br>\'';
 
 	// HCs earned this game
-	statsString += ' + \'<div class="listing"><b>HCs earned this game:</b> \' + Beautify(hcThisGame()) + \' (\' + Beautify(hcFactor()) + \'% of current HC) </div>\'';
+	statsString += ' + \'<div class="listing"><b>HCs earned this game:</b> \' + Beautify(MS.hcThisGame()) + \' (\' + Beautify(MS.hcFactor()) + \'% of current HC) </div>\'';
 	
 	// add blank line
 	statsString += ' + \'<br>\'';
 
 	// BCI
-	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[0].name + ':</b> \' + Beautify(efc=calcEfficiency(Game.ObjectsById[0], (best_bci=calcBestBCI()))) + \'%\'+ \'</div>\'';
-	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[1].name + ':</b> \' + Beautify(calcEfficiency(Game.ObjectsById[1], best_bci)) + \'%\'+ \'</div>\'';
-	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[2].name + ':</b> \' + Beautify(calcEfficiency(Game.ObjectsById[2], best_bci)) + \'%\'+ \'</div>\'';
-	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[3].name + ':</b> \' + Beautify(calcEfficiency(Game.ObjectsById[3], best_bci)) + \'%\'+ \'</div>\'';
-	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[4].name + ':</b> \' + Beautify(calcEfficiency(Game.ObjectsById[4], best_bci)) + \'%\'+ \'</div>\'';
-	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[5].name + ':</b> \' + Beautify(calcEfficiency(Game.ObjectsById[5], best_bci)) + \'%\'+ \'</div>\'';
-	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[6].name + ':</b> \' + Beautify(calcEfficiency(Game.ObjectsById[6], best_bci)) + \'%\'+ \'</div>\'';
-	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[7].name + ':</b> \' + Beautify(calcEfficiency(Game.ObjectsById[7], best_bci)) + \'%\'+ \'</div>\'';
-	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[8].name + ':</b> \' + Beautify(calcEfficiency(Game.ObjectsById[8], best_bci)) + \'%\'+ \'</div>\'';
-	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[9].name + ':</b> \' + Beautify(calcEfficiency(Game.ObjectsById[9], best_bci)) + \'%\'+ \'</div>\'';
-	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[10].name + ':</b> \' + Beautify(calcEfficiency(Game.ObjectsById[10], best_bci)) + \'%\'+ \'</div>\'';
+	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[0].name + ':</b> \' + Beautify(efc=MS.calcEfficiency(Game.ObjectsById[0], (best_bci=MS.calcBestBCI()))) + \'%\'+ \'</div>\'';
+	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[1].name + ':</b> \' + Beautify(MS.calcEfficiency(Game.ObjectsById[1], best_bci)) + \'%\'+ \'</div>\'';
+	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[2].name + ':</b> \' + Beautify(MS.calcEfficiency(Game.ObjectsById[2], best_bci)) + \'%\'+ \'</div>\'';
+	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[3].name + ':</b> \' + Beautify(MS.calcEfficiency(Game.ObjectsById[3], best_bci)) + \'%\'+ \'</div>\'';
+	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[4].name + ':</b> \' + Beautify(MS.calcEfficiency(Game.ObjectsById[4], best_bci)) + \'%\'+ \'</div>\'';
+	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[5].name + ':</b> \' + Beautify(MS.calcEfficiency(Game.ObjectsById[5], best_bci)) + \'%\'+ \'</div>\'';
+	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[6].name + ':</b> \' + Beautify(MS.calcEfficiency(Game.ObjectsById[6], best_bci)) + \'%\'+ \'</div>\'';
+	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[7].name + ':</b> \' + Beautify(MS.calcEfficiency(Game.ObjectsById[7], best_bci)) + \'%\'+ \'</div>\'';
+	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[8].name + ':</b> \' + Beautify(MS.calcEfficiency(Game.ObjectsById[8], best_bci)) + \'%\'+ \'</div>\'';
+	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[9].name + ':</b> \' + Beautify(MS.calcEfficiency(Game.ObjectsById[9], best_bci)) + \'%\'+ \'</div>\'';
+	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[10].name + ':</b> \' + Beautify(MS.calcEfficiency(Game.ObjectsById[10], best_bci)) + \'%\'+ \'</div>\'';
 
 	
 	// Paste string into the menu

@@ -333,8 +333,8 @@ if (!idleDone)
 	}
 	else 
 	{
-		Game.Notify('AFK: ' + framesToString(secondsAfk*Game.fps),'Wrinklers sucked <b>'+Beautify(cookiesSucked)+'</b> cookies while you were away.',[19,8],6);
-		Game.Notify('AFK: ' + framesToString(secondsAfk*Game.fps),'You earned <b>'+Beautify(cookiesEarned)+'</b> cookie'+(Math.floor(cookiesEarned)==1?'':'s')+' while you were away.',[10,0],6);
+		Game.Notify('AFK: ' + RPI.framesToString(secondsAfk*Game.fps),'Wrinklers sucked <b>'+Beautify(cookiesSucked)+'</b> cookies while you were away.',[19,8],6);
+		Game.Notify('AFK: ' + RPI.framesToString(secondsAfk*Game.fps),'You earned <b>'+Beautify(cookiesEarned)+'</b> cookie'+(Math.floor(cookiesEarned)==1?'':'s')+' while you were away.',[10,0],6);
 	}
 
 	console.log('Cookies earned while afk: ' + Beautify(cookiesEarned));

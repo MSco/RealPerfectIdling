@@ -92,7 +92,7 @@ Game.sayTime=function(time,detail)
 
 MS.hcThisGame = function()
 {
-	return Game.HowMuchPrestige(Game.cookiesEarned+Game.cookiesReset+wrinklersreward()) - Game.prestige['Heavenly chips'];	
+	return Game.HowMuchPrestige(Game.cookiesEarned+Game.cookiesReset+MS.wrinklersreward()) - Game.prestige['Heavenly chips'];	
 }
 
 MS.hcFactor = function()

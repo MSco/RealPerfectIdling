@@ -2,7 +2,7 @@
     MSco Perfect Idling With Wrinklers - A Cookie Clicker plugin
 
     Version: 0.9.3
-    Pastebin:  https://pastebin.com/822AfrZg
+    GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
 

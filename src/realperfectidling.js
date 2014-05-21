@@ -81,7 +81,7 @@ RPI.addMissedGoldenCookies = function(durationFrames)
 	var dur=13*Game.fps;	// how long will it stay on-screen?
         if (Game.Has('Lucky day')) dur*=2;
         if (Game.Has('Serendipity')) dur*=2;
-	var thisMissed = Math.round(durationFrames/(calcGCSpawnTime()+dur))
+	var thisMissed = Math.round(durationFrames/(RPI.calcGCSpawnTime()+dur))
 	Game.missedGoldenClicks += thisMissed;
 	console.log('Missed Golden Cookies while afk: ' + thisMissed);
 }
@@ -304,15 +304,15 @@ if (!idleDone)
 	var cookiesSucked = 0;
 
 	// calculate cps regarding century egg
-	var averageCps = calcCpsCenturyEgg();
+	var averageCps = RPI.calcCpsCenturyEgg();
 
 	// calculate cookies earned during pledge
-	var cookiesAndTime = runElderPledge(averageCps, secondsAfk);
+	var cookiesAndTime = RPI.runElderPledge(averageCps, secondsAfk);
 	cookiesEarned += cookiesAndTime[0];
 	var secondsRemaining = cookiesAndTime[1];
 	
 	// calculate cookies earned and sucked during elder wrath
-	var earnedAndSucked = runWrath(averageCps, secondsRemaining);
+	var earnedAndSucked = RPI.runWrath(averageCps, secondsRemaining);
 	cookiesEarned += earnedAndSucked[0];
 	cookiesSucked += earnedAndSucked[1];	
 	
@@ -323,7 +323,7 @@ if (!idleDone)
 		Game.researchT = Math.max(Game.researchT -secondsAfk*Game.fps, 0);
 
 	// add missed golden cookies
-	addMissedGoldenCookies(framesAfk);
+	RPI.addMissedGoldenCookies(framesAfk);
 
 	// Output of cookies earned and sucked
 	if (Game.prefs.popups)

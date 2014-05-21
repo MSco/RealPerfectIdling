@@ -55,7 +55,9 @@
 
 ================================================ */
 
-var calcGCSpawnTime = function()
+var RPI = {};
+
+RPI.calcGCSpawnTime = function()
 {
 	var min=Game.goldenCookie.getMinTime();
 	var max=Game.goldenCookie.getMaxTime();
@@ -74,17 +76,17 @@ var calcGCSpawnTime = function()
 //	return (Game.goldenCookie.getMaxTime()+Game.goldenCookie.getMinTime())/2;
 }
 
-var addMissedGoldenCookies = function(durationFrames)
+RPI.addMissedGoldenCookies = function(durationFrames)
 {
 	var dur=13*Game.fps;	// how long will it stay on-screen?
         if (Game.Has('Lucky day')) dur*=2;
         if (Game.Has('Serendipity')) dur*=2;
-	var thisMissed = Math.round(durationFrames/(calcGCSpawnTime()+dur))
+	var thisMissed = Math.round(durationFrames/(RPI.calcGCSpawnTime()+dur))
 	Game.missedGoldenClicks += thisMissed;
 	console.log('Missed Golden Cookies while afk: ' + thisMissed);
 }
 
-var calcCpsCenturyEgg = function()
+RPI.calcCpsCenturyEgg = function()
 {
 	if (Game.Has('Century egg'))
 	{
@@ -128,7 +130,7 @@ var calcCpsCenturyEgg = function()
 	}
 }
 
-var runElderPledge = function(cps, durationSeconds)
+RPI.runElderPledge = function(cps, durationSeconds)
 {
 	if(Game.Has('Elder Pledge'))
 	{
@@ -154,7 +156,7 @@ var runElderPledge = function(cps, durationSeconds)
 	}
 }
 
-var runWrath = function(cps, durationSeconds)
+RPI.runWrath = function(cps, durationSeconds)
 {
 	if (Game.elderWrath>0)
 	{
@@ -249,7 +251,7 @@ var runWrath = function(cps, durationSeconds)
 	}
 }
 
-framesToString=function(time)
+RPI.framesToString = function(time)
 {      
         var str='';
         time=Math.floor(time);
@@ -302,15 +304,15 @@ if (!idleDone)
 	var cookiesSucked = 0;
 
 	// calculate cps regarding century egg
-	var averageCps = calcCpsCenturyEgg();
+	var averageCps = RPI.calcCpsCenturyEgg();
 
 	// calculate cookies earned during pledge
-	var cookiesAndTime = runElderPledge(averageCps, secondsAfk);
+	var cookiesAndTime = RPI.runElderPledge(averageCps, secondsAfk);
 	cookiesEarned += cookiesAndTime[0];
 	var secondsRemaining = cookiesAndTime[1];
 	
 	// calculate cookies earned and sucked during elder wrath
-	var earnedAndSucked = runWrath(averageCps, secondsRemaining);
+	var earnedAndSucked = RPI.runWrath(averageCps, secondsRemaining);
 	cookiesEarned += earnedAndSucked[0];
 	cookiesSucked += earnedAndSucked[1];	
 	
@@ -321,7 +323,7 @@ if (!idleDone)
 		Game.researchT = Math.max(Game.researchT -secondsAfk*Game.fps, 0);
 
 	// add missed golden cookies
-	addMissedGoldenCookies(framesAfk);
+	RPI.addMissedGoldenCookies(framesAfk);
 
 	// Output of cookies earned and sucked
 	if (Game.prefs.popups)
@@ -331,8 +333,8 @@ if (!idleDone)
 	}
 	else 
 	{
-		Game.Notify('AFK: ' + framesToString(secondsAfk*Game.fps),'Wrinklers sucked <b>'+Beautify(cookiesSucked)+'</b> cookies while you were away.',[19,8],6);
-		Game.Notify('AFK: ' + framesToString(secondsAfk*Game.fps),'You earned <b>'+Beautify(cookiesEarned)+'</b> cookie'+(Math.floor(cookiesEarned)==1?'':'s')+' while you were away.',[10,0],6);
+		Game.Notify('AFK: ' + RPI.framesToString(secondsAfk*Game.fps),'Wrinklers sucked <b>'+Beautify(cookiesSucked)+'</b> cookies while you were away.',[19,8],6);
+		Game.Notify('AFK: ' + RPI.framesToString(secondsAfk*Game.fps),'You earned <b>'+Beautify(cookiesEarned)+'</b> cookie'+(Math.floor(cookiesEarned)==1?'':'s')+' while you were away.',[10,0],6);
 	}
 
 	console.log('Cookies earned while afk: ' + Beautify(cookiesEarned));

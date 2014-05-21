@@ -46,7 +46,7 @@
 
 ================================================ */
 
-Game.sayTime=function(time,detail)
+Game.sayTime = function(time,detail)
 {	
 	var str='';
 	time=Math.floor(time);

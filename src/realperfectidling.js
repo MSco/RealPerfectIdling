@@ -154,9 +154,34 @@ RPI.calcCpsCenturyEgg = function()
 	
 		var averageCps = (Game.cookiesPs + oldCps)/2;
 
-		var averageCenturyBonus = (currentCenturyBonus+oldCenturyBonus)/2;
+		
+		
+		/*******************/
+		var lastDayInMins=lastDay*24*60;
+		var dayInMins=day*24*60;
+		
+		
+		var integ=0;
+		for (var i=lastDayInMins; i<=dayInMins;i++)
+		{
+		    integ+=(1-Math.pow(1-i/100,3))*10;
+		}
+		
+		var integ2=0;
+		for (var i=lastDayInMins; i<=dayInMins;i++)
+		{
+		    integ2+=(1-Math.pow(1-i/100,3))*10;
+		    if (integ2>=integ/2)
+		    {
+		        var halfday=i;
+		        break;
+		    }
+		}
+		halfday = halfday/60/24;
+		var averageCenturyBonus = (1-Math.pow(1-halfday/100,3))*10;
 		averageEggMult += averageCenturyBonus;
 		var averageCpsNew = baseCps * (1+0.01*averageEggMult)
+		/*******************/
 
 		console.log('CPS when game was saved: ' + Beautify(oldCps));
 		console.log('Average CPS: ' + (averageCps));

@@ -106,24 +106,30 @@ RPI.calcCpsCenturyEgg = function()
 		if (Game.Has('Turtle egg')) currentEggMult++;
 		if (Game.Has('Ant larva')) currentEggMult++;
 		var oldEggMult = currentEggMult;
+		var averageEggMult = currentEggMult;
 
 		//the boost increases a little every day, with diminishing returns up to +10% on the 100th day
 		var day=Math.floor((new Date().getTime()-Game.startDate)/1000/10)*10/60/60/24;
 		day=Math.min(day,100);
-		currentEggMult+=(1-Math.pow(1-day/100,3))*10;
+		var currentCenturyBonus = (1-Math.pow(1-day/100,3))*10
+		currentEggMult += currentCenturyBonus;
 
 		var lastDay=Math.floor((Game.lastDate-Game.startDate)/1000/10)*10/60/60/24;
 		lastDay=Math.min(lastDay,100);
-		oldEggMult += (1-Math.pow(1-lastDay/100,3))*10;
+		var oldCenturyBonus = (1-Math.pow(1-lastDay/100,3))*10
+		oldEggMult += oldCenturyBonus;
 
 		var baseCps = Game.cookiesPs / (1+0.01*currentEggMult);
 		var oldCps = baseCps * (1+0.01*oldEggMult);
 	
 		var averageCps = (Game.cookiesPs + oldCps)/2;
 
+		var averageCenturyBonus = (currentCenturyBonus+oldCenturyBonus)/2;
+		
+
 		console.log('CPS when game was saved: ' + Beautify(oldCps));
 		console.log('Average CPS: ' + (averageCps));
-		console.log('CPS with average eggmult: ' + (baseCps * (1+0.01*((oldEggMult+currentEggMult)/2))))
+		console.log('CPS with average century bonus: ' + (baseCps * (1+0.01*(averageEggMult+averageCenturyBonus))))
 
 		return averageCps;
 	}

@@ -146,32 +146,33 @@ RPI.calcCpsCenturyEgg = function()
 
 		var lastDay=Math.floor((Game.lastDate-Game.startDate)/1000/10)*10/60/60/24;
 		lastDay=Math.min(lastDay,100);
-		var oldCenturyBonus = (1-Math.pow(1-lastDay/100,3))*10
-		oldEggMult += oldCenturyBonus;
+		//var oldCenturyBonus = (1-Math.pow(1-lastDay/100,3))*10
+		//oldEggMult += oldCenturyBonus;
 
 		var baseCps = Game.cookiesPs / (1+0.01*currentEggMult);
-		var oldCps = baseCps * (1+0.01*oldEggMult);
-	
-		var averageCps = (Game.cookiesPs + oldCps)/2;
+		//var oldCps = baseCps * (1+0.01*oldEggMult);
+		//var averageCps = (Game.cookiesPs + oldCps)/2;
 
 		
 		
 		/*******************/
+		// Calculation of integrals: We use that day, 
+		// when the integral between lastDay and day reached its half
 		var lastDayInMins=lastDay*24*60;
 		var dayInMins=day*24*60;
 		
 		
-		var integ=0;
+		var integFull=0;
 		for (var i=lastDayInMins; i<=dayInMins;i++)
 		{
-		    integ+=(1-Math.pow(1-i/100,3))*10;
+		    integFull+=(1-Math.pow(1-i/100,3))*10;
 		}
 		
-		var integ2=0;
+		var integHalf=0;
 		for (var i=lastDayInMins; i<=dayInMins;i++)
 		{
-		    integ2+=(1-Math.pow(1-i/100,3))*10;
-		    if (integ2>=integ/2)
+		    integHalf+=(1-Math.pow(1-i/100,3))*10;
+		    if (integHalf>=integFull/2)
 		    {
 		        var halfday=i;
 		        break;
@@ -184,8 +185,8 @@ RPI.calcCpsCenturyEgg = function()
 		/*******************/
 
 		console.log('CPS when game was saved: ' + Beautify(oldCps));
-		console.log('Average CPS: ' + (averageCps));
-		console.log('CPS with average century bonus: ' + (averageCpsNew))
+		//console.log('Average CPS: ' + (averageCps));
+		console.log('CPS with average century bonus: ' + Beautify(averageCpsNew))
 		//return averageCps;
 		return averageCpsNew;
 	}

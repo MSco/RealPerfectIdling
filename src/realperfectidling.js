@@ -59,28 +59,27 @@
 
 /*** notes for century egg cps calculation ******/
 /*
-var lastDay=5*24*60*60*Game.fps;
-var day=10*24*60*60*Game.fps;
+var lastDay=5*24*60*60;
+var day=10*24*60*60;
 
 
 var integ=0;
 for (var i=lastDay; i<=day;i++)
 {
-    integ+=Math.abs(Math.pow(1-i/100,3));
+    integ+=(1-Math.pow(1-i/100,3))*10;
 }
-
 
 var integ2=0;
 for (var i=lastDay; i<=day;i++)
 {
-    integ2+=Math.abs(Math.pow(1-i/100,3));
+    integ2+=(1-Math.pow(1-i/100,3))*10;
     if (integ2>=integ/2)
     {
         var halfday=i;
         break;
     }
 }
-halfday/Game.fps/60/60/24;
+halfday/60/60/24;
 */
 /******************************************************/
 

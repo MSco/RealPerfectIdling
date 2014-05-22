@@ -304,7 +304,7 @@ RPI.framesToString = function(time)
 
 if (!idleDone)
 {
-	var secondsAfk = (new Date().getTime()-Game.lastDate)/1000;
+	var secondsAfk = (new Date().getTime()-Game.lastDate)/1000 - Game.T/Game.fps;
 	//var secondsAfk = 50*60; 					// for debug
 	var framesAfk = secondsAfk*Game.fps;
 

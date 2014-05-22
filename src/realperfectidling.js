@@ -186,7 +186,8 @@ RPI.calcCpsCenturyEgg = function()
 		console.log('CPS when game was saved: ' + Beautify(oldCps));
 		console.log('Average CPS: ' + (averageCps));
 		console.log('CPS with average century bonus: ' + (averageCpsNew))
-		return averageCps;
+		//return averageCps;
+		return averageCpsNew;
 	}
 	else
 	{

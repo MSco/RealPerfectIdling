@@ -122,7 +122,8 @@ RPI.calcCpsCenturyEgg = function()
 		var averageCps = (Game.cookiesPs + oldCps)/2;
 
 		console.log('CPS when game was saved: ' + Beautify(oldCps));
-		console.log('Average CPS: ' + Beautify(averageCps));
+		console.log('Average CPS: ' + (averageCps));
+		console.log('CPS with average eggmult: ' + (baseCps * (1+0.01*((oldEggMult+currentEggMult)/2))))
 
 		return averageCps;
 	}

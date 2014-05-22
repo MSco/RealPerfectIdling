@@ -125,12 +125,12 @@ RPI.calcCpsCenturyEgg = function()
 		var averageCps = (Game.cookiesPs + oldCps)/2;
 
 		var averageCenturyBonus = (currentCenturyBonus+oldCenturyBonus)/2;
-		
+		averageEggMult += averageCenturyBonus;
+		var averageCpsNew = baseCps * (1+0.01*averageEggMult)
 
 		console.log('CPS when game was saved: ' + Beautify(oldCps));
 		console.log('Average CPS: ' + (averageCps));
-		console.log('CPS with average century bonus: ' + (baseCps * (1+0.01*(averageEggMult+averageCenturyBonus))))
-
+		console.log('CPS with average century bonus var: ' + (averageEggMult))
 		return averageCps;
 	}
 	else

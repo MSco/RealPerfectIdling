@@ -1,7 +1,7 @@
 /* ================================================
     MSco Cookie Stats - A Cookie Clicker plugin
 
-    Version: 0.9.4
+    Version: 0.9.4.1
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -47,6 +47,16 @@
 ================================================ */
 
 var MS = {};
+
+// set RPI.importSaveT after importing a save
+MS.importSaveT = 0;
+MS.importSaveCodeOrignal = Game.ImportSaveCode;
+Game.ImportSaveCode = function(save)
+{
+    MS.importSaveCodeOrignal(save);
+    MS.importSaveT = Game.T;
+    console.log('MS.importSaveT: ' + MS.importSaveT);
+}
 
 Game.sayTime = function(time,detail)
 {	

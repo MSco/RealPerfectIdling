@@ -91,7 +91,7 @@ halfday/60/60/24;
 var RPI = {};
 
 RPI.importSaveT = 0;
-if (MS.importSaveT)
+if (MS)
 {
 	RPI.importSaveT = MS.importSaveT;
 	console.log('RPI.importSaveT: ' + RPI.importSaveT);

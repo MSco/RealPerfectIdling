@@ -376,7 +376,7 @@ if (!idleDone)
 {
 	var secondsAfk = (new Date().getTime()-Game.lastDate)/1000 - (Game.T-RPI.importSaveT)/Game.fps;
 	//var secondsAfk = 50*60; 					// for debug
-	var framesAfk = secondsAfk*Game.fps;
+	var framesAfk = (new Date().getTime()-Game.lastDate)/1000*Game.fps - (Game.T-RPI.importSaveT);
 
 	// initialize global values
 	var cookiesEarned = 0;

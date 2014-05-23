@@ -149,7 +149,7 @@ RPI.calcCpsCenturyEgg = function()
 		var averageEggMult = currentEggMult;
 
 		//the boost increases a little every day, with diminishing returns up to +10% on the 100th day
-		var day=Math.floor((new Date().getTime()/*-Game.T/Game.fps*1000*/-Game.startDate)/1000/10)*10/60/60/24;
+		var day=Math.floor((new Date().getTime()-(Game.T-RPI.importSaveT)/Game.fps*1000-Game.startDate)/1000/10)*10/60/60/24;
 		day=Math.min(day,100);
 		var currentCenturyBonus = (1-Math.pow(1-day/100,3))*10
 		currentEggMult += currentCenturyBonus;

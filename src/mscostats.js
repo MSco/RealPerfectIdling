@@ -48,6 +48,16 @@
 
 var MS = {};
 
+// set RPI.importSaveT after importing a save
+var MS.importSaveT = 0;
+MS.importSaveCodeOrignal = Game.ImportSaveCode;
+Game.ImportSaveCode = function ()
+{
+    MS.importSaveCodeOrignal();
+    MS.importSaveT = Game.T;
+    console.log('MS.importSaveT: ' + MS.importSaveT);
+}
+
 Game.sayTime=function(time,detail)
 {	
 	var str='';

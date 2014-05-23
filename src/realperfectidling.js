@@ -90,6 +90,13 @@ halfday/60/60/24;
 
 var RPI = {};
 
+RPI.importSaveT = 0;
+if (MS.importSaveT)
+{
+	RPI.importSaveT = MS.importSaveT;
+	console.log('RPI.importSaveT: ' + RPI.importSaveT);
+}
+
 RPI.supportedVersion = "1.0465"
 if (RPI.supportedVersion != Game.version)
 {
@@ -367,7 +374,7 @@ RPI.framesToString = function(time)
 
 if (!idleDone)
 {
-	var secondsAfk = (new Date().getTime()-Game.lastDate)/1000/* - Game.T/Game.fps*/;
+	var secondsAfk = (new Date().getTime()-Game.lastDate)/1000 - (Game.T-RPI.importSaveT)/Game.fps;
 	//var secondsAfk = 50*60; 					// for debug
 	var framesAfk = secondsAfk*Game.fps;
 

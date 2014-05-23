@@ -1,7 +1,7 @@
 /* ================================================
     MSco Perfect Idling With Wrinklers - A Cookie Clicker plugin
 
-    Version: 0.9.4
+    Version: 0.9.5
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -26,6 +26,9 @@
 	- Recalculate CPS regarding 'Century egg' from easter update. CPS of last save and current CPS are averaged for this.
 
     Version History:
+    0.9.5:
+    	- Game.T is not regarded anymore because Game.T contains also the time between loading the game 
+    	and importing the save.
     0.9.4:
     	- Show message if Game.version is not supported
     	- Subtract Game.T (time after last reload) from afk time

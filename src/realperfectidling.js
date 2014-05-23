@@ -1,7 +1,7 @@
 /* ================================================
     MSco Perfect Idling With Wrinklers - A Cookie Clicker plugin
 
-    Version: 0.9.3
+    Version: 0.9.5
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -26,6 +26,12 @@
 	- Recalculate CPS regarding 'Century egg' from easter update. CPS of last save and current CPS are averaged for this.
 
     Version History:
+    0.9.5:
+    	- Game.T is not regarded anymore because Game.T contains also the time between loading the game 
+    	and importing the save.
+    0.9.4:
+    	- Show message if Game.version is not supported
+    	- Subtract Game.T (time after last reload) from afk time
     0.9.3:
 	- Implemented more methods to split up main code
 	- Own method to generae time string
@@ -53,7 +59,34 @@
 		- decrease season duration
 		- earn cookies
 
-================================================ */
+
+/*** notes for century egg cps calculation ******/
+/*
+var lastDay=5*24*60*60;
+var day=10*24*60*60;
+
+
+var integ=0;
+for (var i=lastDay; i<=day;i++)
+{
+    integ+=(1-Math.pow(1-i/100,3))*10;
+}
+
+var integ2=0;
+for (var i=lastDay; i<=day;i++)
+{
+    integ2+=(1-Math.pow(1-i/100,3))*10;
+    if (integ2>=integ/2)
+    {
+        var halfday=i;
+        break;
+    }
+}
+halfday/60/60/24;
+*/
+/******************************************************/
+
+/*================================================ */
 
 var RPI = {};
 
@@ -106,25 +139,62 @@ RPI.calcCpsCenturyEgg = function()
 		if (Game.Has('Turtle egg')) currentEggMult++;
 		if (Game.Has('Ant larva')) currentEggMult++;
 		var oldEggMult = currentEggMult;
+		var averageEggMult = currentEggMult;
 
 		//the boost increases a little every day, with diminishing returns up to +10% on the 100th day
-		var day=Math.floor((new Date().getTime()-Game.startDate)/1000/10)*10/60/60/24;
+		var day=Math.floor((new Date().getTime()/*-Game.T/Game.fps*1000*/-Game.startDate)/1000/10)*10/60/60/24;
 		day=Math.min(day,100);
-		currentEggMult+=(1-Math.pow(1-day/100,3))*10;
+		var currentCenturyBonus = (1-Math.pow(1-day/100,3))*10
+		currentEggMult += currentCenturyBonus;
 
 		var lastDay=Math.floor((Game.lastDate-Game.startDate)/1000/10)*10/60/60/24;
 		lastDay=Math.min(lastDay,100);
-		oldEggMult += (1-Math.pow(1-lastDay/100,3))*10;
+		var oldCenturyBonus = (1-Math.pow(1-lastDay/100,3))*10
+		oldEggMult += oldCenturyBonus;
 
 		var baseCps = Game.cookiesPs / (1+0.01*currentEggMult);
 		var oldCps = baseCps * (1+0.01*oldEggMult);
-	
 		var averageCps = (Game.cookiesPs + oldCps)/2;
 
-		console.log('CPS when game was saved: ' + Beautify(oldCps));
-		console.log('Average CPS: ' + Beautify(averageCps));
+		
+		
+		/*******************/
+		// Calculation of integrals: We use that day, 
+		// when the integral between lastDay and day reached its half
+		/*
+		var lastDayInMins=lastDay*24*60;
+		var dayInMins=day*24*60;
+		
+		
+		var integFull=0;
+		for (var i=lastDayInMins; i<=dayInMins;i++)
+		{
+		    integFull+=(1-Math.pow(1-i/100,3))*10;
+		}
+		
+		var integHalf=0;
+		for (var i=lastDayInMins; i<=dayInMins;i++)
+		{
+		    integHalf+=(1-Math.pow(1-i/100,3))*10;
+		    if (integHalf>=integFull/2)
+		    {
+		        var halfday=i;
+		        break;
+		    }
+		}
+		halfday = halfday/60/24;
+		var averageCenturyBonus = (1-Math.pow(1-halfday/100,3))*10;
+		averageEggMult += averageCenturyBonus;
+		var averageCpsNew = baseCps * (1+0.01*averageEggMult)
+		*/
+		/*******************/
 
+		console.log('CPS when game was saved: ' + Beautify(oldCps));
+		console.log('Average CPS: ' + (averageCps));
+		//console.log('CPS with half integral century bonus: ' + Beautify(averageCpsNew))
+		console.log('Current CPS: ' + Beautify(Game.cookiesPs))
 		return averageCps;
+		//return averageCpsNew;
 	}
 	else
 	{
@@ -297,7 +367,7 @@ RPI.framesToString = function(time)
 
 if (!idleDone)
 {
-	var secondsAfk = (new Date().getTime()-Game.lastDate)/1000;
+	var secondsAfk = (new Date().getTime()-Game.lastDate)/1000/* - Game.T/Game.fps*/;
 	//var secondsAfk = 50*60; 					// for debug
 	var framesAfk = secondsAfk*Game.fps;
 

@@ -1,8 +1,10 @@
 // Global Variables
+var ccUrl = 'https://raw.githubusercontent.com/MSco/CookieClicker/master/main.js'
 var baseUrl = 'https://raw.githubusercontent.com/MSco/RealPerfectIdling/master/src/'
 
 // Load external libraries
 var script_list = [
+    ccUrl,
     baseUrl + 'mscostats.js',
     baseUrl + 'realperfectidling.js'
     ]

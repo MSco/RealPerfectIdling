@@ -51,9 +51,9 @@ var MS = {};
 // set RPI.importSaveT after importing a save
 MS.importSaveT = 0;
 MS.importSaveCodeOrignal = Game.ImportSaveCode;
-Game.ImportSaveCode = function ()
+Game.ImportSaveCode = function (save)
 {
-    MS.importSaveCodeOrignal();
+    MS.importSaveCodeOrignal(save);
     MS.importSaveT = Game.T;
     console.log('MS.importSaveT: ' + MS.importSaveT);
 }

@@ -11,7 +11,7 @@ the original game.
 How To Use
 ----------
 
-MSco's RealPerfectIdling is available via a bookmarklet. For more detailed installation instructions, please see [the main site](http://cookiemaster.co.uk).
+MSco's RealPerfectIdling is available via a bookmarklet:
 
 * Paste the following code into a new bookmark in your browser:
 

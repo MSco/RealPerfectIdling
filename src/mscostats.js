@@ -26,6 +26,7 @@
     0.9.5:
     	- BCI is gerenerated by a dynamic loop
     	- Show Heavenly Chips earned overall
+    	- Also show max chocolate egg reward
     0.9.4:
 	- Ads have been removed by orteil in v1.0465, so the ad remove code is not needed anymore.
     0.9.3:
@@ -111,6 +112,39 @@ MS.hcOverall = function()
 MS.hcThisGame = function()
 {
 	return (MS.hcOverall() - Game.prestige['Heavenly chips']);	
+}
+
+MS.buildingSellReward = function(building)
+{
+	var price = Math.ceil(building.basePrice * (Math.pow(Game.priceIncrease, building.amount+1) - Game.priceIncrease) / 0.15);
+	var reward = price * 0.5;
+	
+	if (Game.Has('Season savings')) reward*=0.99;
+	if (Game.Has('Santa\'s dominion')) reward*=0.99;
+	if (Game.Has('Faberge egg')) reward*=0.99;
+	
+	return reward;
+}
+
+MS.sellAllReward = function()
+{
+	var reward = 0;
+	for (var i=0; i<Game.ObjectsN; i++)
+	{
+		reward += buildingSellReward(Game.ObjectsById[i]);
+	}
+	
+	return reward;
+}
+
+MS.chocolateEggSellReward = function()
+{
+	return (MS.sellAllReward()*0.05);
+}
+
+MS.chocolateEggMaxReward = function()
+{
+	return (MS.chocolateEggSellReward() + Game.cookies*0.05);
 }
 
 MS.hcFactor = function()
@@ -251,6 +285,11 @@ if(!statsdone)
 	// HCs earned
 	statsString += ' + \'<div class="listing"><b>HCs earned this game:</b> \' + Beautify(MS.hcThisGame()) + \' (\' + Beautify(MS.hcFactor()) + \'% of current HC) </div>\'';
 	statsString += ' + \'<div class="listing"><b>HCs earned overall:</b> \' + Beautify(MS.hcOverall()) + \'</div>\'';
+	
+	// Chocolate Egg reward
+	statsString += ' + \'<div class="listing"><b>Chocolate Egg reward for selling all buildings:</b> <div class="price plain">\' + Beautify(MS.chocolateEggSellReward()) + \'</div></div>\'';
+	statsString += ' + \'<div class="listing"><b>Chocolate Egg max. reward (including current bank):</b> <div class="price plain">\' + Beautify(MS.chocolateEggMaxReward()) + \'</div></div>\'';
+	
 	
 	// add blank line
 	statsString += ' + \'<br>\'';

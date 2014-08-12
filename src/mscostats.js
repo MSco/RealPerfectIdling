@@ -248,7 +248,7 @@ if(!statsdone)
 
 	// BCI
 	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[0].name + ':</b> \' + Beautify(efc=MS.calcEfficiency(Game.ObjectsById[0], (best_bci=MS.calcBestBCI()))) + \'%\'+ \'</div>\'';
-	for (var i=1;i<=10;i++)	
+	for (var i=1;i<Game.ObjectsN;i++)	
 	{
 		statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[i].name + ':</b> \' + Beautify(MS.calcEfficiency(Game.ObjectsById['+i+'], best_bci)) + \'%\'+ \'</div>\'';
 	}

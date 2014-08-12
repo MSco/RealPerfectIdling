@@ -16,7 +16,7 @@
 	- Show maximum of cookies you can spend without getting under the Frenz-Lucky optimized bank
 	- Show Cookies you would earn after popping all wrinklers
 	- Show Cookies earned per hour with 10 active wrinklers
-	- Show Heavenly Chips you would earn additionally after resetting this game
+	- Show Heavenly Chips you would earn additionally after resetting this game (including sucked cookies)
 	- Calculate Base Cost per Income (BCI) for each building and show their efficiencies corresponding 
           the best BCI
 	- Overloaded sayTime function: Time is displayed a bit more detailed now.
@@ -25,7 +25,7 @@
 
     0.9.5:
     	- BCI is gerenerated by a dynamic loop
-    	-
+    	- Show Heavenly Chips earned overall
     0.9.4:
 	- Ads have been removed by orteil in v1.0465, so the ad remove code is not needed anymore.
     0.9.3:

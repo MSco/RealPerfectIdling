@@ -58,7 +58,7 @@ Game.ImportSaveCode = function(save)
     console.log('MS.importSaveT: ' + MS.importSaveT);
 }
 
-Game.sayTime=function(time,detail)
+Game.sayTime = function(time,detail)
 {	
 	var str='';
 	time=Math.floor(time);
@@ -248,16 +248,10 @@ if(!statsdone)
 
 	// BCI
 	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[0].name + ':</b> \' + Beautify(efc=MS.calcEfficiency(Game.ObjectsById[0], (best_bci=MS.calcBestBCI()))) + \'%\'+ \'</div>\'';
-	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[1].name + ':</b> \' + Beautify(MS.calcEfficiency(Game.ObjectsById[1], best_bci)) + \'%\'+ \'</div>\'';
-	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[2].name + ':</b> \' + Beautify(MS.calcEfficiency(Game.ObjectsById[2], best_bci)) + \'%\'+ \'</div>\'';
-	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[3].name + ':</b> \' + Beautify(MS.calcEfficiency(Game.ObjectsById[3], best_bci)) + \'%\'+ \'</div>\'';
-	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[4].name + ':</b> \' + Beautify(MS.calcEfficiency(Game.ObjectsById[4], best_bci)) + \'%\'+ \'</div>\'';
-	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[5].name + ':</b> \' + Beautify(MS.calcEfficiency(Game.ObjectsById[5], best_bci)) + \'%\'+ \'</div>\'';
-	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[6].name + ':</b> \' + Beautify(MS.calcEfficiency(Game.ObjectsById[6], best_bci)) + \'%\'+ \'</div>\'';
-	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[7].name + ':</b> \' + Beautify(MS.calcEfficiency(Game.ObjectsById[7], best_bci)) + \'%\'+ \'</div>\'';
-	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[8].name + ':</b> \' + Beautify(MS.calcEfficiency(Game.ObjectsById[8], best_bci)) + \'%\'+ \'</div>\'';
-	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[9].name + ':</b> \' + Beautify(MS.calcEfficiency(Game.ObjectsById[9], best_bci)) + \'%\'+ \'</div>\'';
-	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[10].name + ':</b> \' + Beautify(MS.calcEfficiency(Game.ObjectsById[10], best_bci)) + \'%\'+ \'</div>\'';
+	for (var i=1;i<=10;i++)	
+	{
+		statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[i].name + ':</b> \' + Beautify(MS.calcEfficiency(Game.ObjectsById['+i+'], best_bci)) + \'%\'+ \'</div>\'';
+	}
 
 	
 	// Paste string into the menu

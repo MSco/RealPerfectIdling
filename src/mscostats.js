@@ -26,7 +26,7 @@
     0.9.5:
     	- BCI is gerenerated by a dynamic loop
     	- Show Heavenly Chips earned overall
-    	- Also show max chocolate egg reward
+    	- Also show max Chocolate egg reward
     0.9.4:
 	- Ads have been removed by orteil in v1.0465, so the ad remove code is not needed anymore.
     0.9.3:
@@ -287,8 +287,8 @@ if(!statsdone)
 	statsString += ' + \'<div class="listing"><b>HCs earned overall:</b> \' + Beautify(MS.hcOverall()) + \'</div>\'';
 	
 	// Chocolate Egg reward
-	statsString += ' + \'<div class="listing"><b>Chocolate Egg reward for buildings:</b> <div class="price plain">\' + Beautify(MS.chocolateEggSellReward()) + \'</div></div>\'';
-	statsString += ' + \'<div class="listing"><b>Chocolate Egg reward for buildings + bank:</b> <div class="price plain">\' + Beautify(MS.chocolateEggMaxReward()) + \'</div></div>\'';
+	statsString += ' + \'<div class="listing"><b>Chocolate egg reward for buildings:</b> <div class="price plain">\' + Beautify(MS.chocolateEggSellReward()) + \'</div></div>\'';
+	statsString += ' + \'<div class="listing"><b>Chocolate egg reward for buildings + bank:</b> <div class="price plain">\' + Beautify(MS.chocolateEggMaxReward()) + \'</div></div>\'';
 	
 	
 	// add blank line

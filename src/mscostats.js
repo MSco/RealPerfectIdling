@@ -1,7 +1,7 @@
 /* ================================================
     MSco Cookie Stats - A Cookie Clicker plugin
 
-    Version: 0.9.4.1
+    Version: 0.9.5
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -23,6 +23,9 @@
 
     Version History:
 
+    0.9.5:
+    	- BCI is gerenerated by a dynamic loop
+    	-
     0.9.4:
 	- Ads have been removed by orteil in v1.0465, so the ad remove code is not needed anymore.
     0.9.3:
@@ -100,9 +103,14 @@ Game.sayTime = function(time,detail)
 	return str;
 }
 
+MS.hcOverall = function()
+{
+	return Game.HowMuchPrestige(Game.cookiesEarned+Game.cookiesReset+MS.wrinklersreward());	
+}
+
 MS.hcThisGame = function()
 {
-	return Game.HowMuchPrestige(Game.cookiesEarned+Game.cookiesReset+MS.wrinklersreward()) - Game.prestige['Heavenly chips'];	
+	return MS.hcOverall - Game.prestige['Heavenly chips'];	
 }
 
 MS.hcFactor = function()
@@ -240,8 +248,9 @@ if(!statsdone)
 	// add blank line
 	statsString += ' + \'<br>\'';
 
-	// HCs earned this game
+	// HCs earned
 	statsString += ' + \'<div class="listing"><b>HCs earned this game:</b> \' + Beautify(MS.hcThisGame()) + \' (\' + Beautify(MS.hcFactor()) + \'% of current HC) </div>\'';
+	statsString += ' + \'<div class="listing"><b>HCs earned overall:</b> \' + Beautify(MS.hcOverall()) + \'</div>\'';
 	
 	// add blank line
 	statsString += ' + \'<br>\'';

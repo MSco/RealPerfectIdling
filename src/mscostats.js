@@ -118,7 +118,7 @@ MS.maxEarnedOverall = function()
 
 MS.hcOverall = function()
 {
-	return Game.HowMuchPrestige(Game.cookiesEarned+Game.cookiesReset+MS.wrinklersreward()+MS.chocolateEggMaxReward());	
+	return Game.HowMuchPrestige(MS.maxEarnedOverall);	
 }
 
 MS.hcThisGame = function()

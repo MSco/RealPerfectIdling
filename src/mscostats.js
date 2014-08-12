@@ -287,8 +287,8 @@ if(!statsdone)
 	statsString += ' + \'<div class="listing"><b>HCs earned overall:</b> \' + Beautify(MS.hcOverall()) + \'</div>\'';
 	
 	// Chocolate Egg reward
-	statsString += ' + \'<div class="listing"><b>Chocolate Egg reward for selling all buildings:</b> <div class="price plain">\' + Beautify(MS.chocolateEggSellReward()) + \'</div></div>\'';
-	statsString += ' + \'<div class="listing"><b>Chocolate Egg max. reward (including current bank):</b> <div class="price plain">\' + Beautify(MS.chocolateEggMaxReward()) + \'</div></div>\'';
+	statsString += ' + \'<div class="listing"><b>Chocolate Egg reward for buildings:</b> <div class="price plain">\' + Beautify(MS.chocolateEggSellReward()) + \'</div></div>\'';
+	statsString += ' + \'<div class="listing"><b>Chocolate Egg reward for buildings + bank:</b> <div class="price plain">\' + Beautify(MS.chocolateEggMaxReward()) + \'</div></div>\'';
 	
 	
 	// add blank line

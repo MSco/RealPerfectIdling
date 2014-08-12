@@ -118,7 +118,7 @@ MS.maxEarnedOverall = function()
 
 MS.hcOverall = function()
 {
-	return Game.HowMuchPrestige(MS.maxEarnedOverall);	
+	return Game.HowMuchPrestige(MS.maxEarnedOverall()));	
 }
 
 MS.hcThisGame = function()

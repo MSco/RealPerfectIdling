@@ -106,12 +106,12 @@ Game.sayTime = function(time,detail)
 	return str;
 }
 
-MS.maxEarnedThisGame()
+MS.maxEarnedThisGame = function()
 {
 	return (Game.cookiesEarned + MS.wrinklersreward() + MS.chocolateEggMaxReward());
 }
 
-MS.maxEarnedOverall()
+MS.maxEarnedOverall = function()
 {
 	return (MS.maxEarnedThisGame() + Game.cookiesReset);
 }

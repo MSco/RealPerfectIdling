@@ -1,7 +1,7 @@
 /* ================================================
     MSco Cookie Stats - A Cookie Clicker plugin
 
-    Version: 0.9.5.2
+    Version: 0.9.6
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -11,6 +11,10 @@
     have any suggestions.
 
     Features:
+    	- Original strings in statistics menu changed:
+    		- Overloaded sayTime function: Time is displayed a bit more detailed now.
+    		- cookies per second not affected by frenzy multipliers
+    		- multiplier not affected by frenzy multipliers
 	- Show Cookies in bank needed to get the maximum reward of a Frenzy-Lucky-Combo of Golden Cookies
 	- Show maximum reward of a Frenzy-Lucky-Combo of Golden Cookies
 	- Show maximum of cookies you can spend without getting under the Frenz-Lucky optimized bank
@@ -20,10 +24,12 @@
 	- Show Heavenly Chips you would earn additionally after resetting this game (including sucked cookies and chocolate egg)
 	- Calculate Base Cost per Income (BCI) for each building and show their efficiencies corresponding 
           the best BCI
-	- Overloaded sayTime function: Time is displayed a bit more detailed now.
+	
 
     Version History:
 
+    0.9.6:
+    	- cps and multiplier statistic strings not affected by frenzy multipliers
     0.9.5:
     	- BCI is gerenerated by a dynamic loop
     	- Show Heavenly Chips earned overall
@@ -175,13 +181,12 @@ MS.wrinklersreward = function()
 
 MS.wrinklersCPH = function()
 {
-	var frenzyMod = (Game.frenzy > 0) ? Game.frenzyPower : 1;
 	var wrinkFactor = 10*0.5*1.1
 	if (Game.Has('Wrinklerspawn'))
 		wrinkFactor *= 1.05;
 	wrinkFactor += 0.5
 
-	return Game.cookiesPs / frenzyMod * wrinkFactor * 3600;
+	return Game.cookiesPs / MS.frenzyMod() * wrinkFactor * 3600;
 }
 
 MS.simulateToggle = function(building, buyOrReverse)
@@ -203,13 +208,12 @@ MS.getBuildingWorth = function(building)
 	MS.simulateToggle(building, true);
 	Game.CalculateGains();
 
-	var frenzyMod = (Game.frenzy > 0) ? Game.frenzyPower : 1;
-	var income = Game['cookiesPs']/frenzyMod;
+	var income = Game['cookiesPs']/MS.frenzyMod();
 
 	MS.simulateToggle(building, false);
 	Game.CalculateGains();
 
-	return income - Game['cookiesPs']/frenzyMod;
+	return income - Game['cookiesPs']/MS.frenzyMod();
 }
 
 MS.getBCI = function(building)
@@ -245,16 +249,19 @@ MS.calcEfficiency = function(building, bestbci)
 	}
 }
 
+MS.frenzyMod = function()
+{
+	return ((Game.frenzy > 0) ? Game.frenzyPower : 1);
+}
+
 MS.bankFrenzyLucky = function()
 {
-	var frenzyMod = (Game.frenzy > 0) ? Game.frenzyPower : 1;
-	return Game.cookiesPs / frenzyMod * 1200 * 10 * 7 + 13;
+	return Game.cookiesPs / MS.frenzyMod() * 1200 * 10 * 7 + 13;
 }
 
 MS.rewardFrenzyLucky = function()
 {
-        var frenzyMod = (Game.frenzy > 0) ? Game.frenzyPower : 1;
-        return Game.cookiesPs / frenzyMod * 1200 * 7 + 13;
+        return Game.cookiesPs / MS.frenzyMod() * 1200 * 7 + 13;
 }
 
 MS.cookiesToSpend = function()
@@ -271,6 +278,14 @@ if(!statsdone)
 	l('sectionMiddle').style.right = '318px';
 	l('sectionRight').style.right = '0px';
 	*/
+	
+	
+	// Replace strings in original Statistics menu
+	
+	// Cookies per second: not effected by any frenzy effects.
+	eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('Beautify(Game.cookiesPs,1)', 'Beautify(Game.cookiesPs/MS.frenzyMod(),1)');
+	// Multiplier: not effected by any frenzy effects.
+	eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('Beautify(Math.round(Game.globalCpsMult*100),1)', 'Beautify(Math.round(Game.globalCpsMult*100/MS.frenzyMod()),1)');
 
 	var statsString;
 

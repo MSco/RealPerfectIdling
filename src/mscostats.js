@@ -131,7 +131,7 @@ MS.sellAllReward = function()
 	var reward = 0;
 	for (var i=0; i<Game.ObjectsN; i++)
 	{
-		reward += buildingSellReward(Game.ObjectsById[i]);
+		reward += MS.buildingSellReward(Game.ObjectsById[i]);
 	}
 	
 	return reward;

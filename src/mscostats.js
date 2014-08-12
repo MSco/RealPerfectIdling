@@ -1,7 +1,7 @@
 /* ================================================
     MSco Cookie Stats - A Cookie Clicker plugin
 
-    Version: 0.9.5.1
+    Version: 0.9.5.2
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -29,6 +29,7 @@
     	- Show Heavenly Chips earned overall
     	- Also show max Chocolate egg reward
     	- Max. cookies earned
+    	- Check for Chocolate Upgrade unlocked and not used
     0.9.4:
 	- Ads have been removed by orteil in v1.0465, so the ad remove code is not needed anymore.
     0.9.3:
@@ -151,12 +152,12 @@ MS.sellAllReward = function()
 
 MS.chocolateEggSellReward = function()
 {
-	return (MS.sellAllReward()*0.05);
+	return (MS.sellAllReward()*0.05)*Game.HasUnlocked('Chocolate egg')*!Game.Has('Chocolate egg');
 }
 
 MS.chocolateEggMaxReward = function()
 {
-	return (MS.chocolateEggSellReward() + (Game.cookies+MS.wrinklersreward())*0.05);
+	return (MS.chocolateEggSellReward() + (Game.cookies+MS.wrinklersreward())*0.05)*Game.HasUnlocked('Chocolate egg')*!Game.Has('Chocolate egg');
 }
 
 MS.hcFactor = function()

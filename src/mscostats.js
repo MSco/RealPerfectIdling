@@ -1,7 +1,7 @@
 /* ================================================
     MSco Cookie Stats - A Cookie Clicker plugin
 
-    Version: 0.9.5
+    Version: 0.9.5.1
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -156,7 +156,7 @@ MS.chocolateEggSellReward = function()
 
 MS.chocolateEggMaxReward = function()
 {
-	return (MS.chocolateEggSellReward() + Game.cookies*0.05);
+	return (MS.chocolateEggSellReward() + (Game.cookies+MS.wrinklersreward())*0.05);
 }
 
 MS.hcFactor = function()

@@ -16,6 +16,7 @@
 	- Show maximum of cookies you can spend without getting under the Frenz-Lucky optimized bank
 	- Show Cookies you would earn after popping all wrinklers
 	- Show Cookies earned per hour with 10 active wrinklers
+	- Show max. Cookies earned (includes sucked cookies and chocolate egg reward)
 	- Show Heavenly Chips you would earn additionally after resetting this game (including sucked cookies and chocolate egg)
 	- Calculate Base Cost per Income (BCI) for each building and show their efficiencies corresponding 
           the best BCI
@@ -27,6 +28,7 @@
     	- BCI is gerenerated by a dynamic loop
     	- Show Heavenly Chips earned overall
     	- Also show max Chocolate egg reward
+    	- Max. cookies earned
     0.9.4:
 	- Ads have been removed by orteil in v1.0465, so the ad remove code is not needed anymore.
     0.9.3:

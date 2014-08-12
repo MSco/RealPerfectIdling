@@ -16,7 +16,7 @@
 	- Show maximum of cookies you can spend without getting under the Frenz-Lucky optimized bank
 	- Show Cookies you would earn after popping all wrinklers
 	- Show Cookies earned per hour with 10 active wrinklers
-	- Show Heavenly Chips you would earn additionally after resetting this game (including sucked cookies)
+	- Show Heavenly Chips you would earn additionally after resetting this game (including sucked cookies and chocolate egg)
 	- Calculate Base Cost per Income (BCI) for each building and show their efficiencies corresponding 
           the best BCI
 	- Overloaded sayTime function: Time is displayed a bit more detailed now.
@@ -104,9 +104,19 @@ Game.sayTime = function(time,detail)
 	return str;
 }
 
+MS.maxEarnedThisGame()
+{
+	return (Game.cookiesEarned + MS.wrinklersreward() + MS.chocolateEggMaxReward());
+}
+
+MS.maxEarnedOverall()
+{
+	return (MS.maxEarnedThisGame() + Game.cookiesReset);
+}
+
 MS.hcOverall = function()
 {
-	return Game.HowMuchPrestige(Game.cookiesEarned+Game.cookiesReset+MS.wrinklersreward());	
+	return Game.HowMuchPrestige(Game.cookiesEarned+Game.cookiesReset+MS.wrinklersreward()+MS.chocolateEggMaxReward());	
 }
 
 MS.hcThisGame = function()
@@ -281,6 +291,10 @@ if(!statsdone)
 
 	// add blank line
 	statsString += ' + \'<br>\'';
+
+	// Max. cookies earned
+	statsString += ' + \'<div class="listing"><b>Max. cookies earned this game:</b> <div class="price plain">\' + Beautify(MS.maxEarnedThisGame()) + \'</div></div>\'';
+	statsString += ' + \'<div class="listing"><b>Max. cookies earned overall:</b> <div class="price plain">\' + Beautify(MS.maxEarnedOverall()) + \'</div></div>\'';
 
 	// HCs earned
 	statsString += ' + \'<div class="listing"><b>HCs earned this game:</b> \' + Beautify(MS.hcThisGame()) + \' (\' + Beautify(MS.hcFactor()) + \'% of current HC) </div>\'';

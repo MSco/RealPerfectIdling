@@ -1,7 +1,7 @@
 /* ================================================
     MSco Cookie Stats - A Cookie Clicker plugin
 
-    Version: 0.9.4.1
+    Version: 0.9.5
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -16,13 +16,19 @@
 	- Show maximum of cookies you can spend without getting under the Frenz-Lucky optimized bank
 	- Show Cookies you would earn after popping all wrinklers
 	- Show Cookies earned per hour with 10 active wrinklers
-	- Show Heavenly Chips you would earn additionally after resetting this game
+	- Show max. Cookies earned (includes sucked cookies and chocolate egg reward)
+	- Show Heavenly Chips you would earn additionally after resetting this game (including sucked cookies and chocolate egg)
 	- Calculate Base Cost per Income (BCI) for each building and show their efficiencies corresponding 
           the best BCI
 	- Overloaded sayTime function: Time is displayed a bit more detailed now.
 
     Version History:
 
+    0.9.5:
+    	- BCI is gerenerated by a dynamic loop
+    	- Show Heavenly Chips earned overall
+    	- Also show max Chocolate egg reward
+    	- Max. cookies earned
     0.9.4:
 	- Ads have been removed by orteil in v1.0465, so the ad remove code is not needed anymore.
     0.9.3:
@@ -100,9 +106,57 @@ Game.sayTime = function(time,detail)
 	return str;
 }
 
+MS.maxEarnedThisGame = function()
+{
+	return (Game.cookiesEarned + MS.wrinklersreward() + MS.chocolateEggMaxReward());
+}
+
+MS.maxEarnedOverall = function()
+{
+	return (MS.maxEarnedThisGame() + Game.cookiesReset);
+}
+
+MS.hcOverall = function()
+{
+	return Game.HowMuchPrestige(MS.maxEarnedOverall()));	
+}
+
 MS.hcThisGame = function()
 {
-	return Game.HowMuchPrestige(Game.cookiesEarned+Game.cookiesReset+MS.wrinklersreward()) - Game.prestige['Heavenly chips'];	
+	return (MS.hcOverall() - Game.prestige['Heavenly chips']);	
+}
+
+MS.buildingSellReward = function(building)
+{
+	var price = Math.ceil(building.basePrice * (Math.pow(Game.priceIncrease, building.amount+1) - Game.priceIncrease) / 0.15);
+	var reward = price * 0.5;
+	
+	if (Game.Has('Season savings')) reward*=0.99;
+	if (Game.Has('Santa\'s dominion')) reward*=0.99;
+	if (Game.Has('Faberge egg')) reward*=0.99;
+	
+	return reward;
+}
+
+MS.sellAllReward = function()
+{
+	var reward = 0;
+	for (var i=0; i<Game.ObjectsN; i++)
+	{
+		reward += MS.buildingSellReward(Game.ObjectsById[i]);
+	}
+	
+	return reward;
+}
+
+MS.chocolateEggSellReward = function()
+{
+	return (MS.sellAllReward()*0.05);
+}
+
+MS.chocolateEggMaxReward = function()
+{
+	return (MS.chocolateEggSellReward() + Game.cookies*0.05);
 }
 
 MS.hcFactor = function()
@@ -240,24 +294,28 @@ if(!statsdone)
 	// add blank line
 	statsString += ' + \'<br>\'';
 
-	// HCs earned this game
+	// Max. cookies earned
+	statsString += ' + \'<div class="listing"><b>Max. cookies earned this game:</b> <div class="price plain">\' + Beautify(MS.maxEarnedThisGame()) + \'</div></div>\'';
+	statsString += ' + \'<div class="listing"><b>Max. cookies earned overall:</b> <div class="price plain">\' + Beautify(MS.maxEarnedOverall()) + \'</div></div>\'';
+
+	// HCs earned
 	statsString += ' + \'<div class="listing"><b>HCs earned this game:</b> \' + Beautify(MS.hcThisGame()) + \' (\' + Beautify(MS.hcFactor()) + \'% of current HC) </div>\'';
+	statsString += ' + \'<div class="listing"><b>HCs earned overall:</b> \' + Beautify(MS.hcOverall()) + \'</div>\'';
+	
+	// Chocolate Egg reward
+	statsString += ' + \'<div class="listing"><b>Chocolate egg reward for buildings:</b> <div class="price plain">\' + Beautify(MS.chocolateEggSellReward()) + \'</div></div>\'';
+	statsString += ' + \'<div class="listing"><b>Chocolate egg reward for buildings + bank:</b> <div class="price plain">\' + Beautify(MS.chocolateEggMaxReward()) + \'</div></div>\'';
+	
 	
 	// add blank line
 	statsString += ' + \'<br>\'';
 
 	// BCI
 	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[0].name + ':</b> \' + Beautify(efc=MS.calcEfficiency(Game.ObjectsById[0], (best_bci=MS.calcBestBCI()))) + \'%\'+ \'</div>\'';
-	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[1].name + ':</b> \' + Beautify(MS.calcEfficiency(Game.ObjectsById[1], best_bci)) + \'%\'+ \'</div>\'';
-	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[2].name + ':</b> \' + Beautify(MS.calcEfficiency(Game.ObjectsById[2], best_bci)) + \'%\'+ \'</div>\'';
-	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[3].name + ':</b> \' + Beautify(MS.calcEfficiency(Game.ObjectsById[3], best_bci)) + \'%\'+ \'</div>\'';
-	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[4].name + ':</b> \' + Beautify(MS.calcEfficiency(Game.ObjectsById[4], best_bci)) + \'%\'+ \'</div>\'';
-	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[5].name + ':</b> \' + Beautify(MS.calcEfficiency(Game.ObjectsById[5], best_bci)) + \'%\'+ \'</div>\'';
-	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[6].name + ':</b> \' + Beautify(MS.calcEfficiency(Game.ObjectsById[6], best_bci)) + \'%\'+ \'</div>\'';
-	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[7].name + ':</b> \' + Beautify(MS.calcEfficiency(Game.ObjectsById[7], best_bci)) + \'%\'+ \'</div>\'';
-	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[8].name + ':</b> \' + Beautify(MS.calcEfficiency(Game.ObjectsById[8], best_bci)) + \'%\'+ \'</div>\'';
-	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[9].name + ':</b> \' + Beautify(MS.calcEfficiency(Game.ObjectsById[9], best_bci)) + \'%\'+ \'</div>\'';
-	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[10].name + ':</b> \' + Beautify(MS.calcEfficiency(Game.ObjectsById[10], best_bci)) + \'%\'+ \'</div>\'';
+	for (var i=1;i<Game.ObjectsN;i++)	
+	{
+		statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[i].name + ':</b> \' + Beautify(MS.calcEfficiency(Game.ObjectsById['+i+'], best_bci)) + \'%\'+ \'</div>\'';
+	}
 
 	
 	// Paste string into the menu

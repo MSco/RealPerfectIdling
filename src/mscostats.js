@@ -110,7 +110,7 @@ MS.hcOverall = function()
 
 MS.hcThisGame = function()
 {
-	return MS.hcOverall - Game.prestige['Heavenly chips'];	
+	return MS.hcOverall() - Game.prestige['Heavenly chips'];	
 }
 
 MS.hcFactor = function()

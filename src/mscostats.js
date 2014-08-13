@@ -1,7 +1,7 @@
 /* ================================================
     MSco Cookie Stats - A Cookie Clicker plugin
 
-    Version: 0.9.6
+    Version: 0.9.6.1
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -191,16 +191,19 @@ MS.wrinklersCPH = function()
 
 MS.simulateToggle = function(building, buyOrReverse)
 {
-	if (buyOrReverse) 
+	if (building.amount>0)
 	{
-        	building.amount++;
-	        building.bought++;
-        }
-	else 
-	{
-        	building.amount--;
-	        building.bought--;
-        }
+		if (buyOrReverse) 
+		{
+	        	building.amount++;
+		        building.bought++;
+	        }
+		else 
+		{
+	        	building.amount--;
+		        building.bought--;
+	        }
+	}
 }
 
 MS.getBuildingWorth = function(building)

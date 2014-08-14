@@ -1,7 +1,7 @@
 /* ================================================
     MSco Cookie Stats - A Cookie Clicker plugin
 
-    Version: 0.9.6.1
+    Version: 0.9.6.2
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -18,6 +18,7 @@
 	- Show Cookies in bank needed to get the maximum reward of a Frenzy-Lucky-Combo of Golden Cookies
 	- Show maximum reward of a Frenzy-Lucky-Combo of Golden Cookies
 	- Show maximum of cookies you can spend without getting under the Frenz-Lucky optimized bank
+	- Show reward for eldeers and elder frenzy with wrinklers
 	- Show Cookies you would earn after popping all wrinklers
 	- Show Cookies earned per hour with 10 active wrinklers
 	- Show max. Cookies earned (includes sucked cookies and chocolate egg reward)
@@ -30,6 +31,7 @@
 
     0.9.6:
     	- cps and multiplier statistic strings not affected by frenzy multipliers
+    	- Show reward for eldeers and elder frenzy with wrinklers
     0.9.5:
     	- BCI is gerenerated by a dynamic loop
     	- Show Heavenly Chips earned overall
@@ -272,6 +274,26 @@ MS.cookiesToSpend = function()
         return Game.cookies - MS.bankFrenzyLucky();
 }
 
+MS.eldeerReward = function()
+{
+	var moni=Math.max(25,Game.cookiesPs/MS.frenzyMod()*666*60*1);//1 minute of cookie production, or 25 cookies - whichever is highest
+	if (Game.Has('Ho ho ho-flavored frosting')) moni*=2;
+	
+	return moni;
+}
+
+MS.maxElderFrenzy = function()
+{
+	var wrinkFactor = 10*0.5*1.1
+	if (Game.Has('Wrinklerspawn'))
+		wrinkFactor *= 1.05;
+	wrinkFactor += 0.5;
+	
+	var time=6+6*Game.Has('Get lucky');
+	var moni = Game.cookiesPs / MS.frenzyMod() * wrinkFactor * 666 * time;
+	return moni;
+}
+
 if(!statsdone)
 {
 	// not needed anymore since v1.0465
@@ -297,12 +319,15 @@ if(!statsdone)
 
 	// Frenzy + Lucky bank
 	statsString += ' + \'<div class="listing"><b>Bank for Frenzy Lucky:</b> <div class="price plain">\' + Beautify(MS.bankFrenzyLucky()) + \'</div></div>\'';
-
 	// Frenzy + Lucky reward
 	statsString += ' + \'<div class="listing"><b>Max. reward of Frenzy Lucky:</b> <div class="price plain">\' + Beautify(MS.rewardFrenzyLucky()) + \'</div></div>\'';
-
 	// Cookies to spend
 	statsString += ' + \'<div class="listing"><b>Max. cookies to spend (FL bank):</b> <div class="price plain">\' + Beautify(MS.cookiesToSpend()) + \'</div></div>\'';
+
+	// Eldeer reward
+	statsString += ' + \'<div class="listing"><b>Eldeer reward:</b> <div class="price plain">\' + Beautify(MS.eldeerReward()) + \'</div></div>\'';
+	// Elder frenzy reward
+	statsString += ' + \'<div class="listing"><b>Max. Elder frenzy reward (10 wrinklers):</b> <div class="price plain">\' + Beautify(MS.maxElderFrenzy()) + \'</div></div>\'';
 
 	// Rewarded by Wrinklers
 	statsString += ' + \'<div class="listing"><b>Cookies Rewarded killing Wrinklers:</b> <div class="price plain">\' + Beautify(MS.wrinklersreward()) + \'</div></div>\'';

@@ -1,7 +1,7 @@
 /* ================================================
     MSco Perfect Idling With Wrinklers - A Cookie Clicker plugin
 
-    Version: 0.9.5.1
+    Version: 0.9.5.2
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -16,7 +16,7 @@
 
     Following calculations are done "while game is closed":
 	- Wrinklers spawn if elder wrath is active as in the original game with all Math.random() stuff etc. ...
-	- Wrinklers suck cookies
+	- Wrinklers suck cookies (also increasing Game.cookiesSucked)
 	- CPS is reduced while wrinklers suck the big cookie
 	- Elder wrath increases
 	- Season timer decreases
@@ -26,8 +26,9 @@
 	- Recalculate CPS regarding 'Century egg' from easter update. CPS of last save and current CPS are averaged for this.
 
     Version History:
-    0.9.5.1:
+    0.9.5:
     	- Substract saveImportT from Game.T, saveImportT is messured by MScoStats
+    	- Increase variable Game.cookiesSucked
     0.9.4:
     	- Show message if Game.version is not supported
     	- Subtract Game.T (time after last reload) from afk time
@@ -288,6 +289,7 @@ RPI.runWrath = function(cps, durationSeconds)
 				{
 					var thisSuck = (cps/Game.fps)*suckedFactor;
 					Game.wrinklers[i].sucked += thisSuck;
+					Game.cookiesSucked += thisSuck;
 					cookiesSuckedWrath += thisSuck;
 				}
 			}
@@ -309,6 +311,7 @@ RPI.runWrath = function(cps, durationSeconds)
 			{
 				var thisSuck = unwitheredCps*fullWitheredTime;
 				Game.wrinklers[i].sucked+=thisSuck;
+				Game.cookiesSucked += thisSuck;
 				cookiesSuckedWrath += thisSuck;
 			}
 

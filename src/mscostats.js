@@ -34,7 +34,7 @@
     	- Show reward for eldeers and elder frenzy with wrinklers
     0.9.5:
     	- BCI is gerenerated by a dynamic loop
-    	- Show Heavenly Chips earned overall
+    	- Show Heavenly Chips earned all time
     	- Also show max Chocolate egg reward
     	- Max. cookies earned
     	- Check for Chocolate Upgrade unlocked and not used
@@ -120,19 +120,19 @@ MS.maxEarnedThisGame = function()
 	return (Game.cookiesEarned + MS.wrinklersreward() + MS.chocolateEggMaxReward());
 }
 
-MS.maxEarnedOverall = function()
+MS.maxEarnedAllTime = function()
 {
 	return (MS.maxEarnedThisGame() + Game.cookiesReset);
 }
 
-MS.hcOverall = function()
+MS.hcAllTime = function()
 {
-	return Game.HowMuchPrestige(MS.maxEarnedOverall());	
+	return Game.HowMuchPrestige(MS.maxEarnedAllTime());	
 }
 
 MS.hcThisGame = function()
 {
-	return (MS.hcOverall() - Game.prestige['Heavenly chips']);	
+	return (MS.hcAllTime() - Game.prestige['Heavenly chips']);	
 }
 
 MS.buildingSellReward = function(building)
@@ -314,7 +314,7 @@ if(!statsdone)
 	
 	var thisGameEarned = ' + \'<div class="listing"><b>Incl. wrinklers and chocolate egg:</b> <div class="price plain">\' + Game.tinyCookie() + Beautify(MS.maxEarnedThisGame()) + \'</div></div>\'';
 	eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('Beautify(Game.cookiesEarned)+\'</div></div>\'', 'Beautify(Game.cookiesEarned)+\'</div></div>\'' + thisGameEarned));
-	var allTimeEarned = ' + \'<div class="listing"><b>Incl. wrinklers and chocolate egg:</b> <div class="price plain">\' + Game.tinyCookie() + Beautify(MS.maxEarnedOverall()) + \'</div></div>\'';
+	var allTimeEarned = ' + \'<div class="listing"><b>Incl. wrinklers and chocolate egg:</b> <div class="price plain">\' + Game.tinyCookie() + Beautify(MS.maxEarnedAllTime()) + \'</div></div>\'';
 	eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('Beautify(Game.cookiesEarned+Game.cookiesReset)+\'</div></div>\'', 'Beautify(Game.cookiesEarned+Game.cookiesReset)+\'</div></div>\'' + allTimeEarned));
 
 
@@ -346,7 +346,7 @@ if(!statsdone)
 
 	// HCs earned
 	statsString += ' + \'<div class="listing"><b>HCs earned this game:</b> \' + Beautify(MS.hcThisGame()) + \' (\' + Beautify(MS.hcFactor()) + \'% of current HC) </div>\'';
-	statsString += ' + \'<div class="listing"><b>HCs earned overall:</b> \' + Beautify(MS.hcOverall()) + \'</div>\'';
+	statsString += ' + \'<div class="listing"><b>HCs earned all time:</b> \' + Beautify(MS.hcAllTime()) + \'</div>\'';
 	
 	// Chocolate Egg reward
 	statsString += ' + \'<div class="listing"><b>Chocolate egg reward for buildings:</b> <div class="price plain">\' + Beautify(MS.chocolateEggSellReward()) + \'</div></div>\'';

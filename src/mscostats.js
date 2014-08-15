@@ -1,7 +1,7 @@
 /* ================================================
     MSco Cookie Stats - A Cookie Clicker plugin
 
-    Version: 0.9.7
+    Version: 0.9.7.1
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -361,7 +361,7 @@ if(!statsdone)
 	
 	// add blank line
 	//statsString += ' + \'<br>\'';
-	statsString += ' + \'<br><div class="subsection">\' + \'<div class="title">Efficiencies</div>\'';
+	statsString += ' + \'<br><div class="subsection">\' + \'<div class="title">Efficiency</div>\'';
 
 	// BCI
 	statsString += ' + \'<div class="listing"><b>' + Game.ObjectsById[0].name + ':</b> \' + Beautify(efc=MS.calcEfficiency(Game.ObjectsById[0], (best_bci=MS.calcBestBCI()))) + \'%\'+ \'</div>\'';

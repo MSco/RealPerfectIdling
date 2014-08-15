@@ -344,10 +344,6 @@ if(!statsdone)
 	// add blank line
 	statsString += ' + \'<br>\'';
 
-	// Max. cookies earned
-	statsString += ' + \'<div class="listing"><b>Max. cookies earned this game:</b> <div class="price plain">\' + Beautify(MS.maxEarnedThisGame()) + \'</div></div>\'';
-	statsString += ' + \'<div class="listing"><b>Max. cookies earned overall:</b> <div class="price plain">\' + Beautify(MS.maxEarnedOverall()) + \'</div></div>\'';
-
 	// HCs earned
 	statsString += ' + \'<div class="listing"><b>HCs earned this game:</b> \' + Beautify(MS.hcThisGame()) + \' (\' + Beautify(MS.hcFactor()) + \'% of current HC) </div>\'';
 	statsString += ' + \'<div class="listing"><b>HCs earned overall:</b> \' + Beautify(MS.hcOverall()) + \'</div>\'';

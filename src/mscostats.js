@@ -1,7 +1,7 @@
 /* ================================================
     MSco Cookie Stats - A Cookie Clicker plugin
 
-    Version: 0.9.6.2
+    Version: 0.9.7
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -15,6 +15,7 @@
     		- Overloaded sayTime function: Time is displayed a bit more detailed now.
     		- cookies per second not affected by frenzy multipliers
     		- multiplier not affected by frenzy multipliers
+    		- Cookies in bank includes wrinkler reward
 	- Show Cookies in bank needed to get the maximum reward of a Frenzy-Lucky-Combo of Golden Cookies
 	- Show maximum reward of a Frenzy-Lucky-Combo of Golden Cookies
 	- Show maximum of cookies you can spend without getting under the Frenz-Lucky optimized bank
@@ -29,6 +30,9 @@
 
     Version History:
 
+    0.9.7:
+    	- interface titles have been split up
+    	- Cookies in bank includes wrinkler reward
     0.9.6:
     	- cps and multiplier statistic strings not affected by frenzy multipliers
     	- Show reward for eldeers and elder frenzy with wrinklers
@@ -306,6 +310,8 @@ if(!statsdone)
 	
 	
 	// Replace strings in original Statistics menu
+	
+	eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('<b>Cookies in bank :</b> <div class="price plain">\'+Game.tinyCookie()+Beautify(Game.cookies)+\'</div></div>\'','<b>Cookies in bank (with wrinklers) :</b> <div class="price plain">\'+Game.tinyCookie()+Beautify(Game.cookies+MS.wrinklersreward())+\'</div></div>\''));
 	
 	// Cookies per second: not effected by any frenzy effects.
 	eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('Beautify(Game.cookiesPs,1)', 'Beautify(Game.cookiesPs/MS.frenzyMod(),1)'));

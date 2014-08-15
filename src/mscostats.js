@@ -311,6 +311,10 @@ if(!statsdone)
 	eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('Beautify(Game.cookiesPs,1)', 'Beautify(Game.cookiesPs/MS.frenzyMod(),1)'));
 	// Multiplier: not effected by any frenzy effects.
 	eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('Beautify(Math.round(Game.globalCpsMult*100),1)', 'Beautify(Math.round(Game.globalCpsMult*100/MS.frenzyMod()),1)'));
+	
+	var thisGameEarnd = ' + \'<div class="listing"><b>Incl. wrinklers and chocolate egg:</b> <div class="price plain">\' + Game.tinyCookie() + Beautify(MS.maxEarnedThisGame()) + \'</div></div>\'';
+	eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('Beautify(Game.cookiesEarned)+\'</div></div>\'', 'Beautify(Game.cookiesEarned)+\'</div></div>\'' + thisGameEarnd));
+
 
 	var statsString;
 

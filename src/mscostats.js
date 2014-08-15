@@ -1,7 +1,7 @@
 /* ================================================
     MSco Cookie Stats - A Cookie Clicker plugin
 
-    Version: 0.9.6.2
+    Version: 0.9.7
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -15,6 +15,7 @@
     		- Overloaded sayTime function: Time is displayed a bit more detailed now.
     		- cookies per second not affected by frenzy multipliers
     		- multiplier not affected by frenzy multipliers
+    		- Cookies in bank includes wrinkler reward
 	- Show Cookies in bank needed to get the maximum reward of a Frenzy-Lucky-Combo of Golden Cookies
 	- Show maximum reward of a Frenzy-Lucky-Combo of Golden Cookies
 	- Show maximum of cookies you can spend without getting under the Frenz-Lucky optimized bank
@@ -29,12 +30,15 @@
 
     Version History:
 
+    0.9.7:
+    	- interface titles have been split up
+    	- Cookies in bank includes wrinkler reward
     0.9.6:
     	- cps and multiplier statistic strings not affected by frenzy multipliers
     	- Show reward for eldeers and elder frenzy with wrinklers
     0.9.5:
     	- BCI is gerenerated by a dynamic loop
-    	- Show Heavenly Chips earned overall
+    	- Show Heavenly Chips earned all time
     	- Also show max Chocolate egg reward
     	- Max. cookies earned
     	- Check for Chocolate Upgrade unlocked and not used
@@ -120,19 +124,19 @@ MS.maxEarnedThisGame = function()
 	return (Game.cookiesEarned + MS.wrinklersreward() + MS.chocolateEggMaxReward());
 }
 
-MS.maxEarnedOverall = function()
+MS.maxEarnedAllTime = function()
 {
 	return (MS.maxEarnedThisGame() + Game.cookiesReset);
 }
 
-MS.hcOverall = function()
+MS.hcAllTime = function()
 {
-	return Game.HowMuchPrestige(MS.maxEarnedOverall());	
+	return Game.HowMuchPrestige(MS.maxEarnedAllTime());	
 }
 
 MS.hcThisGame = function()
 {
-	return (MS.hcOverall() - Game.prestige['Heavenly chips']);	
+	return (MS.hcAllTime() - Game.prestige['Heavenly chips']);	
 }
 
 MS.buildingSellReward = function(building)
@@ -307,10 +311,18 @@ if(!statsdone)
 	
 	// Replace strings in original Statistics menu
 	
+	eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('<b>Cookies in bank :</b> <div class="price plain">\'+Game.tinyCookie()+Beautify(Game.cookies)+\'</div></div>\'','<b>Cookies in bank (with wrinklers) :</b> <div class="price plain">\'+Game.tinyCookie()+Beautify(Game.cookies+MS.wrinklersreward())+\'</div></div>\''));
+	
 	// Cookies per second: not effected by any frenzy effects.
 	eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('Beautify(Game.cookiesPs,1)', 'Beautify(Game.cookiesPs/MS.frenzyMod(),1)'));
 	// Multiplier: not effected by any frenzy effects.
 	eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('Beautify(Math.round(Game.globalCpsMult*100),1)', 'Beautify(Math.round(Game.globalCpsMult*100/MS.frenzyMod()),1)'));
+	
+	var thisGameEarned = ' + \'<div class="listing"><b>Incl. wrinklers and chocolate egg:</b> <div class="price plain">\' + Game.tinyCookie() + Beautify(MS.maxEarnedThisGame()) + \'</div></div>\'';
+	eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('Beautify(Game.cookiesEarned)+\'</div></div>\'', 'Beautify(Game.cookiesEarned)+\'</div></div>\'' + thisGameEarned));
+	var allTimeEarned = ' + \'<div class="listing"><b>Incl. wrinklers and chocolate egg:</b> <div class="price plain">\' + Game.tinyCookie() + Beautify(MS.maxEarnedAllTime()) + \'</div></div>\'';
+	eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('Beautify(Game.cookiesEarned+Game.cookiesReset)+\'</div></div>\'', 'Beautify(Game.cookiesEarned+Game.cookiesReset)+\'</div></div>\'' + allTimeEarned));
+
 
 	var statsString;
 
@@ -338,13 +350,9 @@ if(!statsdone)
 	// add blank line
 	statsString += ' + \'<br>\'';
 
-	// Max. cookies earned
-	statsString += ' + \'<div class="listing"><b>Max. cookies earned this game:</b> <div class="price plain">\' + Beautify(MS.maxEarnedThisGame()) + \'</div></div>\'';
-	statsString += ' + \'<div class="listing"><b>Max. cookies earned overall:</b> <div class="price plain">\' + Beautify(MS.maxEarnedOverall()) + \'</div></div>\'';
-
 	// HCs earned
 	statsString += ' + \'<div class="listing"><b>HCs earned this game:</b> \' + Beautify(MS.hcThisGame()) + \' (\' + Beautify(MS.hcFactor()) + \'% of current HC) </div>\'';
-	statsString += ' + \'<div class="listing"><b>HCs earned overall:</b> \' + Beautify(MS.hcOverall()) + \'</div>\'';
+	statsString += ' + \'<div class="listing"><b>HCs earned all time:</b> \' + Beautify(MS.hcAllTime()) + \'</div>\'';
 	
 	// Chocolate Egg reward
 	statsString += ' + \'<div class="listing"><b>Chocolate egg reward for buildings:</b> <div class="price plain">\' + Beautify(MS.chocolateEggSellReward()) + \'</div></div>\'';
@@ -352,13 +360,14 @@ if(!statsdone)
 	
 	
 	// add blank line
-	statsString += ' + \'<br>\'';
+	//statsString += ' + \'<br>\'';
+	statsString += ' + \'<br><div class="subsection">\' + \'<div class="title">Efficiencies</div>\'';
 
 	// BCI
-	statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[0].name + ':</b> \' + Beautify(efc=MS.calcEfficiency(Game.ObjectsById[0], (best_bci=MS.calcBestBCI()))) + \'%\'+ \'</div>\'';
+	statsString += ' + \'<div class="listing"><b>' + Game.ObjectsById[0].name + ':</b> \' + Beautify(efc=MS.calcEfficiency(Game.ObjectsById[0], (best_bci=MS.calcBestBCI()))) + \'%\'+ \'</div>\'';
 	for (var i=1;i<Game.ObjectsN;i++)	
 	{
-		statsString += ' + \'<div class="listing"><b>BCI ' + Game.ObjectsById[i].name + ':</b> \' + Beautify(MS.calcEfficiency(Game.ObjectsById['+i+'], best_bci)) + \'%\'+ \'</div>\'';
+		statsString += ' + \'<div class="listing"><b>' + Game.ObjectsById[i].name + ':</b> \' + Beautify(MS.calcEfficiency(Game.ObjectsById['+i+'], best_bci)) + \'%\'+ \'</div>\'';
 	}
 
 	

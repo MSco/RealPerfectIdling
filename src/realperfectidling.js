@@ -1,7 +1,7 @@
 /* ================================================
     MSco Perfect Idling With Wrinklers - A Cookie Clicker plugin
 
-    Version: 0.9.5.4
+    Version: 0.9.5.5
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -380,7 +380,7 @@ if (!idleDone)
 	var secondsAfk = (new Date().getTime()-Game.lastDate)/1000 - (Game.T-RPI.importSaveT)/Game.fps;
 	//var secondsAfk = 50*60; 					// for debug
 	var framesAfk = (new Date().getTime()-Game.lastDate)/1000*Game.fps - (Game.T-RPI.importSaveT);
-	console.log("AFK: " + RPI.framesToString(framesAfk));
+	console.log('AFK: ' + RPI.framesToString(framesAfk));
 
 	// initialize global values
 	var cookiesEarned = 0;

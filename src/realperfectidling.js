@@ -1,7 +1,7 @@
 /* ================================================
     MSco Perfect Idling With Wrinklers - A Cookie Clicker plugin
 
-    Version: 0.9.5.5
+    Version: 0.9.5.6
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -196,6 +196,7 @@ RPI.calcCpsCenturyEgg = function()
 		*/
 		/*******************/
 
+		console.log('CPS without century egg: ' + Beautify(baseCps * (1+0.01*(currentEggMult-currentCenturyBonus))));
 		console.log('CPS when game was saved: ' + Beautify(oldCps));
 		console.log('Average CPS: ' + Beautify(averageCps));
 		//console.log('CPS with half integral century bonus: ' + Beautify(averageCpsNew))
@@ -247,14 +248,12 @@ RPI.runWrath = function(cps, durationSeconds)
 		var cookiesEarnedWrath=0;
 		var frames=0;
 		var numWrinklers=0;
-		var wrinklerSpawnTimes = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
 		// check spawned wrinklers
 		for (var i in Game.wrinklers)
 		{	
 			if(Game.wrinklers[i].phase>0)
 			{
-				wrinklerSpawnTimes[i] = 0;
 				numWrinklers++;
 			}
 		}
@@ -274,11 +273,10 @@ RPI.runWrath = function(cps, durationSeconds)
 			{
 				if ( (Game.wrinklers[i].phase==0) && (Math.random() < 0.00003*Game.elderWrath) )
 				{
-					wrinklerSpawnTimes[i] = frames/Game.fps;
 					Game.wrinklers[i].phase = 2;
 					Game.wrinklers[i].hp = 3;
 					numWrinklers++;
-					console.log("Time to spawn wrinkler " + i + ": " + wrinklerSpawnTimes[i]/60 + " minutes. ")
+					console.log("Time to spawn wrinkler " + i + ": " + frames/Game.fps/60 + " minutes. ")
 				}
 
 				// set cps

@@ -196,6 +196,7 @@ RPI.calcCpsCenturyEgg = function()
 		*/
 		/*******************/
 
+		console.log('CPS without century egg: ' + Beautify(baseCps * (1+0.01*(currentEggMult-currentCenturyBonus))));
 		console.log('CPS when game was saved: ' + Beautify(oldCps));
 		console.log('Average CPS: ' + Beautify(averageCps));
 		//console.log('CPS with half integral century bonus: ' + Beautify(averageCpsNew))

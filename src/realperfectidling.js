@@ -1,7 +1,7 @@
 /* ================================================
     MSco Perfect Idling With Wrinklers - A Cookie Clicker plugin
 
-    Version: 0.9.5.6
+    Version: 0.9.6
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -26,6 +26,8 @@
 	- Recalculate CPS regarding 'Century egg' from easter update. CPS of last save and current CPS are averaged for this.
 
     Version History:
+    0.9.6:
+    	- Century egg calculation averaged by a specific number of intervals
     0.9.5:
     	- Substract saveImportT from Game.T, saveImportT is messured by MScoStats
     	- Increase variable Game.cookiesSucked
@@ -149,20 +151,35 @@ RPI.calcCpsCenturyEgg = function()
 		var averageEggMult = currentEggMult;
 
 		//the boost increases a little every day, with diminishing returns up to +10% on the 100th day
-		var day=Math.floor((new Date().getTime()/*-(Game.T-RPI.importSaveT)/Game.fps*1000*/-Game.startDate)/1000/10)*10/60/60/24;
-		day=Math.min(day,100);
-		var currentCenturyBonus = (1-Math.pow(1-day/100,3))*10
+		var todayDays=Math.floor((new Date().getTime()/*-(Game.T-RPI.importSaveT)/Game.fps*1000*/-Game.startDate)/1000/10)*10/60/60/24;
+		todayDays=Math.min(todayDays,100);
+		var currentCenturyBonus = (1-Math.pow(1-todayDays/100,3))*10
 		currentEggMult += currentCenturyBonus;
 
-		var lastDay=Math.floor((Game.lastDate-Game.startDate)/1000/10)*10/60/60/24;
-		lastDay=Math.min(lastDay,100);
-		var oldCenturyBonus = (1-Math.pow(1-lastDay/100,3))*10
+		var lastDateDays=Math.floor((Game.lastDate-Game.startDate)/1000/10)*10/60/60/24;
+		lastDateDays=Math.min(lastDateDays,100);
+		var oldCenturyBonus = (1-Math.pow(1-lastDateDays/100,3))*10
 		oldEggMult += oldCenturyBonus;
 
 		var baseCps = Game.cookiesPs / (1+0.01*currentEggMult);
 		var oldCps = baseCps * (1+0.01*oldEggMult);
-		var averageCps = (Game.cookiesPs + oldCps)/2;
-
+		//var averageCps = (Game.cookiesPs + oldCps)/2;
+		
+		/*******************/
+		// Calculation of century egg bonus averaging over a specific number of intervals
+		var numIntervals = 100;
+		var intLength = (todayDays-lastDateDays)/numIntervals;
+		var averageCenturyBonus = 0;
+		for (var i=0; i<=numIntervals;++i)
+		{
+			var itDays = lastDateDays + i*intLength;
+			var itCenturyBonus = (1-Math.pow(1-itDays/100,3))*10;
+			averageCenturyBonus += itCenturyBonus;
+		}
+		averageCenturyBonus /= (numIntervals+1);
+		averageEggMult += averageCenturyBonus;
+		var averageCps = baseCps * (1+0.01*averageEggMult);
+		/*******************/
 		
 		
 		/*******************/
@@ -198,7 +215,7 @@ RPI.calcCpsCenturyEgg = function()
 
 		console.log('CPS without century egg: ' + Beautify(baseCps * (1+0.01*(currentEggMult-currentCenturyBonus))));
 		console.log('CPS when game was saved: ' + Beautify(oldCps));
-		console.log('Average CPS: ' + Beautify(averageCps));
+		console.log('Average CPS over ' + numIntervals + ' intervals: ' + Beautify(averageCps));
 		//console.log('CPS with half integral century bonus: ' + Beautify(averageCpsNew))
 		console.log('Current CPS: ' + Beautify(Game.cookiesPs))
 		return averageCps;

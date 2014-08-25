@@ -147,6 +147,7 @@ MS.buildingSellReward = function(building)
 	if (Game.Has('Season savings')) reward*=0.99;
 	if (Game.Has('Santa\'s dominion')) reward*=0.99;
 	if (Game.Has('Faberge egg')) reward*=0.99;
+	if (Game.Has('Divine discount')) reward*=0.99;
 	
 	return reward;
 }
@@ -177,19 +178,26 @@ MS.hcFactor = function()
 	return Math.round(MS.hcThisGame()/Game.HowMuchPrestige(Game.cookiesReset) * 100);	
 }
 
-MS.wrinklersreward = function()
+MS.getSuckFactor = function()
 {
 	var suckFactor = 1.1;
+	if (Game.Has('Sacrilegious corruption'))
+		suckFactor *= 1.05;
 	if (Game.Has('Wrinklerspawn'))
 		suckFactor *= 1.05;
+		
+	return suckFactor;
+}
+
+MS.wrinklersreward = function()
+{
+	var suckFactor = MS.getSuckFactor();
 	return Game.wrinklers.reduce(function(p,c){return p + suckFactor*c.sucked},0);	
 }
 
 MS.wrinklersCPH = function()
 {
-	var wrinkFactor = 10*0.5*1.1
-	if (Game.Has('Wrinklerspawn'))
-		wrinkFactor *= 1.05;
+	var wrinkFactor = 10*0.5*MS.getSuckFactor();
 	wrinkFactor += 0.5
 
 	return Game.cookiesPs / MS.frenzyMod() * wrinkFactor * 3600;
@@ -288,12 +296,10 @@ MS.eldeerReward = function()
 
 MS.maxElderFrenzy = function()
 {
-	var wrinkFactor = 10*0.5*1.1
-	if (Game.Has('Wrinklerspawn'))
-		wrinkFactor *= 1.05;
+	var wrinkFactor = 10*0.5*MS.getSuckFactor();
 	wrinkFactor += 0.5;
 	
-	var time=6+6*Game.Has('Get lucky');
+	var time=Math.ceil(6*Game.goldenCookie.getEffectDurMod());
 	var moni = Game.cookiesPs / MS.frenzyMod() * wrinkFactor * 666 * time;
 	return moni;
 }

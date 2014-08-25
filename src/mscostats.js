@@ -1,7 +1,7 @@
 /* ================================================
     MSco Cookie Stats - A Cookie Clicker plugin
 
-    Version: 0.9.7.1
+    Version: 0.9.8.0
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -30,6 +30,8 @@
 
     Version History:
 
+    0.9.8:
+    	- Compatibility of beta 1.0501
     0.9.7:
     	- interface titles have been split up
     	- Cookies in bank includes wrinkler reward
@@ -136,7 +138,7 @@ MS.hcAllTime = function()
 
 MS.hcThisGame = function()
 {
-	return (MS.hcAllTime() - Game.prestige['Heavenly chips']);	
+	return (MS.hcAllTime() - Game.HowMuchPrestige(Game.cookiesReset));	
 }
 
 MS.buildingSellReward = function(building)
@@ -147,6 +149,7 @@ MS.buildingSellReward = function(building)
 	if (Game.Has('Season savings')) reward*=0.99;
 	if (Game.Has('Santa\'s dominion')) reward*=0.99;
 	if (Game.Has('Faberge egg')) reward*=0.99;
+	if (Game.Has('Divine discount')) reward*=0.99;
 	
 	return reward;
 }
@@ -174,22 +177,29 @@ MS.chocolateEggMaxReward = function()
 
 MS.hcFactor = function()
 {
-	return Math.round(MS.hcThisGame()/Game.prestige['Heavenly chips'] * 100);	
+	return Math.round(MS.hcThisGame()/Game.HowMuchPrestige(Game.cookiesReset) * 100);	
+}
+
+MS.getSuckFactor = function()
+{
+	var suckFactor = 1.1;
+	if (Game.Has('Sacrilegious corruption'))
+		suckFactor *= 1.05;
+	if (Game.Has('Wrinklerspawn'))
+		suckFactor *= 1.05;
+		
+	return suckFactor;
 }
 
 MS.wrinklersreward = function()
 {
-	var suckFactor = 1.1;
-	if (Game.Has('Wrinklerspawn'))
-		suckFactor *= 1.05;
+	var suckFactor = MS.getSuckFactor();
 	return Game.wrinklers.reduce(function(p,c){return p + suckFactor*c.sucked},0);	
 }
 
 MS.wrinklersCPH = function()
 {
-	var wrinkFactor = 10*0.5*1.1
-	if (Game.Has('Wrinklerspawn'))
-		wrinkFactor *= 1.05;
+	var wrinkFactor = 10*0.5*MS.getSuckFactor();
 	wrinkFactor += 0.5
 
 	return Game.cookiesPs / MS.frenzyMod() * wrinkFactor * 3600;
@@ -288,12 +298,15 @@ MS.eldeerReward = function()
 
 MS.maxElderFrenzy = function()
 {
-	var wrinkFactor = 10*0.5*1.1
-	if (Game.Has('Wrinklerspawn'))
-		wrinkFactor *= 1.05;
+	var wrinkFactor = 10*0.5*MS.getSuckFactor();
 	wrinkFactor += 0.5;
 	
-	var time=6+6*Game.Has('Get lucky');
+	// note: remove this if prestige update goes live
+	if(typeof(Game.goldenCookie.getEffectDurMod) == "undefined")
+		var time=6+6*Game.Has('Get lucky');
+	else
+		var time=Math.ceil(6*Game.goldenCookie.getEffectDurMod());
+		
 	var moni = Game.cookiesPs / MS.frenzyMod() * wrinkFactor * 666 * time;
 	return moni;
 }

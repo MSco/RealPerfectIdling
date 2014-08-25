@@ -136,7 +136,7 @@ MS.hcAllTime = function()
 
 MS.hcThisGame = function()
 {
-	return (MS.hcAllTime() - Game.prestige['Heavenly chips']);	
+	return (MS.hcAllTime() - Game.HowMuchPrestige(Game.cookiesReset));	
 }
 
 MS.buildingSellReward = function(building)
@@ -174,7 +174,7 @@ MS.chocolateEggMaxReward = function()
 
 MS.hcFactor = function()
 {
-	return Math.round(MS.hcThisGame()/Game.prestige['Heavenly chips'] * 100);	
+	return Math.round(MS.hcThisGame()/Game.HowMuchPrestige(Game.cookiesReset) * 100);	
 }
 
 MS.wrinklersreward = function()

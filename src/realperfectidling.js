@@ -101,8 +101,8 @@ if (MS)
 	console.log('RPI.importSaveT: ' + RPI.importSaveT);
 }
 
-RPI.supportedVersion = "1.0501"
-if (RPI.supportedVersion != Game.version)
+RPI.supportedVersion = 1.0501
+if (RPI.supportedVersion < Game.version)
 {
 	Game.Notify('Unsupported version','MSco\'s Real Perfect Idling has not been tested on this version of Cookie Clicker. Continue on your own peril!',[3,5],6);
 }

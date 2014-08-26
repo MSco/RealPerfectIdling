@@ -1,7 +1,7 @@
 /* ================================================
     MSco Perfect Idling With Wrinklers - A Cookie Clicker plugin
 
-    Version: 0.9.6
+    Version: 0.9.7
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -26,6 +26,8 @@
 	- Recalculate CPS regarding 'Century egg' from easter update. CPS of last save and current CPS are averaged for this.
 
     Version History:
+    0.9.7:
+    	- Beta 1.0501 support
     0.9.6:
     	- Century egg calculation averaged by a specific number of intervals
     0.9.5:
@@ -99,8 +101,8 @@ if (MS)
 	console.log('RPI.importSaveT: ' + RPI.importSaveT);
 }
 
-RPI.supportedVersion = "1.0465"
-if (RPI.supportedVersion != Game.version)
+RPI.supportedVersion = 1.0501
+if (RPI.supportedVersion < Game.version)
 {
 	Game.Notify('Unsupported version','MSco\'s Real Perfect Idling has not been tested on this version of Cookie Clicker. Continue on your own peril!',[3,5],6);
 }
@@ -125,6 +127,8 @@ RPI.addMissedGoldenCookies = function(durationFrames)
 	var dur=13*Game.fps;	// how long will it stay on-screen?
         if (Game.Has('Lucky day')) dur*=2;
         if (Game.Has('Serendipity')) dur*=2;
+	if (Game.Has('Decisive fate')) dur*=1.05;
+        
 	var thisMissed = Math.round(durationFrames/(RPI.calcGCSpawnTime()+dur))
 	Game.missedGoldenClicks += thisMissed;
 	console.log('Missed Golden Cookies while afk: ' + thisMissed);
@@ -288,12 +292,31 @@ RPI.runWrath = function(cps, durationSeconds)
 	
 			for (var i in Game.wrinklers)
 			{
-				if ( (Game.wrinklers[i].phase==0) && (Math.random() < 0.00003*Game.elderWrath) )
+				if (Game.version < 1.05)
 				{
-					Game.wrinklers[i].phase = 2;
-					Game.wrinklers[i].hp = 3;
-					numWrinklers++;
-					console.log("Time to spawn wrinkler " + i + ": " + frames/Game.fps/60 + " minutes. ")
+					if ( (Game.wrinklers[i].phase==0) && (Math.random() < 0.00003*Game.elderWrath) )
+					{
+						Game.wrinklers[i].phase = 2;
+						Game.wrinklers[i].hp = 3;
+						numWrinklers++;
+						console.log("Time to spawn wrinkler " + i + ": " + frames/Game.fps/60 + " minutes. ")
+					}
+				}
+				else
+				{
+					if (Game.wrinklers[i].phase==0 && Game.elderWrath>0)
+					{
+						var chance=0.00002*Game.elderWrath;
+						if (Game.Has('Unholy bait')) chance*=2;
+						if (Game.Has('Wrinkler doormat')) chance=0.1;
+						if (Math.random()<chance) 
+						{
+							Game.wrinklers[i].phase=2;
+							Game.wrinklers[i].hp=Game.wrinklerHP;
+							numWrinklers++;
+							console.log("Time to spawn wrinkler " + i + ": " + frames/Game.fps/60 + " minutes. ")
+						}//respawn
+					}
 				}
 
 				// set cps

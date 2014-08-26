@@ -415,6 +415,9 @@ RPI.framesToString = function(time)
 
 if (!idleDone)
 {
+	// how to add button:
+	//eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('when out of focus)</label></div>\'+', 'when out of focus)</label></div>\'+\'<div class="listing"><a class="option" \'+Game.clickStr+\'="myfunc();">Real Perfect Idling</a><label>Simulate the game untilt the last Save)</label></div>\' + '))
+	
 	var secondsAfk = (new Date().getTime()-Game.lastDate)/1000 - (Game.T-RPI.importSaveT)/Game.fps;
 	//var secondsAfk = 50*60; 					// for debug
 	var framesAfk = (new Date().getTime()-Game.lastDate)/1000*Game.fps - (Game.T-RPI.importSaveT);

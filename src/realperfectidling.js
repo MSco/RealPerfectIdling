@@ -313,6 +313,8 @@ RPI.runWrath = function(cps, durationSeconds)
 						{
 							Game.wrinklers[i].phase=2;
 							Game.wrinklers[i].hp=Game.wrinklerHP;
+							numWrinklers++;
+							console.log("Time to spawn wrinkler " + i + ": " + frames/Game.fps/60 + " minutes. ")
 						}//respawn
 					}
 				}

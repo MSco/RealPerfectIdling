@@ -143,13 +143,18 @@ MS.hcThisGame = function()
 
 MS.buildingSellReward = function(building)
 {
-	var price = Math.ceil(building.basePrice * (Math.pow(Game.priceIncrease, building.amount+1) - Game.priceIncrease) / 0.15);
-	var reward = price * 0.5;
+	var price = Math.ceil(building.basePrice * (Math.pow(Game.priceIncrease, Math.max(0,building.amount-building.free)+1) - Game.priceIncrease) / 0.15);
+	
+	var giveBack=0.5;
+	if (Game.hasAura('Earth Shatterer')) giveBack=0.85
+	
+	var reward = price * giveBack;
 	
 	if (Game.Has('Season savings')) reward*=0.99;
 	if (Game.Has('Santa\'s dominion')) reward*=0.99;
 	if (Game.Has('Faberge egg')) reward*=0.99;
 	if (Game.Has('Divine discount')) reward*=0.99;
+        if (Game.hasAura('Fierce Hoarder')) price*=0.98;
 	
 	return reward;
 }

@@ -306,14 +306,7 @@ MS.maxElderFrenzy = function()
 	var wrinkFactor = 10*0.5*MS.getSuckFactor();
 	wrinkFactor += 0.5;
 	
-	// note: remove this if prestige update goes live
-	if(typeof(Game.goldenCookie.getEffectDurMod) == "undefined")
-		var time=6;
-		if (Game.Has('Get lucky')) time*=2;
-		if (Game.Has('Lasting fortune')) time*=1.1;
-		
-	else
-		var time=Math.ceil(6*Game.goldenCookie.getEffectDurMod());
+	var time=Math.ceil(6*Game.goldenCookie.getEffectDurMod());
 		
 	var moni = Game.cookiesPs / MS.frenzyMod() * wrinkFactor * 666 * time;
 	return moni;

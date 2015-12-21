@@ -204,7 +204,7 @@ MS.wrinklersreward = function()
 
 MS.wrinklersCPH = function()
 {
-	var wrinkFactor = 10*0.5*MS.getSuckFactor();
+	var wrinkFactor = Game.getWrinklersMax()*0.5*MS.getSuckFactor();
 	wrinkFactor += 0.5
 
 	return Game.cookiesPs / MS.frenzyMod() * wrinkFactor * 3600;

@@ -334,7 +334,7 @@ RPI.runWrath = function(cps, durationSeconds)
 		if (numWrinklers == Game.getWrinklersMax())
 		{
 			var fullWitheredTime = durationSeconds-spawnTime;
-			var witherFactor = 0.5;
+			var witherFactor = numWrinklers * 0.05;
 			var unwitheredCps = cps * (1-witherFactor);
 	
 			for (var i in Game.wrinklers)

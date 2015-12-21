@@ -30,6 +30,8 @@
 
     Version History:
 
+    0.9.9:
+    	- Compatibility of beta 1.9
     0.9.8:
     	- Compatibility of beta 1.0501
     0.9.7:

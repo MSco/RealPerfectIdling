@@ -1,7 +1,7 @@
 /* ================================================
     MSco Cookie Stats - A Cookie Clicker plugin
 
-    Version: 0.9.8.0
+    Version: 0.9.9.1
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -305,7 +305,7 @@ MS.eldeerReward = function()
 
 MS.maxElderFrenzy = function()
 {
-	var wrinkFactor = 10*0.5*MS.getSuckFactor();
+	var wrinkFactor = Game.getWrinklersMax()*0.5*MS.getSuckFactor();
 	wrinkFactor += 0.5;
 	
 	var time=Math.ceil(6*Game.goldenCookie.getEffectDurMod());

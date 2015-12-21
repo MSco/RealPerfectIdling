@@ -364,6 +364,54 @@ RPI.runWrath = function(cps, durationSeconds)
 	}
 }
 
+RPI.undoOfflineEarned = function(durationSeconds)
+{
+	if (Game.mobile || Game.Has('Perfect idling') || Game.Has('Twin Gates of Transcendence'))
+	{
+		if (Game.Has('Perfect idling'))
+		{
+			var maxTime=60*60*24*1000000000;
+			var percent=100;
+		}
+		else
+		{
+			var maxTime=60*60;
+			if (Game.Has('Belphegor')) maxTime*=2;
+			if (Game.Has('Mammon')) maxTime*=2;
+			if (Game.Has('Abaddon')) maxTime*=2;
+			if (Game.Has('Satan')) maxTime*=2;
+			if (Game.Has('Asmodeus')) maxTime*=2;
+			if (Game.Has('Beelzebub')) maxTime*=2;
+			if (Game.Has('Lucifer')) maxTime*=2;
+			
+			var percent=5;
+			if (Game.Has('Angels')) percent+=10;
+			if (Game.Has('Archangels')) percent+=10;
+			if (Game.Has('Virtues')) percent+=10;
+			if (Game.Has('Dominions')) percent+=10;
+			if (Game.Has('Cherubim')) percent+=10;
+			if (Game.Has('Seraphim')) percent+=10;
+			if (Game.Has('God')) percent+=10;
+			
+			if (Game.Has('Chimera')) {maxTime+=60*60*24*2;percent+=5;}
+		}
+		
+		//var timeOffline=(new Date().getTime()-Game.lastDate)/1000;
+		var timeOffline=durationSeconds
+		var timeOfflineOptimal=Math.min(timeOffline,maxTime);
+		var timeOfflineReduced=Math.max(0,timeOffline-timeOfflineOptimal);
+		var amount=(timeOfflineOptimal+timeOfflineReduced*0.1)*Game.cookiesPs*(percent/100);
+		
+		if (amount>0)
+		{
+			if (Game.prefs.popups) Game.Popup('Eliminated '+Beautify(amount)+' cookie'+(Math.floor(amount)==1?'':'s'));
+			else Game.Notify('Welcome back!','Eliminated <b>'+Beautify(amount)+'</b> cookie'+(Math.floor(amount)==1?'':'s'));
+			Game.Earn(-amount);
+			console.log('Cookies eliminated: ' + Beautify(amount));
+		}
+	}
+}
+
 RPI.framesToString = function(time)
 {      
         var str='';
@@ -431,7 +479,9 @@ if (!idleDone)
 	// calculate cookies earned and sucked during elder wrath
 	var earnedAndSucked = RPI.runWrath(averageCps, secondsRemaining);
 	cookiesEarned += earnedAndSucked[0];
-	cookiesSucked += earnedAndSucked[1];	
+	cookiesSucked += earnedAndSucked[1];
+	
+	RPI.undoOfflineEarned(secondsAfk);
 	
 	// recalculate timers of the current season and current research
 	if (Game.seasonT > 0)

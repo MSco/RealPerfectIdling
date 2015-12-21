@@ -1,7 +1,7 @@
 /* ================================================
     MSco Cookie Stats - A Cookie Clicker plugin
 
-    Version: 0.9.9.2
+    Version: 0.9.9.3
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -201,7 +201,12 @@ MS.getSuckFactor = function()
 MS.wrinklersreward = function()
 {
 	var suckFactor = MS.getSuckFactor();
-	return Game.wrinklers.reduce(function(p,c){return p + suckFactor*c.sucked},0);	
+	return Game.wrinklers.reduce(function(p,c)
+		{
+			if (c.type==1) suckFactor*=3;
+			return p + suckFactor*c.sucked
+			
+		},0);	
 }
 
 MS.wrinklersCPH = function()

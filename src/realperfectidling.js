@@ -1,7 +1,7 @@
 /* ================================================
     MSco Perfect Idling With Wrinklers - A Cookie Clicker plugin
 
-    Version: 0.9.7
+    Version: 0.9.8
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -26,6 +26,8 @@
 	- Recalculate CPS regarding 'Century egg' from easter update. CPS of last save and current CPS are averaged for this.
 
     Version History:
+    0.9.8:
+    	- Beta 1.9 support
     0.9.7:
     	- Beta 1.0501 support
     0.9.6:

@@ -1,7 +1,7 @@
 /* ================================================
     MSco Perfect Idling With Wrinklers - A Cookie Clicker plugin
 
-    Version: 0.9.8.1
+    Version: 0.9.8.2
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -338,12 +338,15 @@ RPI.runWrath = function(cps, durationSeconds)
 			var fullWitheredTime = durationSeconds-spawnTime;
 			var witherFactor = numWrinklers * 0.05;
 			var unwitheredCps = cps * (1-witherFactor);
-	
+			
+			var thisSuck = unwitheredCps*fullWitheredTime;
 			for (var i in Game.wrinklers)
 			{
-				var thisSuck = unwitheredCps*fullWitheredTime;
-				Game.wrinklers[i].sucked+=thisSuck;
-				cookiesSuckedWrath += thisSuck;
+				if (Game.wrinklers[i].phase==2)
+				{
+					Game.wrinklers[i].sucked+=thisSuck;
+					cookiesSuckedWrath += thisSuck;
+				}
 			}
 
 	

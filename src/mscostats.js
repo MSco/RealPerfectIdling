@@ -314,7 +314,7 @@ MS.bankDragonLucky = function()
 
 MS.cookiesToSpend = function()
 {
-        return Game.cookies - MS.bankLucky(15);
+        return Game.cookies - MS.bankDragonLucky();
 }
 
 MS.eldeerReward = function()

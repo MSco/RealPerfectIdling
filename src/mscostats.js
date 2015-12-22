@@ -1,7 +1,7 @@
 /* ================================================
     MSco Cookie Stats - A Cookie Clicker plugin
 
-    Version: 0.9.9.5
+    Version: 0.9.10.0
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -30,6 +30,9 @@
 
     Version History:
 
+    0.9.10:
+    	- Removed HC stuff
+    	- Added Dragon Lucky Bank
     0.9.9:
     	- Compatibility of beta 1.9
     0.9.8:
@@ -306,6 +309,17 @@ MS.bankFrenzyLucky = function()
 MS.bankDragonLucky = function()
 {
 	return Game.cookiesPs / MS.frenzyMod() * 1200 * 10 * 15 * MS.goldenMult() + 13;
+}
+
+/*MS.maxCookieChainReward = function()
+{
+	var plainreward = Game.cookiesPs*60*60*3*MS.goldenMult();
+	
+}*/
+
+MS.bankCookieChain = function()
+{
+	
 }
 
 MS.cookiesToSpend = function()

@@ -311,8 +311,9 @@ MS.eldeerReward = function()
 
 MS.maxElderFrenzy = function()
 {
-	var wrinkFactor = Game.getWrinklersMax()*0.5*MS.getSuckFactor();
-	wrinkFactor += 0.5;
+	var maxWrinklers = Game.getWrinklersMax();
+	var wrinkFactor = maxWrinklers*maxWrinklers*0.05*MS.getSuckFactor();
+	wrinkFactor += (1-maxWrinklers*0.05);
 	
 	var time=Math.ceil(6*Game.goldenCookie.getEffectDurMod());
 		

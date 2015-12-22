@@ -291,14 +291,14 @@ MS.bankFrenzyLucky = function()
 	return Game.cookiesPs / MS.frenzyMod() * 1200 * 10 * 7 + 13;
 }
 
-MS.rewardFrenzyLucky = function()
+MS.bankDragonLucky = function()
 {
-        return Game.cookiesPs / MS.frenzyMod() * 1200 * 7 + 13;
+        return Game.cookiesPs / MS.frenzyMod() * 1200 * 10 * 15 + 13;
 }
 
 MS.cookiesToSpend = function()
 {
-        return Game.cookies - MS.bankFrenzyLucky();
+        return Game.cookies - MS.bankDragonLucky();
 }
 
 MS.eldeerReward = function()
@@ -355,9 +355,9 @@ if(!statsdone)
 	// Frenzy + Lucky bank
 	statsString += ' + \'<div class="listing"><b>Bank for Frenzy Lucky:</b> <div class="price plain">\' + Beautify(MS.bankFrenzyLucky()) + \'</div></div>\'';
 	// Frenzy + Lucky reward
-	statsString += ' + \'<div class="listing"><b>Max. reward of Frenzy Lucky:</b> <div class="price plain">\' + Beautify(MS.rewardFrenzyLucky()) + \'</div></div>\'';
+	statsString += ' + \'<div class="listing"><b>Bank for Dragon Lucky:</b> <div class="price plain">\' + Beautify(MS.bankDragonLucky()) + \'</div></div>\'';
 	// Cookies to spend
-	statsString += ' + \'<div class="listing"><b>Max. cookies to spend (FL bank):</b> <div class="price plain">\' + Beautify(MS.cookiesToSpend()) + \'</div></div>\'';
+	statsString += ' + \'<div class="listing"><b>Max. cookies to spend (DL bank):</b> <div class="price plain">\' + Beautify(MS.cookiesToSpend()) + \'</div></div>\'';
 
 	// Eldeer reward
 	statsString += ' + \'<div class="listing"><b>Eldeer reward:</b> <div class="price plain">\' + Beautify(MS.eldeerReward()) + \'</div></div>\'';

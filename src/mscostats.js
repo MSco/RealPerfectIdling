@@ -286,14 +286,19 @@ MS.frenzyMod = function()
 	return ((Game.frenzy > 0) ? Game.frenzyPower : 1);
 }
 
-MS.bankFrenzyLucky = function()
+MS.goldenMult = function()
 {
-	return Game.cookiesPs / MS.frenzyMod() * 1200 * 10 * 7 + 13;
+	var mult=1;
+	if (this.wrath>0 && Game.hasAura('Unholy Dominion')) mult*=1.1;
+	else if (this.wrath==0 && Game.hasAura('Ancestral Metamorphosis')) mult*=1.1;
+	
+	return mult;
 }
 
-MS.bankDragonLucky = function()
+MS.bankLucky = function(goldProductionMultiplier)
 {
-        return Game.cookiesPs / MS.frenzyMod() * 1200 * 10 * 15 + 13;
+	// goldProductionMultiplier: 7 for frenzy, 15 for dragon harvest
+	return Game.cookiesPs / MS.frenzyMod() * 1200 * 10 * goldProductionMultiplier * MS.goldenMult() + 13;
 }
 
 MS.cookiesToSpend = function()
@@ -353,9 +358,9 @@ if(!statsdone)
 	statsString = '\'<br><div class="subsection">\' + \'<div class="title">MSco Stats</div>\'';
 
 	// Frenzy + Lucky bank
-	statsString += ' + \'<div class="listing"><b>Bank for Frenzy Lucky:</b> <div class="price plain">\' + Beautify(MS.bankFrenzyLucky()) + \'</div></div>\'';
+	statsString += ' + \'<div class="listing"><b>Bank for Frenzy Lucky:</b> <div class="price plain">\' + Beautify(MS.bankLucky(7)) + \'</div></div>\'';
 	// Frenzy + Lucky reward
-	statsString += ' + \'<div class="listing"><b>Bank for Dragon Lucky:</b> <div class="price plain">\' + Beautify(MS.bankDragonLucky()) + \'</div></div>\'';
+	statsString += ' + \'<div class="listing"><b>Bank for Dragon Lucky:</b> <div class="price plain">\' + Beautify(MS.bankLucky(15)) + \'</div></div>\'';
 	// Cookies to spend
 	statsString += ' + \'<div class="listing"><b>Max. cookies to spend (DL bank):</b> <div class="price plain">\' + Beautify(MS.cookiesToSpend()) + \'</div></div>\'';
 

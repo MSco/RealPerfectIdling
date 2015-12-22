@@ -289,8 +289,8 @@ MS.frenzyMod = function()
 MS.goldenMult = function()
 {
 	var mult=1;
-	if (this.wrath>0 && Game.hasAura('Unholy Dominion')) mult*=1.1;
-	else if (this.wrath==0 && Game.hasAura('Ancestral Metamorphosis')) mult*=1.1;
+	if (Game.elderWrath>0 && Game.hasAura('Unholy Dominion')) mult*=1.1;
+	else if (Game.elderWrath==0 && Game.hasAura('Ancestral Metamorphosis')) mult*=1.1;
 	
 	return mult;
 }
@@ -305,11 +305,7 @@ MS.bankFrenzyLucky = function()
 
 MS.bankDragonLucky = function()
 {
-	var mult=1;
-	if (this.wrath>0 && Game.hasAura('Unholy Dominion')) mult*=1.1;
-	else if (this.wrath==0 && Game.hasAura('Ancestral Metamorphosis')) mult*=1.1;
-	
-	return Game.cookiesPs / MS.frenzyMod() * 1200 * 10 * 15 * mult + 13;
+	return Game.cookiesPs / MS.frenzyMod() * 1200 * 10 * 15 * MS.goldenMult() + 13;
 }
 
 MS.cookiesToSpend = function()

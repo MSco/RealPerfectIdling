@@ -203,8 +203,9 @@ MS.wrinklersreward = function()
 	var suckFactor = MS.getSuckFactor();
 	return Game.wrinklers.reduce(function(p,c)
 		{
-			if (c.type==1) suckFactor*=3;
-			return p + suckFactor*c.sucked
+			var shinySuckfactor = suckFactor
+			if (c.type==1) shinySuckfactor*=3;
+			return p + shinySuckfactor*c.sucked
 			
 		},0);	
 }

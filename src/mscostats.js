@@ -303,7 +303,7 @@ MS.bankLucky = function(goldProductionMultiplier)
 
 MS.cookiesToSpend = function()
 {
-        return Game.cookies - MS.bankDragonLucky();
+        return Game.cookies - MS.bankLucky(15);
 }
 
 MS.eldeerReward = function()

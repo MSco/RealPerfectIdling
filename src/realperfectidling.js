@@ -126,16 +126,19 @@ RPI.calcGCSpawnTime = function()
 
 RPI.addMissedGoldenCookies = function(durationFrames)
 {
-	var dur=13*Game.fps;	// how long will it stay on-screen?
-        if (Game.Has('Lucky day')) dur*=2;
-        if (Game.Has('Serendipity')) dur*=2;
-	if (Game.Has('Decisive fate')) dur*=1.05;
-	if (Game.version >= 1.9)
-		if (Game.hasAura('Epoch Manipulator')) dur*=1.05;
-        
-	var thisMissed = Math.round(durationFrames/(RPI.calcGCSpawnTime()+dur))
-	Game.missedGoldenClicks += thisMissed;
-	console.log('Missed Golden Cookies while afk: ' + thisMissed);
+	if (!Game.Has('Golden switch [off]'))
+	{
+		var dur=13*Game.fps;	// how long will it stay on-screen?
+	        if (Game.Has('Lucky day')) dur*=2;
+	        if (Game.Has('Serendipity')) dur*=2;
+		if (Game.Has('Decisive fate')) dur*=1.05;
+		if (Game.version >= 1.9)
+			if (Game.hasAura('Epoch Manipulator')) dur*=1.05;
+	        
+		var thisMissed = Math.round(durationFrames/(RPI.calcGCSpawnTime()+dur))
+		Game.missedGoldenClicks += thisMissed;
+		console.log('Missed Golden Cookies while afk: ' + thisMissed);
+	}
 }
 
 RPI.calcCpsCenturyEgg = function()

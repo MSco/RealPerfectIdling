@@ -312,27 +312,28 @@ MS.bankDragonLucky = function()
 	return Game.cookiesPs / MS.frenzyMod() * 1200 * 10 * 15 * MS.goldenMult() + 13;
 }
 
-MS.bankCookieChain = function()
+MS.bankCookieChain = function(frenzyMultiplier)
 {
-	return MS.maxCookieChainReward()*4;
+	return (MS.maxCookieChainReward(frenzyMultiplier)[0])*4;
 }
 
-MS.maxCookieChainReward = function()
+MS.maxCookieChainReward = function(frenzyMultiplier)
 {
 	var digit = Game.elderWrath > 2 ? 6:7;
 	var mult = MS.goldenMult();
 	
 	var chain = 0;
 	var moni = 0, nextMoni = 0;
-	while (moni < Game.cookiesPs*60*60*3*mult)
+	while (moni < Game.cookiesPs*frenzyMultiplier/MS.frenzyMod()*60*60*3*mult)
 	{
 		chain++;
 		moni = Math.max(digit,Math.floor(1/9*Math.pow(10,chain)*digit*mult));
 	}
 	
 	moni = Math.max(digit,Math.floor(1/9*Math.pow(10,chain-1)*digit*mult));
+	var nextCps = Math.max(digit,Math.floor(1/9*Math.pow(10,chain)*digit*mult))/(60*60*3*mult*frenzyMultiplier);
 	
-	return moni;
+	return [moni, nextCps];
 }
 
 MS.cookiesToSpend = function()
@@ -396,22 +397,24 @@ if(!statsdone)
 	// Dragon + Lucky bank
 	statsString += ' + \'<div class="listing"><b>Bank for Dragon Lucky:</b> <div class="price plain">\' + Beautify(MS.bankDragonLucky()) + \'</div></div>\'';
 	// Cookie Chain bank
-	statsString += ' + \'<div class="listing"><b>Bank for Cookie Chain:</b> <div class="price plain">\' + Beautify(MS.bankCookieChain()) + \'</div></div>\'';
+	statsString += ' + \'<div class="listing"><b>Bank for Cookie Chain:</b> <div class="price plain">\' + Beautify(MS.bankCookieChain(1)) + \'</div>, <b>Frenzy: </b><div class="price plain">\' + Beautify(MS.bankCookieChain(7)) + \'</div>, <b>Dragon: </b><div class="price plain">\' + Beautify(MS.bankCookieChain(15)) + \'</div></div>\'';
 	// Cookie Chain reward
-	statsString += ' + \'<div class="listing"><b>Max. Reward for Cookie Chain:</b> <div class="price plain">\' + Beautify(MS.maxCookieChainReward()) + \'</div></div>\'';
+	statsString += ' + \'<div class="listing"><b>Max. Cookie Chain Reward:</b> <div class="price plain">\' + Beautify(MS.maxCookieChainReward(1)[0]) + \'</div>, <b>F: </b><div class="price plain">\' + Beautify(MS.maxCookieChainReward(7)[0]) + \'</div>, <b>D: </b><div class="price plain">\' + Beautify(MS.maxCookieChainReward(15)[0]) + \'</div></div>\'';
+	// Next Cps for Cookie Chain
+	statsString += ' + \'<div class="listing"><b>Next CPS for Cookie Chain:</b> <div class="price plain">\' + Beautify(MS.maxCookieChainReward(1)[1]) + \'</div>, <b>F: </b><div class="price plain">\' + Beautify(MS.maxCookieChainReward(7)[1]) + \'</div>, <b>D: </b><div class="price plain">\' + Beautify(MS.maxCookieChainReward(15)[1]) + \'</div></div>\'';
 	// Cookies to spend
-	statsString += ' + \'<div class="listing"><b>Max. cookies to spend (DL bank):</b> <div class="price plain">\' + Beautify(MS.cookiesToSpend()) + \'</div></div>\'';
+	statsString += ' + \'<div class="listing"><b>Max. Cookies to Spend (DL bank):</b> <div class="price plain">\' + Beautify(MS.cookiesToSpend()) + \'</div></div>\'';
 
 	// Eldeer reward
-	statsString += ' + \'<div class="listing"><b>Eldeer reward:</b> <div class="price plain">\' + Beautify(MS.eldeerReward()) + \'</div></div>\'';
+	statsString += ' + \'<div class="listing"><b>Eldeer Reward:</b> <div class="price plain">\' + Beautify(MS.eldeerReward()) + \'</div></div>\'';
 	// Elder frenzy reward
-	statsString += ' + \'<div class="listing"><b>Max. Elder frenzy reward (\'+Game.getWrinklersMax()+\' wrinklers):</b> <div class="price plain">\' + Beautify(MS.maxElderFrenzy()) + \'</div></div>\'';
+	statsString += ' + \'<div class="listing"><b>Max. Elder Frenzy Reward (\'+Game.getWrinklersMax()+\' wrinklers):</b> <div class="price plain">\' + Beautify(MS.maxElderFrenzy()) + \'</div></div>\'';
 
 	// Rewarded by Wrinklers
 	statsString += ' + \'<div class="listing"><b>Cookies Rewarded killing Wrinklers:</b> <div class="price plain">\' + Beautify(MS.wrinklersreward()) + \'</div></div>\'';
 
 	// Real Withered Cookies Per Hour
-	statsString += ' + \'<div class="listing"><b>Real Withered Cookies Per Hour:</b> <div class="price plain">\' + Beautify(MS.wrinklersCPH()) + \'</div></div>\'';
+	statsString += ' + \'<div class="listing"><b>Real Withered Cookies per Hour:</b> <div class="price plain">\' + Beautify(MS.wrinklersCPH()) + \'</div></div>\'';
 
 	// add blank line
 	statsString += ' + \'<br>\'';

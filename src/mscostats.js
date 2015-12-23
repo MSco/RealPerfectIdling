@@ -85,6 +85,16 @@ Game.ImportSaveCode = function(save)
     console.log('MS.importSaveT: ' + MS.importSaveT);
 }
 
+// Remove this function if Game.Version>=1.9
+MS.getEffectDurMod=function()
+{
+	var dur=1;
+	if (Game.Has('Get lucky')) dur*=2;
+	if (Game.Has('Lasting fortune')) dur*=1.1;
+	return dur;
+}
+/***********************************************/
+
 Game.sayTime = function(time,detail)
 {	
 	var str='';
@@ -369,7 +379,7 @@ MS.maxElderFrenzy = function()
 	var wrinkFactor = wrinklersMax*wrinklersMax*0.05*MS.getSuckFactor();
 	wrinkFactor += (1-wrinklersMax*0.05);
 	
-	var time=Math.ceil(6*Game.goldenCookie.getEffectDurMod());
+	var time=Math.ceil(6*MS.getEffectDurMod());
 		
 	var moni = Game.cookiesPs / MS.frenzyMod() * wrinkFactor * 666 * time;
 	return moni;

@@ -1,7 +1,7 @@
 /* ================================================
     MSco Cookie Stats - A Cookie Clicker plugin
 
-    Version: 0.9.10.0
+    Version: 0.9.10.1
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -33,6 +33,7 @@
     0.9.10:
     	- Removed HC stuff
     	- Added Dragon Lucky Bank
+    	- Added Cookie Chain
     0.9.9:
     	- Compatibility of beta 1.9
     0.9.8:
@@ -311,15 +312,27 @@ MS.bankDragonLucky = function()
 	return Game.cookiesPs / MS.frenzyMod() * 1200 * 10 * 15 * MS.goldenMult() + 13;
 }
 
-/*MS.maxCookieChainReward = function()
-{
-	var plainreward = Game.cookiesPs*60*60*3*MS.goldenMult();
-	
-}*/
-
 MS.bankCookieChain = function()
 {
+	return MS.maxCookieChainReward()*4;
+}
+
+MS.maxCookieChainReward = function()
+{
+	var digit = Game.elderWrath > 2 ? 6:7;
+	var mult = MS.goldenMult();
 	
+	var chain = 0;
+	var moni = 0, nextMoni = 0;
+	while (moni < Game.cookiesPs*60*60*3*mult)
+	{
+		chain++;
+		moni = Math.max(digit,Math.floor(1/9*Math.pow(10,chain)*digit*mult));
+	}
+	
+	moni = Math.max(digit,Math.floor(1/9*Math.pow(10,chain-1)*digit*mult));
+	
+	return moni;
 }
 
 MS.cookiesToSpend = function()
@@ -380,8 +393,12 @@ if(!statsdone)
 
 	// Frenzy + Lucky bank
 	statsString += ' + \'<div class="listing"><b>Bank for Frenzy Lucky:</b> <div class="price plain">\' + Beautify(MS.bankFrenzyLucky()) + \'</div></div>\'';
-	// Frenzy + Lucky reward
+	// Dragon + Lucky bank
 	statsString += ' + \'<div class="listing"><b>Bank for Dragon Lucky:</b> <div class="price plain">\' + Beautify(MS.bankDragonLucky()) + \'</div></div>\'';
+	// Cookie Chain bank
+	statsString += ' + \'<div class="listing"><b>Bank for Cookie Chain:</b> <div class="price plain">\' + Beautify(MS.bankCookieChain()) + \'</div></div>\'';
+	// Cookie Chain reward
+	statsString += ' + \'<div class="listing"><b>Max. Reward for Cookie Chain:</b> <div class="price plain">\' + Beautify(MS.maxCookieChainReward()) + \'</div></div>\'';
 	// Cookies to spend
 	statsString += ' + \'<div class="listing"><b>Max. cookies to spend (DL bank):</b> <div class="price plain">\' + Beautify(MS.cookiesToSpend()) + \'</div></div>\'';
 

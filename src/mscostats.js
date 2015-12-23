@@ -343,7 +343,7 @@ MS.bankCookieChain = function(frenzyMultiplier)
 
 MS.maxCookieChainReward = function(frenzyMultiplier)
 {
-	var digit = Game.elderWrath > 2 ? 6:7;
+	var digit = (Game.elderWrath < 3 || frenzyMultiplier == 7) ? 7 : 6;
 	var mult = MS.goldenMult();
 	
 	var chain = 0;

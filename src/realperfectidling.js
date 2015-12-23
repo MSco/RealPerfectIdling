@@ -130,7 +130,8 @@ RPI.addMissedGoldenCookies = function(durationFrames)
         if (Game.Has('Lucky day')) dur*=2;
         if (Game.Has('Serendipity')) dur*=2;
 	if (Game.Has('Decisive fate')) dur*=1.05;
-	if (Game.hasAura('Epoch Manipulator')) dur*=1.05;
+	if (Game.version >= 1.9)
+		if (Game.hasAura('Epoch Manipulator')) dur*=1.05;
         
 	var thisMissed = Math.round(durationFrames/(RPI.calcGCSpawnTime()+dur))
 	Game.missedGoldenClicks += thisMissed;
@@ -283,7 +284,7 @@ RPI.runWrath = function(cps, durationSeconds)
 		}
 
 		// spawn remaining wrinklers
-		while(numWrinklers<Game.getWrinklersMax() && frames<durationFrames)
+		while(numWrinklers<MS.wrinklersMax() && frames<durationFrames)
 		{
 			// increase elder wrath
 			var potentialWrath = Game.Has('One mind')+Game.Has('Communal brainsweep')+Game.Has('Elder Pact');
@@ -295,18 +296,21 @@ RPI.runWrath = function(cps, durationSeconds)
 	
 			for (var i in Game.wrinklers)
 			{
-				if (Game.wrinklers[i].phase==0 && Game.elderWrath>0 && numWrinklers<Game.getWrinklersMax())
+				if (Game.wrinklers[i].phase==0 && Game.elderWrath>0 && numWrinklers<MS.wrinklersMax())
 				{
-					var chance=0.00001*Game.elderWrath;
+					var chance = (Game.version >= 1.9) ? 0.00001*Game.elderWrath : 0.00003*Game.elderWrath;
 					if (Game.Has('Unholy bait')) chance*=5;
 					if (Game.Has('Wrinkler doormat')) chance=0.1;
 					if (Math.random()<chance) 
 					{
 						Game.wrinklers[i].phase=2;
 						Game.wrinklers[i].hp=Game.wrinklerHP;
-						Game.wrinklers[i].type=0;
-						if (Math.random()<0.001) 
-							Game.wrinklers[i].type=1; // shiny wrinkler
+						if (Game.version >= 1.9)
+						{
+							Game.wrinklers[i].type=0;
+							if (Math.random()<0.001) 
+								Game.wrinklers[i].type=1; // shiny wrinkler
+						}
 						numWrinklers++;
 						console.log("Time to spawn wrinkler " + i + ": " + frames/Game.fps/60 + " minutes. ")
 					}//respawn
@@ -333,7 +337,7 @@ RPI.runWrath = function(cps, durationSeconds)
 
 		var spawnTime = frames/Game.fps;
 
-		if (numWrinklers >= Game.getWrinklersMax())
+		if (numWrinklers >= MS.wrinklersMax())
 		{
 			var fullWitheredTime = durationSeconds-spawnTime;
 			var witherFactor = numWrinklers * 0.05;

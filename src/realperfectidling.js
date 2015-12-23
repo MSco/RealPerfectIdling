@@ -1,7 +1,7 @@
 /* ================================================
     MSco Perfect Idling With Wrinklers - A Cookie Clicker plugin
 
-    Version: 0.9.7
+    Version: 0.9.8.4
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -26,6 +26,8 @@
 	- Recalculate CPS regarding 'Century egg' from easter update. CPS of last save and current CPS are averaged for this.
 
     Version History:
+    0.9.8:
+    	- Beta 1.9 support
     0.9.7:
     	- Beta 1.0501 support
     0.9.6:
@@ -101,7 +103,7 @@ if (MS)
 	console.log('RPI.importSaveT: ' + RPI.importSaveT);
 }
 
-RPI.supportedVersion = 1.0501
+RPI.supportedVersion = 1.9
 if (RPI.supportedVersion < Game.version)
 {
 	Game.Notify('Unsupported version','MSco\'s Real Perfect Idling has not been tested on this version of Cookie Clicker. Continue on your own peril!',[3,5],6);
@@ -128,6 +130,7 @@ RPI.addMissedGoldenCookies = function(durationFrames)
         if (Game.Has('Lucky day')) dur*=2;
         if (Game.Has('Serendipity')) dur*=2;
 	if (Game.Has('Decisive fate')) dur*=1.05;
+	if (Game.hasAura('Epoch Manipulator')) dur*=1.05;
         
 	var thisMissed = Math.round(durationFrames/(RPI.calcGCSpawnTime()+dur))
 	Game.missedGoldenClicks += thisMissed;
@@ -280,7 +283,7 @@ RPI.runWrath = function(cps, durationSeconds)
 		}
 
 		// spawn remaining wrinklers
-		while(numWrinklers<10 && frames<durationFrames)
+		while(numWrinklers<Game.getWrinklersMax() && frames<durationFrames)
 		{
 			// increase elder wrath
 			var potentialWrath = Game.Has('One mind')+Game.Has('Communal brainsweep')+Game.Has('Elder Pact');
@@ -292,33 +295,23 @@ RPI.runWrath = function(cps, durationSeconds)
 	
 			for (var i in Game.wrinklers)
 			{
-				if (Game.version < 1.05)
+				if (Game.wrinklers[i].phase==0 && Game.elderWrath>0 && numWrinklers<Game.getWrinklersMax())
 				{
-					if ( (Game.wrinklers[i].phase==0) && (Math.random() < 0.00003*Game.elderWrath) )
+					var chance=0.00001*Game.elderWrath;
+					if (Game.Has('Unholy bait')) chance*=5;
+					if (Game.Has('Wrinkler doormat')) chance=0.1;
+					if (Math.random()<chance) 
 					{
-						Game.wrinklers[i].phase = 2;
-						Game.wrinklers[i].hp = 3;
+						Game.wrinklers[i].phase=2;
+						Game.wrinklers[i].hp=Game.wrinklerHP;
+						Game.wrinklers[i].type=0;
+						if (Math.random()<0.001) 
+							Game.wrinklers[i].type=1; // shiny wrinkler
 						numWrinklers++;
 						console.log("Time to spawn wrinkler " + i + ": " + frames/Game.fps/60 + " minutes. ")
-					}
+					}//respawn
 				}
-				else
-				{
-					if (Game.wrinklers[i].phase==0 && Game.elderWrath>0)
-					{
-						var chance=0.00002*Game.elderWrath;
-						if (Game.Has('Unholy bait')) chance*=2;
-						if (Game.Has('Wrinkler doormat')) chance=0.1;
-						if (Math.random()<chance) 
-						{
-							Game.wrinklers[i].phase=2;
-							Game.wrinklers[i].hp=Game.wrinklerHP;
-							numWrinklers++;
-							console.log("Time to spawn wrinkler " + i + ": " + frames/Game.fps/60 + " minutes. ")
-						}//respawn
-					}
-				}
-
+				
 				// set cps
 				var suckedFactor = numWrinklers*0.05;
 				var remainingCps = cps * (1-suckedFactor);
@@ -340,23 +333,26 @@ RPI.runWrath = function(cps, durationSeconds)
 
 		var spawnTime = frames/Game.fps;
 
-		if (numWrinklers == 10)
+		if (numWrinklers >= Game.getWrinklersMax())
 		{
 			var fullWitheredTime = durationSeconds-spawnTime;
-			var witherFactor = 0.5;
+			var witherFactor = numWrinklers * 0.05;
 			var unwitheredCps = cps * (1-witherFactor);
-	
+			
+			var thisSuck = cps*witherFactor*fullWitheredTime;
 			for (var i in Game.wrinklers)
 			{
-				var thisSuck = unwitheredCps*fullWitheredTime;
-				Game.wrinklers[i].sucked+=thisSuck;
-				cookiesSuckedWrath += thisSuck;
+				if (Game.wrinklers[i].phase==2)
+				{
+					Game.wrinklers[i].sucked+=thisSuck;
+					cookiesSuckedWrath += thisSuck;
+				}
 			}
 
 	
 			var thisEarned = unwitheredCps*fullWitheredTime;
 			Game.Earn(thisEarned);
-			Game.cookiesSucked += cps*witherFactor*fullWitheredTime;
+			Game.cookiesSucked += thisSuck;
 			cookiesEarnedWrath += thisEarned;
 		}
 
@@ -368,6 +364,54 @@ RPI.runWrath = function(cps, durationSeconds)
 		Game.Earn(thisEarned);
 
 		return [thisEarned, 0];
+	}
+}
+
+RPI.undoOfflineEarned = function(durationSeconds)
+{
+	if (Game.mobile || Game.Has('Perfect idling') || Game.Has('Twin Gates of Transcendence'))
+	{
+		if (Game.Has('Perfect idling'))
+		{
+			var maxTime=60*60*24*1000000000;
+			var percent=100;
+		}
+		else
+		{
+			var maxTime=60*60;
+			if (Game.Has('Belphegor')) maxTime*=2;
+			if (Game.Has('Mammon')) maxTime*=2;
+			if (Game.Has('Abaddon')) maxTime*=2;
+			if (Game.Has('Satan')) maxTime*=2;
+			if (Game.Has('Asmodeus')) maxTime*=2;
+			if (Game.Has('Beelzebub')) maxTime*=2;
+			if (Game.Has('Lucifer')) maxTime*=2;
+			
+			var percent=5;
+			if (Game.Has('Angels')) percent+=10;
+			if (Game.Has('Archangels')) percent+=10;
+			if (Game.Has('Virtues')) percent+=10;
+			if (Game.Has('Dominions')) percent+=10;
+			if (Game.Has('Cherubim')) percent+=10;
+			if (Game.Has('Seraphim')) percent+=10;
+			if (Game.Has('God')) percent+=10;
+			
+			if (Game.Has('Chimera')) {maxTime+=60*60*24*2;percent+=5;}
+		}
+		
+		//var timeOffline=(new Date().getTime()-Game.lastDate)/1000;
+		var timeOffline=durationSeconds
+		var timeOfflineOptimal=Math.min(timeOffline,maxTime);
+		var timeOfflineReduced=Math.max(0,timeOffline-timeOfflineOptimal);
+		var amount=(timeOfflineOptimal+timeOfflineReduced*0.1)*Game.cookiesPs*(percent/100);
+		
+		if (amount>0)
+		{
+			if (Game.prefs.popups) Game.Popup('Eliminated '+Beautify(amount)+' cookie'+(Math.floor(amount)==1?'':'s'));
+			else Game.Notify('Welcome back!','Eliminated <b>'+Beautify(amount)+'</b> cookie'+(Math.floor(amount)==1?'':'s'));
+			Game.Earn(-amount);
+			console.log('Cookies eliminated: ' + Beautify(amount));
+		}
 	}
 }
 
@@ -415,6 +459,9 @@ RPI.framesToString = function(time)
 
 if (!idleDone)
 {
+	// how to add button:
+	//eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('when out of focus)</label></div>\'+', 'when out of focus)</label></div>\'+\'<div class="listing"><a class="option" \'+Game.clickStr+\'="myfunc();">Real Perfect Idling</a><label>Simulate the game untilt the last Save)</label></div>\' + '))
+	
 	var secondsAfk = (new Date().getTime()-Game.lastDate)/1000 - (Game.T-RPI.importSaveT)/Game.fps;
 	//var secondsAfk = 50*60; 					// for debug
 	var framesAfk = (new Date().getTime()-Game.lastDate)/1000*Game.fps - (Game.T-RPI.importSaveT);
@@ -435,7 +482,9 @@ if (!idleDone)
 	// calculate cookies earned and sucked during elder wrath
 	var earnedAndSucked = RPI.runWrath(averageCps, secondsRemaining);
 	cookiesEarned += earnedAndSucked[0];
-	cookiesSucked += earnedAndSucked[1];	
+	cookiesSucked += earnedAndSucked[1];
+	
+	RPI.undoOfflineEarned(secondsAfk);
 	
 	// recalculate timers of the current season and current research
 	if (Game.seasonT > 0)

@@ -1,7 +1,7 @@
 /* ================================================
     MSco Cookie Stats - A Cookie Clicker plugin
 
-    Version: 0.9.8.0
+    Version: 0.9.10.1
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -30,6 +30,12 @@
 
     Version History:
 
+    0.9.10:
+    	- Removed HC stuff
+    	- Added Dragon Lucky Bank
+    	- Added Cookie Chain
+    0.9.9:
+    	- Compatibility of beta 1.9
     0.9.8:
     	- Compatibility of beta 1.0501
     0.9.7:
@@ -78,6 +84,16 @@ Game.ImportSaveCode = function(save)
     MS.importSaveT = Game.T;
     console.log('MS.importSaveT: ' + MS.importSaveT);
 }
+
+// Remove this function if Game.Version>=1.9
+MS.getEffectDurMod=function()
+{
+	var dur=1;
+	if (Game.Has('Get lucky')) dur*=2;
+	if (Game.Has('Lasting fortune')) dur*=1.1;
+	return dur;
+}
+/***********************************************/
 
 Game.sayTime = function(time,detail)
 {	
@@ -143,13 +159,23 @@ MS.hcThisGame = function()
 
 MS.buildingSellReward = function(building)
 {
-	var price = Math.ceil(building.basePrice * (Math.pow(Game.priceIncrease, building.amount+1) - Game.priceIncrease) / 0.15);
-	var reward = price * 0.5;
+	var buildingfree = (Game.version >= 1.9) ? building.free : 0;
+	var price = Math.ceil(building.basePrice * (Math.pow(Game.priceIncrease, Math.max(0,building.amount-buildingfree)+1) - Game.priceIncrease) / 0.15);
+	
+	var giveBack=0.5;
+	if (Game.version >= 1.9)
+		if (Game.dragonLevel>=9) 
+			giveBack=0.85
+	
+	var reward = price * giveBack;
 	
 	if (Game.Has('Season savings')) reward*=0.99;
 	if (Game.Has('Santa\'s dominion')) reward*=0.99;
 	if (Game.Has('Faberge egg')) reward*=0.99;
 	if (Game.Has('Divine discount')) reward*=0.99;
+	
+	if (Game.version >= 1.9)
+        	if (Game.hasAura('Fierce Hoarder')) price*=0.98;
 	
 	return reward;
 }
@@ -194,12 +220,23 @@ MS.getSuckFactor = function()
 MS.wrinklersreward = function()
 {
 	var suckFactor = MS.getSuckFactor();
-	return Game.wrinklers.reduce(function(p,c){return p + suckFactor*c.sucked},0);	
+	return Game.wrinklers.reduce(function(p,c)
+		{
+			var shinySuckfactor = suckFactor
+			if (c.type==1) shinySuckfactor*=3;
+			return p + shinySuckfactor*c.sucked
+			
+		},0);	
+}
+
+MS.wrinklersMax = function()
+{
+	return Game.version >= 1.9 ? Game.getWrinklersMax() : 10;
 }
 
 MS.wrinklersCPH = function()
 {
-	var wrinkFactor = 10*0.5*MS.getSuckFactor();
+	var wrinkFactor = MS.wrinklersMax()*0.5*MS.getSuckFactor();
 	wrinkFactor += 0.5
 
 	return Game.cookiesPs / MS.frenzyMod() * wrinkFactor * 3600;
@@ -273,19 +310,59 @@ MS.frenzyMod = function()
 	return ((Game.frenzy > 0) ? Game.frenzyPower : 1);
 }
 
-MS.bankFrenzyLucky = function()
+MS.goldenMult = function()
 {
-	return Game.cookiesPs / MS.frenzyMod() * 1200 * 10 * 7 + 13;
+	var mult=1;
+	if (Game.version >= 1.9)
+	{
+		if (Game.elderWrath>0 && Game.hasAura('Unholy Dominion')) mult*=1.1;
+		else if (Game.elderWrath==0 && Game.hasAura('Ancestral Metamorphosis')) mult*=1.1;
+	}
+	
+	return mult;
 }
 
-MS.rewardFrenzyLucky = function()
+MS.bankFrenzyLucky = function()
 {
-        return Game.cookiesPs / MS.frenzyMod() * 1200 * 7 + 13;
+	var mult = 1;
+	if (Game.version >= 1.9)
+		if (Game.hasAura('Ancestral Metamorphosis')) mult*=1.1;
+	
+	return Game.cookiesPs / MS.frenzyMod() * 1200 * 10 * 7 * mult + 13;
+}
+
+MS.bankDragonLucky = function()
+{
+	return Game.cookiesPs / MS.frenzyMod() * 1200 * 10 * 15 * MS.goldenMult() + 13;
+}
+
+MS.bankCookieChain = function(frenzyMultiplier)
+{
+	return (MS.maxCookieChainReward(frenzyMultiplier)[0])*4;
+}
+
+MS.maxCookieChainReward = function(frenzyMultiplier)
+{
+	var digit = Game.elderWrath > 2 ? 6:7;
+	var mult = MS.goldenMult();
+	
+	var chain = 0;
+	var moni = 0, nextMoni = 0;
+	while (moni < Game.cookiesPs*frenzyMultiplier/MS.frenzyMod()*60*60*3*mult)
+	{
+		chain++;
+		moni = Math.max(digit,Math.floor(1/9*Math.pow(10,chain)*digit*mult));
+	}
+	
+	moni = Math.max(digit,Math.floor(1/9*Math.pow(10,chain-1)*digit*mult));
+	var nextCps = Math.max(digit,Math.floor(1/9*Math.pow(10,chain)*digit*mult))/(60*60*3*mult*frenzyMultiplier);
+	
+	return [moni, nextCps];
 }
 
 MS.cookiesToSpend = function()
 {
-        return Game.cookies - MS.bankFrenzyLucky();
+        return Game.cookies - MS.bankDragonLucky();
 }
 
 MS.eldeerReward = function()
@@ -298,14 +375,11 @@ MS.eldeerReward = function()
 
 MS.maxElderFrenzy = function()
 {
-	var wrinkFactor = 10*0.5*MS.getSuckFactor();
-	wrinkFactor += 0.5;
+	var wrinklersMax = MS.wrinklersMax();
+	var wrinkFactor = wrinklersMax*wrinklersMax*0.05*MS.getSuckFactor();
+	wrinkFactor += (1-wrinklersMax*0.05);
 	
-	// note: remove this if prestige update goes live
-	if(typeof(Game.goldenCookie.getEffectDurMod) == "undefined")
-		var time=6+6*Game.Has('Get lucky');
-	else
-		var time=Math.ceil(6*Game.goldenCookie.getEffectDurMod());
+	var time=Math.ceil(6*MS.getEffectDurMod());
 		
 	var moni = Game.cookiesPs / MS.frenzyMod() * wrinkFactor * 666 * time;
 	return moni;
@@ -344,28 +418,37 @@ if(!statsdone)
 
 	// Frenzy + Lucky bank
 	statsString += ' + \'<div class="listing"><b>Bank for Frenzy Lucky:</b> <div class="price plain">\' + Beautify(MS.bankFrenzyLucky()) + \'</div></div>\'';
-	// Frenzy + Lucky reward
-	statsString += ' + \'<div class="listing"><b>Max. reward of Frenzy Lucky:</b> <div class="price plain">\' + Beautify(MS.rewardFrenzyLucky()) + \'</div></div>\'';
+	// Dragon + Lucky bank
+	statsString += ' + \'<div class="listing"><b>Bank for Dragon Lucky:</b> <div class="price plain">\' + Beautify(MS.bankDragonLucky()) + \'</div></div>\'';
+	// Cookie Chain bank
+	statsString += ' + \'<div class="listing"><b>Bank for Cookie Chain:</b> <div class="price plain">\' + Beautify(MS.bankCookieChain(1)) + \'</div>, <b>Frenzy: </b><div class="price plain">\' + Beautify(MS.bankCookieChain(7)) + \'</div>, <b>Dragon: </b><div class="price plain">\' + Beautify(MS.bankCookieChain(15)) + \'</div></div>\'';
+	// Cookie Chain reward
+	statsString += ' + \'<div class="listing"><b>Max. Cookie Chain Reward:</b> <div class="price plain">\' + Beautify(MS.maxCookieChainReward(1)[0]) + \'</div>, <b>F: </b><div class="price plain">\' + Beautify(MS.maxCookieChainReward(7)[0]) + \'</div>, <b>D: </b><div class="price plain">\' + Beautify(MS.maxCookieChainReward(15)[0]) + \'</div></div>\'';
+	// Next Cps for Cookie Chain
+	statsString += ' + \'<div class="listing"><b>Next CPS for Cookie Chain:</b> <div class="price plain">\' + Beautify(MS.maxCookieChainReward(1)[1]) + \'</div>, <b>F: </b><div class="price plain">\' + Beautify(MS.maxCookieChainReward(7)[1]) + \'</div>, <b>D: </b><div class="price plain">\' + Beautify(MS.maxCookieChainReward(15)[1]) + \'</div></div>\'';
 	// Cookies to spend
-	statsString += ' + \'<div class="listing"><b>Max. cookies to spend (FL bank):</b> <div class="price plain">\' + Beautify(MS.cookiesToSpend()) + \'</div></div>\'';
+	statsString += ' + \'<div class="listing"><b>Max. Cookies to Spend (DL bank):</b> <div class="price plain">\' + Beautify(MS.cookiesToSpend()) + \'</div></div>\'';
 
 	// Eldeer reward
-	statsString += ' + \'<div class="listing"><b>Eldeer reward:</b> <div class="price plain">\' + Beautify(MS.eldeerReward()) + \'</div></div>\'';
+	statsString += ' + \'<div class="listing"><b>Eldeer Reward:</b> <div class="price plain">\' + Beautify(MS.eldeerReward()) + \'</div></div>\'';
 	// Elder frenzy reward
-	statsString += ' + \'<div class="listing"><b>Max. Elder frenzy reward (10 wrinklers):</b> <div class="price plain">\' + Beautify(MS.maxElderFrenzy()) + \'</div></div>\'';
+	statsString += ' + \'<div class="listing"><b>Max. Elder Frenzy Reward (\'+MS.wrinklersMax()+\' wrinklers):</b> <div class="price plain">\' + Beautify(MS.maxElderFrenzy()) + \'</div></div>\'';
 
 	// Rewarded by Wrinklers
 	statsString += ' + \'<div class="listing"><b>Cookies Rewarded killing Wrinklers:</b> <div class="price plain">\' + Beautify(MS.wrinklersreward()) + \'</div></div>\'';
 
 	// Real Withered Cookies Per Hour
-	statsString += ' + \'<div class="listing"><b>Real Withered Cookies Per Hour:</b> <div class="price plain">\' + Beautify(MS.wrinklersCPH()) + \'</div></div>\'';
+	statsString += ' + \'<div class="listing"><b>Real Withered Cookies per Hour:</b> <div class="price plain">\' + Beautify(MS.wrinklersCPH()) + \'</div></div>\'';
 
 	// add blank line
 	statsString += ' + \'<br>\'';
 
+	if (Game.version < 1.9)
+	{
 	// HCs earned
 	statsString += ' + \'<div class="listing"><b>HCs earned this game:</b> \' + Beautify(MS.hcThisGame()) + \' (\' + Beautify(MS.hcFactor()) + \'% of current HC) </div>\'';
 	statsString += ' + \'<div class="listing"><b>HCs earned all time:</b> \' + Beautify(MS.hcAllTime()) + \'</div>\'';
+	}
 	
 	// Chocolate Egg reward
 	statsString += ' + \'<div class="listing"><b>Chocolate egg reward for buildings:</b> <div class="price plain">\' + Beautify(MS.chocolateEggSellReward()) + \'</div></div>\'';

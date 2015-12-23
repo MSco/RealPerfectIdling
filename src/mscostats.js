@@ -149,10 +149,13 @@ MS.hcThisGame = function()
 
 MS.buildingSellReward = function(building)
 {
-	var price = Math.ceil(building.basePrice * (Math.pow(Game.priceIncrease, Math.max(0,building.amount-building.free)+1) - Game.priceIncrease) / 0.15);
+	var buildingfree = (Game.version >= 1.9) ? building.free : 0;
+	var price = Math.ceil(building.basePrice * (Math.pow(Game.priceIncrease, Math.max(0,building.amount-buildingfree)+1) - Game.priceIncrease) / 0.15);
 	
 	var giveBack=0.5;
-	if (Game.dragonLevel>=9) giveBack=0.85
+	if (Game.version >= 1.9)
+		if (Game.dragonLevel>=9) 
+			giveBack=0.85
 	
 	var reward = price * giveBack;
 	
@@ -160,7 +163,9 @@ MS.buildingSellReward = function(building)
 	if (Game.Has('Santa\'s dominion')) reward*=0.99;
 	if (Game.Has('Faberge egg')) reward*=0.99;
 	if (Game.Has('Divine discount')) reward*=0.99;
-        if (Game.hasAura('Fierce Hoarder')) price*=0.98;
+	
+	if (Game.version >= 1.9)
+        	if (Game.hasAura('Fierce Hoarder')) price*=0.98;
 	
 	return reward;
 }
@@ -214,9 +219,14 @@ MS.wrinklersreward = function()
 		},0);	
 }
 
+MS.wrinklersMax = function()
+{
+	return Game.version >= 1.9 ? Game.getWrinklersMax() : 10;
+}
+
 MS.wrinklersCPH = function()
 {
-	var wrinkFactor = Game.getWrinklersMax()*0.5*MS.getSuckFactor();
+	var wrinkFactor = MS.wrinklersMax()*0.5*MS.getSuckFactor();
 	wrinkFactor += 0.5
 
 	return Game.cookiesPs / MS.frenzyMod() * wrinkFactor * 3600;
@@ -293,8 +303,11 @@ MS.frenzyMod = function()
 MS.goldenMult = function()
 {
 	var mult=1;
-	if (Game.elderWrath>0 && Game.hasAura('Unholy Dominion')) mult*=1.1;
-	else if (Game.elderWrath==0 && Game.hasAura('Ancestral Metamorphosis')) mult*=1.1;
+	if (Game.version >= 1.9)
+	{
+		if (Game.elderWrath>0 && Game.hasAura('Unholy Dominion')) mult*=1.1;
+		else if (Game.elderWrath==0 && Game.hasAura('Ancestral Metamorphosis')) mult*=1.1;
+	}
 	
 	return mult;
 }
@@ -302,7 +315,8 @@ MS.goldenMult = function()
 MS.bankFrenzyLucky = function()
 {
 	var mult = 1;
-	if (Game.hasAura('Ancestral Metamorphosis')) mult*=1.1;
+	if (Game.version >= 1.9)
+		if (Game.hasAura('Ancestral Metamorphosis')) mult*=1.1;
 	
 	return Game.cookiesPs / MS.frenzyMod() * 1200 * 10 * 7 * mult + 13;
 }
@@ -351,9 +365,9 @@ MS.eldeerReward = function()
 
 MS.maxElderFrenzy = function()
 {
-	var maxWrinklers = Game.getWrinklersMax();
-	var wrinkFactor = maxWrinklers*maxWrinklers*0.05*MS.getSuckFactor();
-	wrinkFactor += (1-maxWrinklers*0.05);
+	var wrinklersMax = MS.wrinklersMax();
+	var wrinkFactor = wrinklersMax*wrinklersMax*0.05*MS.getSuckFactor();
+	wrinkFactor += (1-wrinklersMax*0.05);
 	
 	var time=Math.ceil(6*Game.goldenCookie.getEffectDurMod());
 		
@@ -408,7 +422,7 @@ if(!statsdone)
 	// Eldeer reward
 	statsString += ' + \'<div class="listing"><b>Eldeer Reward:</b> <div class="price plain">\' + Beautify(MS.eldeerReward()) + \'</div></div>\'';
 	// Elder frenzy reward
-	statsString += ' + \'<div class="listing"><b>Max. Elder Frenzy Reward (\'+Game.getWrinklersMax()+\' wrinklers):</b> <div class="price plain">\' + Beautify(MS.maxElderFrenzy()) + \'</div></div>\'';
+	statsString += ' + \'<div class="listing"><b>Max. Elder Frenzy Reward (\'+MS.wrinklersMax()+\' wrinklers):</b> <div class="price plain">\' + Beautify(MS.maxElderFrenzy()) + \'</div></div>\'';
 
 	// Rewarded by Wrinklers
 	statsString += ' + \'<div class="listing"><b>Cookies Rewarded killing Wrinklers:</b> <div class="price plain">\' + Beautify(MS.wrinklersreward()) + \'</div></div>\'';

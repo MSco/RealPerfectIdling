@@ -365,19 +365,19 @@ MS.maxCookieChainReward = function(frenzyMultiplier)
 	return [moni, nextCps];
 }
 
-MS.cookiesToSpend = function(multiplier)
+MS.cookiesToSpend = function(frenzyMultiplier)
 {
-	if (multiplier == 1)
+	if (frenzyMultiplier == 1)
 		return Game.cookies - MS.bankLucky();
-	if (multiplier == 7)
+	if (frenzyMultiplier == 7)
 		return Game.cookies - MS.bankFrenzyLucky();
-	if (multiplier == 15)
+	if (frenzyMultiplier == 15)
         	return Game.cookies - MS.bankDragonLucky();
 }
 
-MS.eldeerReward = function()
+MS.reindeerReward = function(frenzyMultiplier)
 {
-	var moni=Math.max(25,Game.cookiesPs/MS.frenzyMod()*666*60*1);//1 minute of cookie production, or 25 cookies - whichever is highest
+	var moni=Math.max(25,Game.cookiesPs/MS.frenzyMod()*frenzyMultiplier*60*1);//1 minute of cookie production, or 25 cookies - whichever is highest
 	if (Game.Has('Ho ho ho-flavored frosting')) moni*=2;
 	
 	return moni;
@@ -442,7 +442,8 @@ if(!statsdone)
 	statsString += ' + \'<div class="listing"><b>Max. Cookies to Spend:</b> <div class="price plain">\' + Beautify(MS.cookiesToSpend(1)) + \'</div>, <b>F: </b><div class="price plain">\' + Beautify(MS.cookiesToSpend(7)) + \'</div>, <b>D: </b><div class="price plain">\' + Beautify(MS.cookiesToSpend(15)) + \'</div></div>\'';
 
 	// Eldeer reward
-	statsString += ' + \'<div class="listing"><b>Eldeer Reward:</b> <div class="price plain">\' + Beautify(MS.eldeerReward()) + \'</div></div>\'';
+	statsString += ' + \'<div class="listing"><b>Reindeer:</b> <div class="price plain">\' + Beautify(MS.reindeerReward(666)) + \'</div></div>\'';
+	statsString += ' + \'<div class="listing"><b>Reindeer:</b> <div class="price plain">\' + Beautify(MS.reindeerReward(1)) + \'</div>, <b>F: </b><div class="price plain">\' + Beautify(MS.reindeerReward(7)) + \'</div>, <b>D: </b><div class="price plain">\' + Beautify(MS.reindeerReward(15)) + \'</div>, <b>Elder: </b><div class="price plain">\' + Beautify(MS.reindeerReward(666)) + \'</div> + \'</div></div>\'';
 	// Elder frenzy reward
 	statsString += ' + \'<div class="listing"><b>Max. Elder Frenzy Reward (\'+MS.wrinklersMax()+\' wrinklers):</b> <div class="price plain">\' + Beautify(MS.maxElderFrenzy()) + \'</div></div>\'';
 

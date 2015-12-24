@@ -442,8 +442,7 @@ if(!statsdone)
 	statsString += ' + \'<div class="listing"><b>Max. Cookies to Spend:</b> <div class="price plain">\' + Beautify(MS.cookiesToSpend(1)) + \'</div>, <b>F: </b><div class="price plain">\' + Beautify(MS.cookiesToSpend(7)) + \'</div>, <b>D: </b><div class="price plain">\' + Beautify(MS.cookiesToSpend(15)) + \'</div></div>\'';
 
 	// Eldeer reward
-	statsString += ' + \'<div class="listing"><b>Reindeer:</b> <div class="price plain">\' + Beautify(MS.reindeerReward(666)) + \'</div></div>\'';
-	statsString += ' + \'<div class="listing"><b>Reindeer:</b> <div class="price plain">\' + Beautify(MS.reindeerReward(1)) + \'</div>, <b>F: </b><div class="price plain">\' + Beautify(MS.reindeerReward(7)) + \'</div>, <b>D: </b><div class="price plain">\' + Beautify(MS.reindeerReward(15)) + \'</div>, <b>Elder: </b><div class="price plain">\' + Beautify(MS.reindeerReward(666)) + \'</div> + \'</div></div>\'';
+	statsString += ' + \'<div class="listing"><b>Reindeer:</b> <div class="price plain">\' + Beautify(MS.reindeerReward(1)) + \'</div>, <b>F: </b><div class="price plain">\' + Beautify(MS.reindeerReward(7)) + \'</div>, <b>D: </b><div class="price plain">\' + Beautify(MS.reindeerReward(15)) + \'</div>, <b>Elder: </b><div class="price plain">\' + Beautify(MS.reindeerReward(666)) + \'</div></div>\'';
 	// Elder frenzy reward
 	statsString += ' + \'<div class="listing"><b>Max. Elder Frenzy Reward (\'+MS.wrinklersMax()+\' wrinklers):</b> <div class="price plain">\' + Beautify(MS.maxElderFrenzy()) + \'</div></div>\'';
 

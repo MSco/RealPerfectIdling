@@ -1,7 +1,7 @@
 /* ================================================
     MSco Cookie Stats - A Cookie Clicker plugin
 
-    Version: 0.9.10.1
+    Version: 0.9.10.2
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -322,6 +322,11 @@ MS.goldenMult = function()
 	return mult;
 }
 
+MS.bankLucky = function()
+{
+	return Game.cookiesPs / MS.frenzyMod() * 1200 * 10 * MS.goldenMult() + 13;
+}
+
 MS.bankFrenzyLucky = function()
 {
 	var mult = 1;
@@ -360,14 +365,19 @@ MS.maxCookieChainReward = function(frenzyMultiplier)
 	return [moni, nextCps];
 }
 
-MS.cookiesToSpend = function()
+MS.cookiesToSpend = function(frenzyMultiplier)
 {
-        return Game.cookies - MS.bankDragonLucky();
+	if (frenzyMultiplier == 1)
+		return Game.cookies - MS.bankLucky();
+	if (frenzyMultiplier == 7)
+		return Game.cookies - MS.bankFrenzyLucky();
+	if (frenzyMultiplier == 15)
+        	return Game.cookies - MS.bankDragonLucky();
 }
 
-MS.eldeerReward = function()
+MS.reindeerReward = function(frenzyMultiplier)
 {
-	var moni=Math.max(25,Game.cookiesPs/MS.frenzyMod()*666*60*1);//1 minute of cookie production, or 25 cookies - whichever is highest
+	var moni=Math.max(25,Game.cookiesPs/MS.frenzyMod()*frenzyMultiplier*60*1);//1 minute of cookie production, or 25 cookies - whichever is highest
 	if (Game.Has('Ho ho ho-flavored frosting')) moni*=2;
 	
 	return moni;
@@ -416,6 +426,8 @@ if(!statsdone)
 	// Title
 	statsString = '\'<br><div class="subsection">\' + \'<div class="title">MSco Stats</div>\'';
 
+	// Lucky bank
+	statsString += ' + \'<div class="listing"><b>Bank for Lucky:</b> <div class="price plain">\' + Beautify(MS.bankLucky()) + \'</div></div>\'';
 	// Frenzy + Lucky bank
 	statsString += ' + \'<div class="listing"><b>Bank for Frenzy Lucky:</b> <div class="price plain">\' + Beautify(MS.bankFrenzyLucky()) + \'</div></div>\'';
 	// Dragon + Lucky bank
@@ -427,10 +439,10 @@ if(!statsdone)
 	// Next Cps for Cookie Chain
 	statsString += ' + \'<div class="listing"><b>Next CPS for Cookie Chain:</b> <div class="price plain">\' + Beautify(MS.maxCookieChainReward(1)[1]) + \'</div>, <b>F: </b><div class="price plain">\' + Beautify(MS.maxCookieChainReward(7)[1]) + \'</div>, <b>D: </b><div class="price plain">\' + Beautify(MS.maxCookieChainReward(15)[1]) + \'</div></div>\'';
 	// Cookies to spend
-	statsString += ' + \'<div class="listing"><b>Max. Cookies to Spend (DL bank):</b> <div class="price plain">\' + Beautify(MS.cookiesToSpend()) + \'</div></div>\'';
+	statsString += ' + \'<div class="listing"><b>Max. Cookies to Spend:</b> <div class="price plain">\' + Beautify(MS.cookiesToSpend(1)) + \'</div>, <b>F: </b><div class="price plain">\' + Beautify(MS.cookiesToSpend(7)) + \'</div>, <b>D: </b><div class="price plain">\' + Beautify(MS.cookiesToSpend(15)) + \'</div></div>\'';
 
 	// Eldeer reward
-	statsString += ' + \'<div class="listing"><b>Eldeer Reward:</b> <div class="price plain">\' + Beautify(MS.eldeerReward()) + \'</div></div>\'';
+	statsString += ' + \'<div class="listing"><b>Reindeer:</b> <div class="price plain">\' + Beautify(MS.reindeerReward(1)) + \'</div>, <b>F: </b><div class="price plain">\' + Beautify(MS.reindeerReward(7)) + \'</div>, <b>D: </b><div class="price plain">\' + Beautify(MS.reindeerReward(15)) + \'</div>, <b>Elder: </b><div class="price plain">\' + Beautify(MS.reindeerReward(666)) + \'</div></div>\'';
 	// Elder frenzy reward
 	statsString += ' + \'<div class="listing"><b>Max. Elder Frenzy Reward (\'+MS.wrinklersMax()+\' wrinklers):</b> <div class="price plain">\' + Beautify(MS.maxElderFrenzy()) + \'</div></div>\'';
 

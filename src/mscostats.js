@@ -90,7 +90,7 @@ Game.GetHeavenlyMultiplier=function()
 {
 	if (Game.beta==1 && Game.version==1.9)
 	{
-		var heavenlyMult=1;
+		var heavenlyMult=0;
 		if (Game.Has('Heavenly chip secret')) heavenlyMult+=0.05;
 		if (Game.Has('Heavenly cookie stand')) heavenlyMult+=0.2;
 		if (Game.Has('Heavenly bakery')) heavenlyMult+=0.25;

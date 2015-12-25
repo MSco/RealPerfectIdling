@@ -1,7 +1,7 @@
 /* ================================================
     MSco Perfect Idling With Wrinklers - A Cookie Clicker plugin
 
-    Version: 0.9.8.5
+    Version: 0.9.8.6
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -235,6 +235,16 @@ RPI.calcCpsCenturyEgg = function()
 	else
 	{
 		return Game.cookiesPs;
+	}
+}
+
+RPI.addTotalCookies = function(cps, durationSeconds)
+{
+	var factor = cps / Game.cookiesPs;
+	for (var i in Game.Objects)
+	{
+		var me=Game.Objects[i];
+		me.totalCookies+=(me.storedTotalCps*factor*Game.globalCpsMult) * durationSeconds;
 	}
 }
 
@@ -492,6 +502,8 @@ if (!idleDone)
 	cookiesSucked += earnedAndSucked[1];
 	
 	RPI.undoOfflineEarned(secondsAfk);
+	
+	RPI.addTotalCookies(averageCps, secondsAfk);
 	
 	// recalculate timers of the current season and current research
 	if (Game.seasonT > 0)

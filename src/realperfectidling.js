@@ -238,6 +238,16 @@ RPI.calcCpsCenturyEgg = function()
 	}
 }
 
+RPI.addTotalCookies = function(cps, durationSeconds)
+{
+	var factor = cps / Game.cookiesPs;
+	for (var i in Game.Objects)
+	{
+		var me=Game.Objects[i];
+		me.totalCookies+=(me.storedTotalCps*factor*Game.globalCpsMult) * durationSeconds;
+	}
+}
+
 RPI.runElderPledge = function(cps, durationSeconds)
 {
 	if(Game.Has('Elder Pledge'))
@@ -492,6 +502,8 @@ if (!idleDone)
 	cookiesSucked += earnedAndSucked[1];
 	
 	RPI.undoOfflineEarned(secondsAfk);
+	
+	RPI.addTotalCookies(averageCps, secondsAfk);
 	
 	// recalculate timers of the current season and current research
 	if (Game.seasonT > 0)

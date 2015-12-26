@@ -1,7 +1,7 @@
 /* ================================================
     MSco Cookie Stats - A Cookie Clicker plugin
 
-    Version: 0.9.10.2
+    Version: 0.9.10.3
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -99,7 +99,26 @@ Game.GetHeavenlyMultiplier=function()
 		if (Game.hasAura('Dragon God')) heavenlyMult*=1.05;
 		return heavenlyMult;
 	}
-	else return GetHeavenlyMultiplierOriginal();
+	else return MS.GetHeavenlyMultiplierOriginal();
+}
+
+MS.EarnHeavenlyChipsOriginal = Game.EarnHeavenlyChips;
+Game.EarnHeavenlyChips=function(cookiesForfeited)
+{
+	if (Game.beta==1 && Game.version==1.9)
+	{
+		//recalculate prestige and chips owned
+		var prestige=Math.floor(Game.HowMuchPrestige(Game.cookiesReset+cookiesForfeited));
+		if (prestige>Game.prestige)//did we gain prestige levels?
+		{
+			var prestigeDifference=prestige-Game.prestige;
+			Game.heavenlyChips+=prestige-Game.heavenlyChips-Game.heavenlyChipsSpent;
+			Game.prestige=prestige;
+			if (Game.prefs.popups) Game.Popup('You gain '+Beautify(prestigeDifference)+' prestige level'+(prestigeDifference==1?'':'s')+'!');
+			else Game.Notify('You forfeit your '+Beautify(cookiesForfeited)+' cookies.','You gain <b>'+Beautify(prestigeDifference)+'</b> prestige level'+(prestigeDifference==1?'':'s')+'!',[19,7]);
+		}
+	}
+	else return MS.EarnHeavenlyChipsOriginal();
 }
 
 // Remove this function if Game.Version>=1.9

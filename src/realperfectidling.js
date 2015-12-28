@@ -1,7 +1,7 @@
 /* ================================================
     MSco Perfect Idling With Wrinklers - A Cookie Clicker plugin
 
-    Version: 0.9.8.6
+    Version: 0.9.8.7
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -506,10 +506,13 @@ if (!idleDone)
 	RPI.addTotalCookies(averageCps, secondsAfk);
 	
 	// recalculate timers of the current season and current research
-	if (Game.seasonT > 0)
-		Game.seasonT = Math.max(Game.seasonT-secondsAfk*Game.fps, 0);
-	if (Game.researchT > 0)
-		Game.researchT = Math.max(Game.researchT -secondsAfk*Game.fps, 0);
+	if (Game.version < 1.9)
+	{
+		if (Game.seasonT > 0)
+			Game.seasonT = Math.max(Game.seasonT-secondsAfk*Game.fps, 0);
+		if (Game.researchT > 0)
+			Game.researchT = Math.max(Game.researchT -secondsAfk*Game.fps, 0);
+	}
 
 	// add missed golden cookies
 	RPI.addMissedGoldenCookies(framesAfk);

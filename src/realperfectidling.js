@@ -257,7 +257,9 @@ RPI.runElderPledge = function(cps, durationSeconds)
 		var pledgeEarned = pledgeSeconds*cps;
 		Game.Earn(pledgeEarned);
 
-		Game.pledgeT = Math.max(Game.pledgeT - pledgeSeconds*Game.fps, 0);
+		if (Game.version <= 1.9)
+			Game.pledgeT = Math.max(Game.pledgeT - pledgeSeconds*Game.fps, 0);
+			
 		if (Game.pledgeT == 0)
 		{
 			Game.Lock('Elder Pledge');

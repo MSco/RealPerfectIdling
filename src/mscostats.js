@@ -91,12 +91,13 @@ Game.GetHeavenlyMultiplier=function()
 	if (Game.beta==1 && Game.version==1.9)
 	{
 		var heavenlyMult=0;
-		if (Game.Has('Heavenly chip secret')) heavenlyMult+=0.05;
-		if (Game.Has('Heavenly cookie stand')) heavenlyMult+=0.2;
-		if (Game.Has('Heavenly bakery')) heavenlyMult+=0.25;
-		if (Game.Has('Heavenly confectionery')) heavenlyMult+=0.25;
-		if (Game.Has('Heavenly key')) heavenlyMult+=0.25;
+		if (Game.Has('Heavenly chip secret')) heavenlyMult+=5;
+		if (Game.Has('Heavenly cookie stand')) heavenlyMult+=20;
+		if (Game.Has('Heavenly bakery')) heavenlyMult+=25;
+		if (Game.Has('Heavenly confectionery')) heavenlyMult+=25;
+		if (Game.Has('Heavenly key')) heavenlyMult+=25;
 		if (Game.hasAura('Dragon God')) heavenlyMult*=1.05;
+		heavenlyMult*=0.01
 		return heavenlyMult;
 	}
 	else return MS.GetHeavenlyMultiplierOriginal();

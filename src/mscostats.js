@@ -1,7 +1,7 @@
 /* ================================================
     MSco Cookie Stats - A Cookie Clicker plugin
 
-    Version: 0.9.10.3
+    Version: 0.9.10.4
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -197,6 +197,11 @@ MS.hcThisGame = function()
 MS.buildingSellReward = function(building)
 {
 	var buildingfree = (Game.version >= 1.9) ? building.free : 0;
+	var buildingamount = building.amount;
+	if (Game.version >= 1.9)
+		if (building.id == Game.ObjectsN-1 && Game.dragonLevel>=9 && !Game.hasAura('Earth Shatterer'))
+			buildingamount--;
+	
 	var price = Math.ceil(building.basePrice * (Math.pow(Game.priceIncrease, Math.max(0,building.amount-buildingfree)+1) - Game.priceIncrease) / 0.15);
 	
 	var giveBack=0.5;

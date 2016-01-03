@@ -96,13 +96,6 @@ halfday/60/60/24;
 
 var RPI = {};
 
-RPI.importSaveT = 0;
-if (MS)
-{
-	RPI.importSaveT = MS.importSaveT;
-	console.log('RPI.importSaveT: ' + RPI.importSaveT);
-}
-
 RPI.supportedVersion = 1.9
 if (RPI.supportedVersion < Game.version)
 {
@@ -162,7 +155,7 @@ RPI.calcCpsCenturyEgg = function()
 		var averageEggMult = currentEggMult;
 
 		//the boost increases a little every day, with diminishing returns up to +10% on the 100th day
-		var todayDays=Math.floor((new Date().getTime()/*-(Game.T-RPI.importSaveT)/Game.fps*1000*/-Game.startDate)/1000/10)*10/60/60/24;
+		var todayDays=Math.floor((new Date().getTime()/*-(Game.T-MS.importSaveT)/Game.fps*1000*/-Game.startDate)/1000/10)*10/60/60/24;
 		todayDays=Math.min(todayDays,100);
 		var currentCenturyBonus = (1-Math.pow(1-todayDays/100,3))*10
 		currentEggMult += currentCenturyBonus;
@@ -481,9 +474,9 @@ if (!idleDone)
 	// how to add button:
 	//eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('when out of focus)</label></div>\'+', 'when out of focus)</label></div>\'+\'<div class="listing"><a class="option" \'+Game.clickStr+\'="myfunc();">Real Perfect Idling</a><label>Simulate the game untilt the last Save)</label></div>\' + '))
 	
-	var secondsAfk = (new Date().getTime()-Game.lastDate)/1000 - (Game.T-RPI.importSaveT)/Game.fps;
+	var secondsAfk = (new Date().getTime()-Game.lastDate)/1000 - (Game.T-MS.importSaveT)/Game.fps;
 	//var secondsAfk = 50*60; 					// for debug
-	var framesAfk = (new Date().getTime()-Game.lastDate)/1000*Game.fps - (Game.T-RPI.importSaveT);
+	var framesAfk = (new Date().getTime()-Game.lastDate)/1000*Game.fps - (Game.T-MS.importSaveT);
 	console.log('AFK: ' + RPI.framesToString(framesAfk));
 
 	// initialize global values

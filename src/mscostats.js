@@ -75,9 +75,10 @@
 
 var MS = {};
 
-// set RPI.importSaveT after importing a save
+// set MS.importSaveT after importing a save
 MS.importSaveT = 0;
 MS.importSaveDate = new Date().getTime() - Game.T*1000/Game.fps;
+MS.saveImported = false;
 MS.importSaveCodeOrignal = Game.ImportSaveCode;
 Game.ImportSaveCode = function(save)
 {
@@ -90,6 +91,7 @@ Game.ImportSaveCode = function(save)
     	var str=unescape(data);
     	var spl=str[4].split(';');
     	Game.pledgeT=spl[11]?parseInt(spl[11]):0;
+    	MS.saveImported = true;
     }
     
     console.log('MS.importSaveT: ' + MS.importSaveT);

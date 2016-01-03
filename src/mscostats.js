@@ -88,7 +88,7 @@ Game.ImportSaveCode = function(save)
     
     if (save && save!='')
     {
-    	var str=unescape(data);
+    	var str=unescape(save);
     	var spl=str[4].split(';');
     	Game.pledgeT=spl[11]?parseInt(spl[11]):0;
     	MS.saveImported = true;

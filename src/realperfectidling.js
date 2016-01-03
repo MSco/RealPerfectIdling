@@ -269,8 +269,7 @@ RPI.runElderPledge = function(cps, durationSeconds)
 				str=unescape(document.cookie.split(Game.SaveTo+'=')[1]);//get cookie here
 		}
 		
-		var spl=str[4].split(';');
-	    	Game.pledgeT=spl[11]?parseInt(spl[11]):0;
+		MS.readPledgeFromStr(str);
 	}
 	
 	if(Game.pledgeT > 0)

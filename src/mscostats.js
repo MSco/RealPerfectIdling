@@ -89,9 +89,7 @@ Game.ImportSaveCode = function(save)
     if (save && save!='')
     {
     	var str=unescape(save);
-    	var spl=str[4].split(';');
-    	Game.pledgeT=spl[11]?parseInt(spl[11]):0;
-    	MS.saveImported = true;
+    	readPledgeFromStr(str);
     }
     
     console.log('MS.importSaveT: ' + MS.importSaveT);
@@ -133,6 +131,14 @@ Game.EarnHeavenlyChips=function(cookiesForfeited)
 		}
 	}
 	else return MS.EarnHeavenlyChipsOriginal();
+}
+
+MS.readPledgeFromStr=function(str)
+{
+	str=str.split('|');
+    	var spl=str[4].split(';');
+    	Game.pledgeT=spl[11]?parseInt(spl[11]):0;
+    	MS.saveImported = true;
 }
 
 // Remove this function if Game.Version>=1.9

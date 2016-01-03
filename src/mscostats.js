@@ -456,11 +456,14 @@ Game.LoadSave=function(data)
 						}
 						
 						var timeOffline=(new Date().getTime()-Game.lastDate)/1000;
-						console.log('Original Gettime: ' + new Date().getTime());
-						console.log('Original lastDate: ' + Game.lastDate);
+						console.log('Original timeOffline: ' + timeOffline);
 						var timeOfflineOptimal=Math.min(timeOffline,maxTime);
+						console.log('Original timeOfflineOptimal: ' + timeOfflineOptimal);
 						var timeOfflineReduced=Math.max(0,timeOffline-timeOfflineOptimal);
+						console.log('Original timeOfflineReduced: ' + timeOfflineReduced);
 						var amount=(timeOfflineOptimal+timeOfflineReduced*0.1)*Game.cookiesPs*(percent/100);
+						console.log('Original Game.cookiesPs: ' + Game.cookiesPs);
+						console.log('Original amount: ' + amount);
 						
 						if (amount>0)
 						{

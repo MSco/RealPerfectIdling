@@ -426,8 +426,8 @@ RPI.undoOfflineEarned = function()
 		
 		if (amount>0)
 		{
-			if (Game.prefs.popups) Game.Popup('Eliminated '+Beautify(amount)+' cookie'+(Math.floor(amount)==1?'':'s, in ' + Game.sayTime(timeOfflineOptimal*Game.fps)));
-			else Game.Notify('Welcome back!','Eliminated <b>'+Beautify(amount)+'</b> cookie'+(Math.floor(amount)==1?'':'s, in ' + Game.sayTime(timeOfflineOptimal*Game.fps)') );
+			if (Game.prefs.popups) Game.Popup('Eliminated '+Beautify(amount)+' cookie'+(Math.floor(amount)==1?'':'s') + ', in ' + Game.sayTime(timeOfflineOptimal*Game.fps));
+			else Game.Notify('Welcome back!','Eliminated <b>'+Beautify(amount)+'</b> cookie'+(Math.floor(amount)==1?'':'s') + ', in ' + Game.sayTime(timeOfflineOptimal*Game.fps));
 			Game.Earn(-amount);
 			console.log('Cookies eliminated: ' + Beautify(amount));
 		}

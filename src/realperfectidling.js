@@ -243,14 +243,44 @@ RPI.addTotalCookies = function(cps, durationSeconds)
 
 RPI.runElderPledge = function(cps, durationSeconds)
 {
-	if(Game.Has('Elder Pledge'))
+	if (!MS.saveImported && Game.version >= 1.9)
+	{
+		var str='';
+		if (Game.useLocalStorage)
+		{
+			var local=window.localStorage.getItem(Game.SaveTo);
+			if (!local)//no localstorage save found? let's get the cookie one last time
+			{
+				if (document.cookie.indexOf(Game.SaveTo)>=0)
+				{
+					str=unescape(document.cookie.split(Game.SaveTo+'=')[1]);
+					document.cookie=Game.SaveTo+'=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+				}
+				else return false;
+			}
+			else
+			{
+				str=unescape(local);
+			}
+		}
+		else//legacy system
+		{
+			if (document.cookie.indexOf(Game.SaveTo)>=0) 
+				str=unescape(document.cookie.split(Game.SaveTo+'=')[1]);//get cookie here
+		}
+		
+		var spl=str[4].split(';');
+	    	Game.pledgeT=spl[11]?parseInt(spl[11]):0;
+	}
+	
+	if(Game.pledgeT > 0)
 	{
 		var secondsRemaining = Math.max(durationSeconds - Game.pledgeT/Game.fps, 0);
 		var pledgeSeconds = durationSeconds - secondsRemaining;
 		var pledgeEarned = pledgeSeconds*cps;
 		Game.Earn(pledgeEarned);
 
-		if (Game.version <= 1.9)
+		//if (Game.version <= 1.9)
 			Game.pledgeT = Math.max(Game.pledgeT - pledgeSeconds*Game.fps, 0);
 			
 		if (Game.pledgeT == 0)

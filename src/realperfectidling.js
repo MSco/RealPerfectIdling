@@ -386,7 +386,7 @@ RPI.runWrath = function(cps, durationSeconds)
 	}
 }
 
-RPI.undoOfflineEarned = function(durationSeconds)
+RPI.undoOfflineEarned = function()
 {
 	if (Game.mobile || Game.Has('Perfect idling') || Game.Has('Twin Gates of Transcendence'))
 	{
@@ -419,7 +419,7 @@ RPI.undoOfflineEarned = function(durationSeconds)
 		}
 		
 		//var timeOffline=(new Date().getTime()-Game.lastDate)/1000;
-		var timeOffline=durationSeconds
+		var timeOffline=(MS.importSaveDate-Game.lastDate)/1000;
 		var timeOfflineOptimal=Math.min(timeOffline,maxTime);
 		var timeOfflineReduced=Math.max(0,timeOffline-timeOfflineOptimal);
 		var amount=(timeOfflineOptimal+timeOfflineReduced*0.1)*Game.cookiesPs*(percent/100);

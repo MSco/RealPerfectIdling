@@ -82,7 +82,9 @@ Game.ImportSaveCode = function(save)
 {
     MS.importSaveCodeOrignal(save);
     MS.importSaveT = Game.T;
+    MS.importSaveDate = new Date().getTime();
     console.log('MS.importSaveT: ' + MS.importSaveT);
+    console.log('MS.importSaveDate: ' + MS.importSaveDate);
 }
 
 MS.GetHeavenlyMultiplierOriginal = Game.GetHeavenlyMultiplier;

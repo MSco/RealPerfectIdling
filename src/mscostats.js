@@ -135,6 +135,13 @@ Game.EarnHeavenlyChips=function(cookiesForfeited)
 
 MS.readPledgeFromStr=function(str)
 {
+	var oldstr=str.split('|');
+	if (oldstr[0]<1) {}
+	else
+	{
+		str=str.split('!END!')[0];
+		str=b64_to_utf8(str);
+	}
 	str=str.split('|');
     	var spl=str[4].split(';');
     	Game.pledgeT=spl[11]?parseInt(spl[11]):0;

@@ -89,7 +89,7 @@ Game.ImportSaveCode = function(save)
     if (save && save!='')
     {
     	var str=unescape(save);
-    	readPledgeFromStr(str);
+    	MS.readPledgeFromStr(str);
     }
     
     console.log('MS.importSaveT: ' + MS.importSaveT);

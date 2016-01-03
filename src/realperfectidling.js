@@ -272,6 +272,8 @@ RPI.runElderPledge = function(cps, durationSeconds)
 		MS.readPledgeFromStr(str);
 	}
 	
+	Game.pledgeT = Math.max(0, Game.pledgeT-(Game.T-MS.importSaveT));
+	
 	if(Game.pledgeT > 0)
 	{
 		var secondsRemaining = Math.max(durationSeconds - Game.pledgeT/Game.fps, 0);
@@ -280,7 +282,7 @@ RPI.runElderPledge = function(cps, durationSeconds)
 		Game.Earn(pledgeEarned);
 
 		//if (Game.version <= 1.9)
-			Game.pledgeT = Math.max(Game.pledgeT - pledgeSeconds*Game.fps, 0);
+		Game.pledgeT = Math.max(Game.pledgeT - pledgeSeconds*Game.fps, 0);
 			
 		if (Game.pledgeT == 0)
 		{

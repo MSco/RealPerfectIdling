@@ -13,22 +13,6 @@ Game.Achievements['Spacetime jigamaroo'].won=0
 Game.Achievements['Supermassive'].won=0
 Game.Achievements['Praise the sun'].won=0
 
-// Remove Achievements: make x from y #2
-Game.Achievements['Finger clickin\' good'].won=0
-Game.Achievements['Panic at the bingo'].won=0
-Game.Achievements['Rake in the dough'].won=0
-Game.Achievements['Quarry on'].won=0
-Game.Achievements['Yes I love technology'].won=0
-//Game.Achievements['Paid in full'].won=0
-//Game.Achievements['Church of Cookiology'].won=0
-//Game.Achievements['Too many rabbits, not enough hats'].won=0
-Game.Achievements['The most precious cargo'].won=0
-Game.Achievements['The Aureate'].won=0
-Game.Achievements['Ever more hideous'].won=0
-Game.Achievements['Be kind, rewind'].won=0
-Game.Achievements['Infinitesimal'].won=0
-Game.Achievements['A still more glorious dawn'].won=0
-
 // Remove Achievements: Time Machine, Antimatter condenser, Prism
 Game.Achievements['Time warp'].won=0
 Game.Achievements['Alternate timeline'].won=0
@@ -45,6 +29,14 @@ Game.Achievements['Dazzling glimmer'].won=0
 Game.Achievements['Blinding flash'].won=0
 Game.Achievements['Unending glow'].won=0
 Game.Achievements['Rise and shine'].won=0
+
+// Remove Achievements: Centennial etc.
+Game.Achievements['One with everything'].won=0
+Game.Achievements['Mathematician'].won=0
+Game.Achievements['Base 10'].won=0
+Game.Achievements['Centennial'].won=0
+Game.Achievements['Centennial and a half'].won=0
+Game.Achievements['Bicentennial'].won=0
 
 // Remove Upgrades: Time Machine, Antimatter condenser, Prism
 // bought

@@ -503,7 +503,7 @@ if (!idleDone)
 	cookiesEarned += earnedAndSucked[0];
 	cookiesSucked += earnedAndSucked[1];
 	
-	RPI.undoOfflineEarned(secondsAfk);
+	RPI.undoOfflineEarned();
 	
 	RPI.addTotalCookies(averageCps, secondsAfk);
 	

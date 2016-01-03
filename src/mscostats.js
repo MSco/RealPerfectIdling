@@ -80,9 +80,9 @@ MS.importSaveT = 0;
 MS.importSaveCodeOrignal = Game.ImportSaveCode;
 Game.ImportSaveCode = function(save)
 {
+    MS.importSaveCodeOrignal(save);
     MS.importSaveT = Game.T;
     MS.importSaveDate = new Date().getTime();
-    MS.importSaveCodeOrignal(save);
     console.log('MS.importSaveT: ' + MS.importSaveT);
     console.log('MS.importSaveDate: ' + MS.importSaveDate);
 }

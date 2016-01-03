@@ -77,7 +77,7 @@ var MS = {};
 
 // set RPI.importSaveT after importing a save
 MS.importSaveT = 0;
-MS.importSaveDate = Game.lastDate;
+MS.importSaveDate = new Date().getTime() - Game.T;
 MS.importSaveCodeOrignal = Game.ImportSaveCode;
 Game.ImportSaveCode = function(save)
 {

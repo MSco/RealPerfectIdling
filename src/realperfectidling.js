@@ -257,7 +257,9 @@ RPI.runElderPledge = function(cps, durationSeconds)
 		var pledgeEarned = pledgeSeconds*cps;
 		Game.Earn(pledgeEarned);
 
-		Game.pledgeT = Math.max(Game.pledgeT - pledgeSeconds*Game.fps, 0);
+		if (Game.version <= 1.9)
+			Game.pledgeT = Math.max(Game.pledgeT - pledgeSeconds*Game.fps, 0);
+			
 		if (Game.pledgeT == 0)
 		{
 			Game.Lock('Elder Pledge');
@@ -384,7 +386,7 @@ RPI.runWrath = function(cps, durationSeconds)
 	}
 }
 
-RPI.undoOfflineEarned = function(durationSeconds)
+RPI.undoOfflineEarned = function()
 {
 	if (Game.mobile || Game.Has('Perfect idling') || Game.Has('Twin Gates of Transcendence'))
 	{
@@ -417,7 +419,7 @@ RPI.undoOfflineEarned = function(durationSeconds)
 		}
 		
 		//var timeOffline=(new Date().getTime()-Game.lastDate)/1000;
-		var timeOffline=durationSeconds
+		var timeOffline=(MS.importSaveDate-Game.lastDate)/1000;
 		var timeOfflineOptimal=Math.min(timeOffline,maxTime);
 		var timeOfflineReduced=Math.max(0,timeOffline-timeOfflineOptimal);
 		var amount=(timeOfflineOptimal+timeOfflineReduced*0.1)*Game.cookiesPs*(percent/100);
@@ -501,7 +503,7 @@ if (!idleDone)
 	cookiesEarned += earnedAndSucked[0];
 	cookiesSucked += earnedAndSucked[1];
 	
-	RPI.undoOfflineEarned(secondsAfk);
+	RPI.undoOfflineEarned();
 	
 	RPI.addTotalCookies(averageCps, secondsAfk);
 	

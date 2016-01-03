@@ -1,7 +1,7 @@
 /* ================================================
     MSco Cookie Stats - A Cookie Clicker plugin
 
-    Version: 0.9.10.3
+    Version: 0.9.10.4
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -82,7 +82,9 @@ Game.ImportSaveCode = function(save)
 {
     MS.importSaveCodeOrignal(save);
     MS.importSaveT = Game.T;
+    MS.importSaveDate = new Date().getTime();
     console.log('MS.importSaveT: ' + MS.importSaveT);
+    console.log('MS.importSaveDate: ' + MS.importSaveDate);
 }
 
 MS.GetHeavenlyMultiplierOriginal = Game.GetHeavenlyMultiplier;
@@ -91,12 +93,13 @@ Game.GetHeavenlyMultiplier=function()
 	if (Game.beta==1 && Game.version==1.9)
 	{
 		var heavenlyMult=0;
-		if (Game.Has('Heavenly chip secret')) heavenlyMult+=0.05;
-		if (Game.Has('Heavenly cookie stand')) heavenlyMult+=0.2;
-		if (Game.Has('Heavenly bakery')) heavenlyMult+=0.25;
-		if (Game.Has('Heavenly confectionery')) heavenlyMult+=0.25;
-		if (Game.Has('Heavenly key')) heavenlyMult+=0.25;
+		if (Game.Has('Heavenly chip secret')) heavenlyMult+=5;
+		if (Game.Has('Heavenly cookie stand')) heavenlyMult+=20;
+		if (Game.Has('Heavenly bakery')) heavenlyMult+=25;
+		if (Game.Has('Heavenly confectionery')) heavenlyMult+=25;
+		if (Game.Has('Heavenly key')) heavenlyMult+=25;
 		if (Game.hasAura('Dragon God')) heavenlyMult*=1.05;
+		heavenlyMult*=0.01
 		return heavenlyMult;
 	}
 	else return MS.GetHeavenlyMultiplierOriginal();
@@ -196,6 +199,11 @@ MS.hcThisGame = function()
 MS.buildingSellReward = function(building)
 {
 	var buildingfree = (Game.version >= 1.9) ? building.free : 0;
+	var buildingamount = building.amount;
+	if (Game.version >= 1.9)
+		if (building.id == Game.ObjectsN-1 && Game.dragonLevel>=9 && !Game.hasAura('Earth Shatterer'))
+			buildingamount--;
+	
 	var price = Math.ceil(building.basePrice * (Math.pow(Game.priceIncrease, Math.max(0,building.amount-buildingfree)+1) - Game.priceIncrease) / 0.15);
 	
 	var giveBack=0.5;

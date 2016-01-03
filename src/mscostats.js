@@ -84,6 +84,14 @@ Game.ImportSaveCode = function(save)
     MS.importSaveCodeOrignal(save);
     MS.importSaveT = Game.T;
     MS.importSaveDate = new Date().getTime();
+    
+    if (save && save!='')
+    {
+    	var str=unescape(data);
+    	var spl=str[4].split(';');
+    	Game.pledgeT=spl[11]?parseInt(spl[11]):0;
+    }
+    
     console.log('MS.importSaveT: ' + MS.importSaveT);
     console.log('MS.importSaveDate: ' + MS.importSaveDate);
 }

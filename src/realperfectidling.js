@@ -420,6 +420,7 @@ RPI.undoOfflineEarned = function()
 		
 		//var timeOffline=(new Date().getTime()-Game.lastDate)/1000;
 		var timeOffline=(MS.importSaveDate-Game.lastDate)/1000;
+		console.log('RPI timeOffline: ' + timeOffline);
 		var timeOfflineOptimal=Math.min(timeOffline,maxTime);
 		var timeOfflineReduced=Math.max(0,timeOffline-timeOfflineOptimal);
 		var amount=(timeOfflineOptimal+timeOfflineReduced*0.1)*Game.cookiesPs*(percent/100);

@@ -465,17 +465,9 @@ MS.maxElderFrenzy = function()
 
 if(!statsdone)
 {
-	// not needed anymore since v1.0465
-	/*
-	l('sectionAd').style.display = 'none';
-	document.getElementsByClassName('separatorRight')[0].style.right = '317px';
-	l('sectionMiddle').style.right = '318px';
-	l('sectionRight').style.right = '0px';
-	*/
-	
-	
 	// Replace strings in original Statistics menu
 	
+	// cookies in bank with wrinklers
 	eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('<b>Cookies in bank :</b> <div class="price plain">\'+Game.tinyCookie()+Beautify(Game.cookies)+\'</div></div>\'','<b>Cookies in bank (with wrinklers) :</b> <div class="price plain">\'+Game.tinyCookie()+Beautify(Game.cookies+MS.wrinklersreward())+\'</div></div>\''));
 	
 	// Cookies per second: not effected by any frenzy effects.
@@ -545,7 +537,6 @@ if(!statsdone)
 	{
 		statsString += ' + \'<div class="listing"><b>' + Game.ObjectsById[i].name + ':</b> \' + Beautify(MS.calcEfficiency(Game.ObjectsById['+i+'], best_bci)) + \'%\'+ \'</div>\'';
 	}
-
 	
 	// Paste string into the menu
 	eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('Game.version+\'</div>\'+', 'Game.version+\'</div>\' + ' + statsString + ' + '));

@@ -474,12 +474,12 @@ if(!statsdone)
 	eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('Beautify(Game.cookiesPs,1)', 'Beautify(Game.cookiesPs/MS.frenzyMod(),1)'));
 	// Multiplier: not effected by any frenzy effects.
 	eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('Beautify(Math.round(Game.globalCpsMult*100),1)', 'Beautify(Math.round(Game.globalCpsMult*100/MS.frenzyMod()),1)'));
-	
-	var thisGameEarned = ' + \'<div class="listing"><b>Incl. wrinklers and chocolate egg:</b> <div class="price plain">\' + Game.tinyCookie() + Beautify(MS.maxEarnedThisGame()) + \'</div></div>\'';
-	eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('Beautify(Game.cookiesEarned)+\'</div></div>\'', 'Beautify(Game.cookiesEarned)+\'</div></div>\'' + thisGameEarned));
-	var allTimeEarned = ' + \'<div class="listing"><b>Incl. wrinklers and chocolate egg:</b> <div class="price plain">\' + Game.tinyCookie() + Beautify(MS.maxEarnedAllTime()) + \'</div></div>\'';
-	eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('Beautify(Game.cookiesEarned+Game.cookiesReset)+\'</div></div>\'', 'Beautify(Game.cookiesEarned+Game.cookiesReset)+\'</div></div>\'' + allTimeEarned));
 
+	// cookies baked
+	var thisGameEarned = '<b>Cookies baked (this game, incl. wrinkl. and ch. egg:</b> <div class="price plain">\' + Game.tinyCookie() + Beautify(MS.maxEarnedThisGame()) + \'</div></div>\'';
+	eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('<b>Cookies baked (this game) :</b> <div class="price plain">\'+Game.tinyCookie()+Beautify(Game.cookiesEarned)+\'</div></div>\'', thisGameEarned);	
+	var allTimeEarned = '<b>Cookies baked (all time, incl. wrinkl. and ch. egg:</b> <div class="price plain">\' + Game.tinyCookie() + Beautify(MS.maxEarnedAllTime()) + \'</div></div>\'';
+	eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('<b>Cookies baked (all time) :</b> <div class="price plain">\'+Game.tinyCookie()+Beautify(Game.cookiesEarned+Game.cookiesReset)+\'</div></div>\'', allTimeEarned);	
 
 	var statsString;
 

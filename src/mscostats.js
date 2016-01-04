@@ -296,14 +296,14 @@ MS.wrinklersreward = function()
 		},0);	
 }
 
-MS.wrinklersMax = function()
+MS.getWrinklersMax = function()
 {
 	return Game.version >= 1.9 ? Game.getWrinklersMax() : 10;
 }
 
 MS.wrinklersCPH = function()
 {
-	var wrinkFactor = MS.wrinklersMax()*0.5*MS.getSuckFactor();
+	var wrinkFactor = MS.getWrinklersMax()*0.5*MS.getSuckFactor();
 	wrinkFactor += 0.5
 
 	return Game.cookiesPs / MS.frenzyMod() * wrinkFactor * 3600;
@@ -452,7 +452,7 @@ MS.reindeerReward = function(frenzyMultiplier)
 
 MS.maxElderFrenzy = function()
 {
-	var wrinklersMax = MS.wrinklersMax();
+	var wrinklersMax = MS.getWrinklersMax();
 	var wrinkFactor = wrinklersMax*wrinklersMax*0.05*MS.getSuckFactor();
 	wrinkFactor += (1-wrinklersMax*0.05);
 	
@@ -485,7 +485,7 @@ if(!statsdone)
 	// Title
 	statsString = '\'<br><div class="subsection">\' + \'<div class="title">MSco Stats</div>\'';
 
-	// Lucky bank
+	// Lucky (plain, frenzy, dragon) bank + max to spend
 	statsString += ' + \'<div class="listing"><b>Bank for Lucky:</b> <div class="price plain">\' + Beautify(MS.bankLucky()) + \'</div> <b>Max cookies to spend: </b><div class="price plain">\' + Beautify(MS.cookiesToSpend(1)) + \'</div></div>\'';
 	statsString += ' + \'<div class="listing"><b>Bank for Frenzy Lucky:</b> <div class="price plain">\' + Beautify(MS.bankFrenzyLucky()) + \'</div> <b>Max cookies to spend: </b><div class="price plain">\' + Beautify(MS.cookiesToSpend(7)) + \'</div></div>\'';
 	statsString += ' + \'<div class="listing"><b>Bank for Dragon Lucky:</b> <div class="price plain">\' + Beautify(MS.bankDragonLucky()) + \'</div> <b>Max cookies to spend: </b><div class="price plain">\' + Beautify(MS.cookiesToSpend(15)) + \'</div></div>\'';
@@ -499,7 +499,7 @@ if(!statsdone)
 	// Eldeer reward
 	statsString += ' + \'<div class="listing"><b>Reindeer:</b> <div class="price plain">\' + Beautify(MS.reindeerReward(1)) + \'</div> <b>F: </b><div class="price plain">\' + Beautify(MS.reindeerReward(7)) + \'</div> <b>D: </b><div class="price plain">\' + Beautify(MS.reindeerReward(15)) + \'</div> <b>Elder: </b><div class="price plain">\' + Beautify(MS.reindeerReward(666)) + \'</div></div>\'';
 	// Elder frenzy reward
-	statsString += ' + \'<div class="listing"><b>Max. Elder Frenzy Reward (\'+MS.wrinklersMax()+\' wrinklers):</b> <div class="price plain">\' + Beautify(MS.maxElderFrenzy()) + \'</div></div>\'';
+	statsString += ' + \'<div class="listing"><b>Max. Elder Frenzy Reward (\'+MS.getWrinklersMax()+\' wrinklers):</b> <div class="price plain">\' + Beautify(MS.maxElderFrenzy()) + \'</div></div>\'';
 
 	// Rewarded by Wrinklers
 	statsString += ' + \'<div class="listing"><b>Cookies Rewarded killing Wrinklers:</b> <div class="price plain">\' + Beautify(MS.wrinklersreward()) + \'</div></div>\'';

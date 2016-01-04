@@ -462,9 +462,15 @@ MS.maxElderFrenzy = function()
 	return moni;
 }
 
+MS.myfunc = function()
+{
+	console.log('hello!!!')
+}
+
 if(!statsdone)
 {
 	// Replace strings in original Statistics menu
+	//eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('when out of focus)</label><br>\'+', 'when out of focus)</label><br>\'+\'<div class="listing"><a class="option" \'+Game.clickStr+\'="myfunc();">Real Perfect Idling</a><label>Simulate the game untilt the last Save)</label></div>\' + '))
 	
 	// cookies in bank with wrinklers
 	eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('<b>Cookies in bank :</b> <div class="price plain">\'+Game.tinyCookie()+Beautify(Game.cookies)+\'</div></div>\'','<b>Cookies in bank (with wrinklers) :</b> <div class="price plain">\'+Game.tinyCookie()+Beautify(Game.cookies+MS.wrinklersreward())+\'</div></div>\''));
@@ -521,6 +527,10 @@ if(!statsdone)
 	statsString += ' + \'<div class="listing"><b>Chocolate egg reward for buildings:</b> <div class="price plain">\' + Beautify(MS.chocolateEggSellReward()) + \'</div></div>\'';
 	statsString += ' + \'<div class="listing"><b>Chocolate egg reward for buildings + bank:</b> <div class="price plain">\' + Beautify(MS.chocolateEggMaxReward()) + \'</div></div>\'';
 	
+	// Textfield
+	//statsString += ' + \'<div class="listing"><div class="mdl-textfield">Real Perfect Idling</div><label>Simulate the game untilt the last Save)</label></div>\'';
+	//statsString += ' + \'<div class="textfield">text</div>\'';
+	//statsString += ' + \'<input type="text"  \'/>';
 	
 	// add blank line
 	//statsString += ' + \'<br>\'';

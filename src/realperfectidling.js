@@ -503,7 +503,9 @@ RPI.framesToString = function(time)
 if (!idleDone)
 {
 	// how to add button:
-	//eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('when out of focus)</label></div>\'+', 'when out of focus)</label></div>\'+\'<div class="listing"><a class="option" \'+Game.clickStr+\'="myfunc();">Real Perfect Idling</a><label>Simulate the game untilt the last Save)</label></div>\' + '))
+	// eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('when out of focus)</label></div>\'+', 'when out of focus)</label></div>\'+\'<div class="listing"><a class="option" \'+Game.clickStr+\'="myfunc();">Real Perfect Idling</a><label>Simulate the game untilt the last Save)</label></div>\' + '))
+	// in beta 1.9 (ein zusätzliches Leerzeichen erscheint fälschlicherweise vor dem Button)
+	// eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('when out of focus)</label><br>\'+', 'when out of focus)</label><br>\'+\'<div class="listing"><a class="option" \'+Game.clickStr+\'="myfunc();">Real Perfect Idling</a><label>Simulate the game untilt the last Save)</label></div>\' + '))
 	
 	var secondsAfk = (new Date().getTime()-Game.lastDate)/1000 - (Game.T-MS.importSaveT)/Game.fps;
 	//var secondsAfk = 50*60; 					// for debug

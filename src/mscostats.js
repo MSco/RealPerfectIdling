@@ -1,7 +1,7 @@
 /* ================================================
     MSco Cookie Stats - A Cookie Clicker plugin
 
-    Version: 0.9.11.1
+    Version: 0.9.11.2
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -469,14 +469,13 @@ MS.maxElderFrenzy = function()
 
 MS.neededCookiesForHC = function(HC)
 {
-	if (HC == null || isNaN(HC) || HC.length==0)
-		return 0;
-	else
-	{
+	var hcsToAdd = 0;
+	
+	if (!(HC == null || isNaN(HC) || HC.length==0))
 		var hcsToAdd = parseInt(HC);
-		var hcsOverallNeeded = Game.heavenlyChips + Game.heavenlyChipsSpent + hcsToAdd;
-		return Math.pow(hcsOverallNeeded,3)*Math.pow(10,12);
-	}
+		
+	var hcsOverallNeeded = Game.heavenlyChips + Game.heavenlyChipsSpent + hcsToAdd;
+	return Math.pow(hcsOverallNeeded,3)*Math.pow(10,12);
 }
 
 MS.priceForBuildings = function(building, amount)
@@ -565,12 +564,18 @@ if(!statsdone)
 	// add blank line
 	statsString += ' + \'<br>\'';
 
-	if (Game.version < 1.9)
-	{
 	// HCs earned
 	statsString += ' + \'<div class="listing"><b>HCs earned this game:</b> \' + Beautify(MS.hcThisGame()) + \' (\' + Beautify(MS.hcFactor()) + \'% of current HC) </div>\'';
 	statsString += ' + \'<div class="listing"><b>HCs earned all time:</b> \' + Beautify(MS.hcAllTime()) + \'</div>\'';
+	// HCs to add -> cookies needed
+	if(Game.version >= 1.9)
+	{
+		//statsString += ' + \'<div class="listing"><b>HCs you want to add:</b> <textarea id="tfHC" style="width:10%;height:11px;">\' + (thisInput=(l("tfHC")==null ? \'0\' : l("tfHC").value)) + \'</textarea> <b>Cookies (all time) needed:</b> <div class="price plain">\' + Beautify(MS.neededCookiesForHC(thisInput)) + \'</div></div>\'';
+		statsString += ' + \'<div class="listing"><b>HCs you want to add (this game):</b> <input type=number id="tfHC" autofocus=true min=0 max=99999999 style="width:8%;" value=\' + (thisInput=(l("tfHC")==null ? \'0\' : l("tfHC").value)) + \'></input> <b>Cookies (all time) needed:</b> <div class="price plain">\' + Beautify(MS.neededCookiesForHC(thisInput)) + \'</div></div>\'';
 	}
+	
+	// add blank line
+	statsString += ' + \'<br>\'';
 	
 	// Chocolate Egg reward
 	statsString += ' + \'<div class="listing"><b>Chocolate egg reward for buildings:</b> <div class="price plain">\' + Beautify(MS.chocolateEggSellReward()) + \'</div></div>\'';
@@ -578,13 +583,6 @@ if(!statsdone)
 	
 	if(Game.version >= 1.9)
 	{
-		// add blank line
-		statsString += ' + \'<br>\'';
-		
-		// Textfield
-		//statsString += ' + \'<div class="listing"><b>HCs you want to add:</b> <textarea id="tfHC" style="width:10%;height:11px;">\' + (thisInput=(l("tfHC")==null ? \'0\' : l("tfHC").value)) + \'</textarea> <b>Cookies (all time) needed:</b> <div class="price plain">\' + Beautify(MS.neededCookiesForHC(thisInput)) + \'</div></div>\'';
-		statsString += ' + \'<div class="listing"><b>HCs you want to add (this game):</b> <input type=number id="tfHC" autofocus=true min=0 max=99999999 style="width:8%;" value=\' + (thisInput=(l("tfHC")==null ? \'0\' : l("tfHC").value)) + \'></input> <b>Cookies (all time) needed:</b> <div class="price plain">\' + Beautify(MS.neededCookiesForHC(thisInput)) + \'</div></div>\'';
-		
 		// Price for next Dragon Level
 		statsString += ' + \'<div class="listing"><b>Price for next Dragon Level:</b> <div class="price plain">\' + Beautify(MS.priceForNextDragonLevel()) + \'</div></div>\'';
 	}

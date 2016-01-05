@@ -471,7 +471,6 @@ MS.neededCookiesForHC = function(HC)
 		return 0;
 	else
 	{
-		
 		var hcsToAdd = parseInt(HC);
 		var hcsOverallNeeded = Game.heavenlyChips + Game.heavenlyChipsSpent + hcsToAdd;
 		return Math.pow(hcsOverallNeeded,3)*Math.pow(10,12);

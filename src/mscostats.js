@@ -477,6 +477,19 @@ MS.neededCookiesForHC = function(HC)
 	}
 }
 
+MS.priceForNextDragonLevel = function()
+{
+	if (Game.dragonLevel <= 4)
+	{
+		return 1000000 * Math.pow(2, Game.dragonLevel);
+	}
+	else if(Game.dragonLevel <= 18)
+	{
+		var building = Game.ObjectsById(Game.dragonLevel-5);
+		var lowestSacrificeId = Math.max(building.amount-100, 0);
+	}
+}
+
 if(!statsdone)
 {
 	// Replace strings in original Statistics menu

@@ -1,7 +1,7 @@
 /* ================================================
     MSco Cookie Stats - A Cookie Clicker plugin
 
-    Version: 0.9.10.8
+    Version: 0.9.11.0
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -26,9 +26,12 @@
 	- Show Heavenly Chips you would earn additionally after resetting this game (including sucked cookies and chocolate egg)
 	- Calculate Base Cost per Income (BCI) for each building and show their efficiencies corresponding 
           the best BCI
+        - Show how much cookies you have to generate (all time) to add a specified number of HCs (specified via number input)
 
     Version History:
 
+    0.9.11:
+    	- Added number input for HCs you want to generate this run
     0.9.10:
     	- Removed HC stuff
     	- Added Dragon Lucky Bank
@@ -464,10 +467,15 @@ MS.maxElderFrenzy = function()
 
 MS.neededCookiesForHC = function(HC)
 {
-	if (HC == null)
-		return 7;
+	if (HC == null || isNaN(HC) || HC.length==0)
+		return 0;
 	else
-		return HC.value;
+	{
+		
+		var hcsToAdd = parseInt(HC);
+		var hcsOverallNeeded = Game.heavenlyChips + Game.heavenlyChipsSpent + hcsToAdd;
+		return Math.pow(hcsOverallNeeded,3)*Math.pow(10,12);
+	}
 }
 
 if(!statsdone)
@@ -530,9 +538,15 @@ if(!statsdone)
 	statsString += ' + \'<div class="listing"><b>Chocolate egg reward for buildings:</b> <div class="price plain">\' + Beautify(MS.chocolateEggSellReward()) + \'</div></div>\'';
 	statsString += ' + \'<div class="listing"><b>Chocolate egg reward for buildings + bank:</b> <div class="price plain">\' + Beautify(MS.chocolateEggMaxReward()) + \'</div></div>\'';
 	
-	// Textfield
-	//statsString += ' + \'<div class="block"><textarea id="textareaPrompt" style="width:10%;height:10px;"></textarea></div>\' + MS.myfunc(l(\\\'textareaPrompt\\\').value)';
-	//statsString += ' + \'<div class="listing"><b>HCs you want to add:</b> <textarea id="textareaPrompt" style="width:10%;height:10px;"></textarea> \' + MS.neededCookiesForHC(l("textareaPrompt")) + \'</div>\'';
+	if(Game.version >= 1.9)
+	{
+		// add blank line
+		statsString += ' + \'<br>\'';
+		
+		// Textfield
+		//statsString += ' + \'<div class="listing"><b>HCs you want to add:</b> <textarea id="tfHC" style="width:10%;height:11px;">\' + (thisInput=(l("tfHC")==null ? \'0\' : l("tfHC").value)) + \'</textarea> <b>Cookies (all time) needed:</b> <div class="price plain">\' + Beautify(MS.neededCookiesForHC(thisInput)) + \'</div></div>\'';
+		statsString += ' + \'<div class="listing"><b>HCs you want to add (this game):</b> <input type=number id="tfHC" autofocus=true min=0 max=99999999 style="width:8%;" value=\' + (thisInput=(l("tfHC")==null ? \'0\' : l("tfHC").value)) + \'></input> <b>Cookies (all time) needed:</b> <div class="price plain">\' + Beautify(MS.neededCookiesForHC(thisInput)) + \'</div></div>\'';
+	}
 	
 	// add blank line
 	//statsString += ' + \'<br>\'';

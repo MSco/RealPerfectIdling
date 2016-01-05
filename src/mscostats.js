@@ -504,21 +504,12 @@ MS.priceForNextDragonLevel = function()
 		var building = Game.ObjectsById[Game.dragonLevel-5];
 		return MS.priceForBuildings(building, 100);
 	}
-	else if(Game.dragonLevel == 19)
+	else if(Game.dragonLevel == 19 || Game.dragonLevel == 20)
 	{
 		var price = 0;
 		for (var i in Game.ObjectsById)
 		{
-			price += MS.priceForBuildings(Game.ObjectsById[i], 10);
-		}
-		return price;
-	}
-	else if(Game.dragonLevel == 20)
-	{
-		var price = 0;
-		for (var i in Game.ObjectsById)
-		{
-			price += MS.priceForBuildings(Game.ObjectsById[i], 200);
+			price += MS.priceForBuildings(Game.ObjectsById[i], (Game.dragonLevel == 19 ? 10 : 200));
 		}
 		return price;
 	}

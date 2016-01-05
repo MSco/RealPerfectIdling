@@ -462,9 +462,12 @@ MS.maxElderFrenzy = function()
 	return moni;
 }
 
-MS.myfunc = function()
+MS.neededCookiesForHC = function(HC)
 {
-	console.log('hello!!!')
+	if (HC == null)
+		return 7;
+	else
+		return HC.value;
 }
 
 if(!statsdone)
@@ -528,9 +531,8 @@ if(!statsdone)
 	statsString += ' + \'<div class="listing"><b>Chocolate egg reward for buildings + bank:</b> <div class="price plain">\' + Beautify(MS.chocolateEggMaxReward()) + \'</div></div>\'';
 	
 	// Textfield
-	//statsString += ' + \'<div class="listing"><div class="mdl-textfield">Real Perfect Idling</div><label>Simulate the game untilt the last Save)</label></div>\'';
-	//statsString += ' + \'<div class="textfield">text</div>\'';
-	//statsString += ' + \'<input type="text"  \'/>';
+	//statsString += ' + \'<div class="block"><textarea id="textareaPrompt" style="width:10%;height:10px;"></textarea></div>\' + MS.myfunc(l(\\\'textareaPrompt\\\').value)';
+	//statsString += ' + \'<div class="listing"><b>HCs you want to add:</b> <textarea id="textareaPrompt" style="width:10%;height:10px;"></textarea> \' + MS.neededCookiesForHC(l("textareaPrompt")) + \'</div>\'';
 	
 	// add blank line
 	//statsString += ' + \'<br>\'';

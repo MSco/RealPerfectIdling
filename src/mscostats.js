@@ -1,7 +1,7 @@
 /* ================================================
     MSco Cookie Stats - A Cookie Clicker plugin
 
-    Version: 0.9.11.0
+    Version: 0.9.11.1
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -27,11 +27,13 @@
 	- Calculate Base Cost per Income (BCI) for each building and show their efficiencies corresponding 
           the best BCI
         - Show how much cookies you have to generate (all time) to add a specified number of HCs (specified via number input)
+        - Show Price for next Dragon Level
 
     Version History:
 
     0.9.11:
     	- Added number input for HCs you want to generate this run
+    	- Show Price for next Dragon Level
     0.9.10:
     	- Removed HC stuff
     	- Added Dragon Lucky Bank
@@ -477,6 +479,20 @@ MS.neededCookiesForHC = function(HC)
 	}
 }
 
+MS.priceForBuildings = function(building, amount)
+{
+	var lowAmount = Math.max(building.amount-amount-building.free, 0);
+	var highAmount = Math.max(Math.max(building.amount-amount,0)+amount-building.free, 0);
+	var price = building.basePrice*(Math.pow(Game.priceIncrease, highAmount)-Math.pow(Game.priceIncrease, lowAmount))/0.15;
+	if (Game.Has('Season savings')) price*=0.99;
+	if (Game.Has('Santa\'s dominion')) price*=0.99;
+	if (Game.Has('Faberge egg')) price*=0.99;
+	if (Game.Has('Divine discount')) price*=0.99;
+	if (Game.hasAura('Fierce Hoarder')) price*=0.98;
+	
+	return Math.ceil(price);
+}
+
 MS.priceForNextDragonLevel = function()
 {
 	if (Game.dragonLevel <= 4)
@@ -485,10 +501,28 @@ MS.priceForNextDragonLevel = function()
 	}
 	else if(Game.dragonLevel <= 18)
 	{
-		var building = Game.ObjectsById(Game.dragonLevel-5);
-		var lowAmount = Math.max(building.amount-100, 0);
-		return building.basePrice*(Math.pow(1.15, lowAmount+100)-Math.pow(1.15, lowAmount));
+		var building = Game.ObjectsById[Game.dragonLevel-5];
+		return MS.priceForBuildings(building, 100);
 	}
+	else if(Game.dragonLevel == 19)
+	{
+		var price = 0;
+		for (var i in Game.ObjectsById)
+		{
+			price += MS.priceForBuildings(Game.ObjectsById[i], 10);
+		}
+		return price;
+	}
+	else if(Game.dragonLevel == 20)
+	{
+		var price = 0;
+		for (var i in Game.ObjectsById)
+		{
+			price += MS.priceForBuildings(Game.ObjectsById[i], 200);
+		}
+		return price;
+	}
+	else return 0;
 }
 
 if(!statsdone)
@@ -559,6 +593,9 @@ if(!statsdone)
 		// Textfield
 		//statsString += ' + \'<div class="listing"><b>HCs you want to add:</b> <textarea id="tfHC" style="width:10%;height:11px;">\' + (thisInput=(l("tfHC")==null ? \'0\' : l("tfHC").value)) + \'</textarea> <b>Cookies (all time) needed:</b> <div class="price plain">\' + Beautify(MS.neededCookiesForHC(thisInput)) + \'</div></div>\'';
 		statsString += ' + \'<div class="listing"><b>HCs you want to add (this game):</b> <input type=number id="tfHC" autofocus=true min=0 max=99999999 style="width:8%;" value=\' + (thisInput=(l("tfHC")==null ? \'0\' : l("tfHC").value)) + \'></input> <b>Cookies (all time) needed:</b> <div class="price plain">\' + Beautify(MS.neededCookiesForHC(thisInput)) + \'</div></div>\'';
+		
+		// Price for next Dragon Level
+		statsString += ' + \'<div class="listing"><b>Price for next Dragon Level:</b> <div class="price plain">\' + Beautify(MS.priceForNextDragonLevel()) + \'</div></div>\'';
 	}
 	
 	// add blank line

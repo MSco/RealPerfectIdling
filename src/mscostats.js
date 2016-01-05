@@ -486,7 +486,8 @@ MS.priceForNextDragonLevel = function()
 	else if(Game.dragonLevel <= 18)
 	{
 		var building = Game.ObjectsById(Game.dragonLevel-5);
-		var lowestSacrificeId = Math.max(building.amount-100, 0);
+		var lowAmount = Math.max(building.amount-100, 0);
+		return building.basePrice*(Math.pow(1.15, lowAmount+100)-Math.pow(1.15, lowAmount));
 	}
 }
 

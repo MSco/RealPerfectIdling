@@ -580,7 +580,7 @@ if(!statsdone)
 	
 	// start lucky table
 	statsString += ' + \'<table style="width: 90%;border-collapse: separate;">\'';
-	statsString += ' + \'<tr class="title" style="font-size:15px;"><td lass="listing">Lucky</td> <td>Bank</td> <td>Time Left</td> <td>Max. Cookies to spend/td></tr>\'';
+	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing">Lucky</td> <td>Bank</td> <td>Time Left</td> <td>Max. Cookies to spend/td></tr>\'';
 	// Lucky (plain, frenzy, dragon) bank + max to spend
 	statsString += ' + \'<tr><td class="listing"><b>Plain:</b></td> <td class="price plain">\' + Beautify(MS.bankLucky()) + \'</td><td style="font-weight:bold;">\' + ((time=MS.timeLeftForBank(MS.bankLucky())) > 0 ? Beautify(time) : "done") + \'</b></td> <td class="price plain"> \' + Beautify(MS.cookiesToSpend(1)) + \'</td></tr>\'';
 	statsString += ' + \'<tr><td class="listing"><b>Frenzy:</b></td> <td class="price plain">\' + Beautify(MS.bankFrenzyLucky()) + \'</td><td style="font-weight:bold;">\' + ((time=MS.timeLeftForBank(MS.bankFrenzyLucky())) > 0 ? Game.sayTime(time) : "done") + \' </td> <td class="price plain"> \' + Beautify(MS.cookiesToSpend(7)) + \'</td></tr>\'';
@@ -601,7 +601,7 @@ if(!statsdone)
 	
 	// start Reindeer table
 	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing">Reindeers</td> <td>Plain</td> <td>Frenzy</td> <td>Dragon Harvest</td> <td>Elder Frenzy</td></tr>\'';
-	statsString += ' + \'<tr><td class="listing"><b>Reindeer reward:</b> </td><td class="price plain">\' + Beautify(MS.reindeerReward(1)) + \'</td><td class="price plain">\' + Beautify(MS.reindeerReward(7)) + \'</td><td class="price plain">\' + Beautify(MS.reindeerReward(15)) + \'</td><td> <div class="price plain">\' + Beautify(MS.reindeerReward(666)) + \'</td></tr>\'';
+	statsString += ' + \'<tr><td class="listing"><b>Reindeer reward:</b> </td><td class="price plain">\' + Beautify(MS.reindeerReward(1)) + \'</td><td class="price plain">\' + Beautify(MS.reindeerReward(7)) + \'</td><td class="price plain">\' + Beautify(MS.reindeerReward(15)) + \'</td><td class="price plain">\' + Beautify(MS.reindeerReward(666)) + \'</td></tr>\'';
 	
 	// add blank row
 	statsString += ' + \'<tr style="height: 20px;"><td colspan="4"></td></tr>\'';

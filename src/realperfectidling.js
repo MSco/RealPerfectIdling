@@ -1,5 +1,5 @@
 /* ================================================
-    MSco Perfect Idling With Wrinklers - A Cookie Clicker plugin
+    MSco's Real Perfect Idling - A Cookie Clicker plugin
 
     Version: 0.9.9.0
     GitHub:  https://github.com/MSco/RealPerfectIdling

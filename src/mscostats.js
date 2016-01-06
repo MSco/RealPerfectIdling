@@ -560,19 +560,34 @@ if(!statsdone)
 	// Title
 	statsString = '\'<br><div class="subsection">\' + \'<div class="title">MSco Stats</div>\'';
 	
-	// start MS.BeautifyShort
-	statsString += ' + \'<table>\'';
+	//statsString += ' + \'<div class="listing"><span class="title" style="font-size:20px;"> Bank Stats </span></div>\'';
 	
+	// add blank line
+	statsString += ' + \'<br>\'';
+	
+	// start lucky table
+	statsString += ' + \'<table style="width: 650px;border-collapse: separate;">\'';
+	statsString += ' + \'<tr><td><div class="listing"><span class="title" style="font-size:15px;">Lucky State</span></div></td> <td><div class="listing"><span class="title" style="font-size:15px;">Bank</span></div></td> <td><div class="listing"><span class="title" style="font-size:15px;">Time</span></div></td> <td><div class="listing"><span class="title" style="font-size:15px;">Max Cookies to spend</span></div></td></tr>\'';
 	// Lucky (plain, frenzy, dragon) bank + max to spend
-	statsString += ' + \'<tr><td><div class="listing"><b>Bank for Lucky:</b> <div class="price plain">\' + MS.BeautifyShort(MS.bankLucky()) + \'</div> (\' + ((time=MS.timeLeftForBank(MS.bankLucky())) > 0 ? Game.sayTime(time) : "done") + \')</td> <td><b>Max cookies to spend: </b><div class="price plain">\' + MS.BeautifyShort(MS.cookiesToSpend(1)) + \'</div></td></div></tr>\'';
-	statsString += ' + \'<tr><td><div class="listing"><b>Bank for Frenzy Lucky:</b> <div class="price plain">\' + MS.BeautifyShort(MS.bankFrenzyLucky()) + \'</div> (\' + ((time=MS.timeLeftForBank(MS.bankFrenzyLucky())) > 0 ? Game.sayTime(time) : "done") + \') </td> <td><b>Max cookies to spend: </b><div class="price plain">\' + MS.BeautifyShort(MS.cookiesToSpend(7)) + \'</div></td></div></tr>\'';
-	statsString += ' + \'<tr><td><div class="listing"><b>Bank for Dragon Lucky:</b> <div class="price plain">\' + MS.BeautifyShort(MS.bankDragonLucky()) + \'</div> (\' + ((time=MS.timeLeftForBank(MS.bankDragonLucky())) > 0 ? Game.sayTime(time) : "done") + \') </td> <td><b>Max cookies to spend: </b><div class="price plain">\' + MS.BeautifyShort(MS.cookiesToSpend(15)) + \'</div></td></div></tr>\'';
-	// Cookie Chain bank
-	statsString += ' + \'<tr><td><div class="listing"><b>Bank for Cookie Chain:</b> <div class="price plain">\' + MS.BeautifyShort(MS.bankCookieChain(1)) + \'</div> </td> <td><b>Frenzy: </b><div class="price plain">\' + MS.BeautifyShort(MS.bankCookieChain(7)) + \'</div> </td><td> <b> Dragon: </b><div class="price plain">\' + MS.BeautifyShort(MS.bankCookieChain(15)) + \'</div></td></div></tr>\'';
-	// Cookie Chain reward
-	statsString += ' + \'<tr><td><div class="listing"><b>Max. Cookie Chain Reward:</b> <div class="price plain">\' + MS.BeautifyShort(MS.maxCookieChainReward(1)[0]) + \'</div> </td> <td><b>F: </b><div class="price plain">\' + MS.BeautifyShort(MS.maxCookieChainReward(7)[0]) + \'</div> </td><td> <b> D: </b><div class="price plain">\' + MS.BeautifyShort(MS.maxCookieChainReward(15)[0]) + \'</div></td></div></tr>\'';
-	// Next Cps for Cookie Chain
-	statsString += ' + \'<tr><td><div class="listing"><b>Next CPS for Cookie Chain:</b> <div class="price plain">\' + MS.BeautifyShort(MS.maxCookieChainReward(1)[1]) + \'</div> </td> <td><b>F: </b><div class="price plain">\' + MS.BeautifyShort(MS.maxCookieChainReward(7)[1]) + \'</div> </td><td> <b> D: </b><div class="price plain">\' + MS.BeautifyShort(MS.maxCookieChainReward(15)[1]) + \'</div></td></div></tr>\'';
+	statsString += ' + \'<tr><td><div class="listing"><b>Plain:</b></td><td> <div class="price plain">\' + MS.BeautifyShort(MS.bankLucky()) + \'</div> </td><td>\' + ((time=MS.timeLeftForBank(MS.bankLucky())) > 0 ? Game.sayTime(time) : "done") + \'</td> <td><div class="price plain"> \' + MS.BeautifyShort(MS.cookiesToSpend(1)) + \'</div></td></div></tr>\'';
+	statsString += ' + \'<tr><td><div class="listing"><b>Frenzy:</b></td><td> <div class="price plain">\' + MS.BeautifyShort(MS.bankFrenzyLucky()) + \'</div> </td><td>\' + ((time=MS.timeLeftForBank(MS.bankFrenzyLucky())) > 0 ? Game.sayTime(time) : "done") + \' </td> <td><div class="price plain"> \' + MS.BeautifyShort(MS.cookiesToSpend(7)) + \'</div></td></div></tr>\'';
+	statsString += ' + \'<tr><td><div class="listing"><b>Dragon Harvest:</b></td><td> <div class="price plain">\' + MS.BeautifyShort(MS.bankDragonLucky()) + \'</div> </td><td>\' + ((time=MS.timeLeftForBank(MS.bankDragonLucky())) > 0 ? Game.sayTime(time) : "done") + \' </td> <td><div class="price plain"> \' + MS.BeautifyShort(MS.cookiesToSpend(15)) + \'</div></td></div></tr>\'';
+	// end lucky table
+	//statsString += ' + \'<table>\'';
+	
+	// add blank row
+	statsString += ' + \'<tr style="line-height:50px"></td> </tr>\'';
+	
+	// start cookie chain table
+	//statsString += ' + \'<table style="width: 600px;border-collapse: separate;">\'';
+	statsString += ' + \'<tr><td><div class="listing"><span class="title" style="font-size:15px;">Cookie Chain State</span></div></td> <td><div class="listing"><span class="title" style="font-size:15px;">Bank</span></div></td> <td><div class="listing"><span class="title" style="font-size:15px;">Reward</span></div></td> <td><div class="listing"><span class="title" style="font-size:15px;">Next CPS</span></div></td></tr>\'';
+	// Cookie Chain stats
+	statsString += ' + \'<tr><td><div class="listing"><b>Plain:</b> </td><td> <div class="price plain">\' + MS.BeautifyShort(MS.bankCookieChain(1)) + \'</div> </td> <td><div class="price plain">\' + MS.BeautifyShort(MS.maxCookieChainReward(1)[0]) + \'</div> </td><td> <div class="price plain">\' + MS.BeautifyShort(MS.maxCookieChainReward(1)[1]) + \'</div></td></div></tr>\'';
+	statsString += ' + \'<tr><td><div class="listing"><b>Frenzy:</b> </td><td> <div class="price plain">\' + MS.BeautifyShort(MS.bankCookieChain(7)) + \'</div> </td> <td><div class="price plain">\' + MS.BeautifyShort(MS.maxCookieChainReward(7)[0]) + \'</div> </td><td> <div class="price plain">\' + MS.BeautifyShort(MS.maxCookieChainReward(7)[1]) + \'</div></td></div></tr>\'';
+	statsString += ' + \'<tr><td><div class="listing"><b>Dragon Harvest:</b> </td><td> <div class="price plain">\' + MS.BeautifyShort(MS.bankCookieChain(15)) + \'</div> </td> <td><div class="price plain">\' + MS.BeautifyShort(MS.maxCookieChainReward(15)[0]) + \'</div> </td><td> <div class="price plain">\' + MS.BeautifyShort(MS.maxCookieChainReward(15)[1]) + \'</div></td></div></tr>\'';
+	// end cookie chain table
+	statsString += ' + \'<table>\'';
+
 
 	// Eldeer reward
 	statsString += ' + \'<tr><td><div class="listing"><b>Reindeer:</b> <div class="price plain">\' + MS.BeautifyShort(MS.reindeerReward(1)) + \'</div> </td> <td><b>F: </b><div class="price plain">\' + MS.BeautifyShort(MS.reindeerReward(7)) + \'</div> </td><td> <b> D: </b><div class="price plain">\' + MS.BeautifyShort(MS.reindeerReward(15)) + \'</div> <b>Elder: </b><div class="price plain">\' + MS.BeautifyShort(MS.reindeerReward(666)) + \'</div></td></div></tr>\'';

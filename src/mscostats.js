@@ -580,21 +580,21 @@ if(!statsdone)
 	
 	// start lucky table
 	statsString += ' + \'<table style="width: 90%;border-collapse: separate;">\'';
-	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Lucky</td> <td>Bank</td> <td>Time Left</td> <td>Max. Cookies to spend</td></tr>\'';
+	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Lucky</td> <td>Plain</td> <td>Frenzy</td> <td>Dragon Harvest</td></tr>\'';
 	// Lucky (plain, frenzy, dragon) bank + max to spend
-	statsString += ' + \'<tr><td class="listing"><b>Plain:</b></td> <td class="price plain">\' + Beautify(MS.bankLucky()) + \'</td><td style="font-weight:bold;">\' + ((time=MS.timeLeftForBank(MS.bankLucky())) > 0 ? Beautify(time) : "done") + \'</b></td> <td class="price plain"> \' + Beautify(MS.cookiesToSpend(1)) + \'</td></tr>\'';
-	statsString += ' + \'<tr><td class="listing"><b>Frenzy:</b></td> <td class="price plain">\' + Beautify(MS.bankFrenzyLucky()) + \'</td><td style="font-weight:bold;">\' + ((time=MS.timeLeftForBank(MS.bankFrenzyLucky())) > 0 ? Game.sayTime(time) : "done") + \' </td> <td class="price plain"> \' + Beautify(MS.cookiesToSpend(7)) + \'</td></tr>\'';
-	statsString += ' + \'<tr><td class="listing"><b>Dragon Harvest:</b></td> <td class="price plain">\' + Beautify(MS.bankDragonLucky()) + \'</td><td style="font-weight:bold;">\' + ((time=MS.timeLeftForBank(MS.bankDragonLucky())) > 0 ? Game.sayTime(time) : "done") + \' </td> <td class="price plain"> \' + Beautify(MS.cookiesToSpend(15)) + \'</td></tr>\'';
+	statsString += ' + \'<tr><td class="listing"><b>Bank:</b></td> <td class="price plain">\' + Beautify(MS.bankLucky()) + \'</td><td> <div class="price plain">\' + Beautify(MS.bankFrenzyLucky()) + \' </div></td> <td><div class="price plain"> \' + Beautify(MS.bankDragonLucky()) + \'</div></td></tr>\'';
+	statsString += ' + \'<tr><td class="listing"><b>Max Cookies to spend:</b></td> <td><div class="price plain"> \' + Beautify(MS.cookiesToSpend(1)) + \'</div></td> <td><div class="price plain"> \' + Beautify(MS.cookiesToSpend(7)) + \'</div></td> <td><div class="price plain"> \' + Beautify(MS.cookiesToSpend(15)) + \'</div></td></tr>\'';
+	statsString += ' + \'<tr><td class="listing"><b>Time Left:</b></td> <td style="font-weight:bold;">\' + ((time=MS.timeLeftForBank(MS.bankLucky())) > 0 ? Game.sayTime(time) : "done") + \' </td><td style="font-weight:bold;">\' + ((time=MS.timeLeftForBank(MS.bankFrenzyLucky())) > 0 ? Game.sayTime(time) : "done") + \' </td> <td style="font-weight:bold;">\' + ((time=MS.timeLeftForBank(MS.bankDragonLucky())) > 0 ? Game.sayTime(time) : "done") + \' </td></tr>\'';
 	
 	// add blank row
 	statsString += ' + \'<tr style="height: 20px;"><td colspan="4"></td></tr>\'';
 	
 	// start cookie chain table
-	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Cookie Chains</td> <td>Bank</td> <td>Reward</td> <td>Next CPS</td></tr>\'';
+	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Cookie Chains</td> <td>Plain</td> <td>Frenzy</td> <td>Dragon Harvest</td></tr>\'';
 	// Cookie Chain stats
-	statsString += ' + \'<tr><td class="listing"><b>Plain:</b></td> <td><div class="price plain">\' + Beautify(MS.bankCookieChain(1)) + \'</div></td> <td><div class="price plain">\' + Beautify(MS.maxCookieChainReward(1)[0]) + \'</div></td><td><div class="price plain">\' + Beautify(MS.maxCookieChainReward(1)[1]) + \'</div></td></tr>\'';
-	statsString += ' + \'<tr><td class="listing"><b>Frenzy:</b></td> <td><div class="price plain">\' + Beautify(MS.bankCookieChain(7)) + \'</div></td> <td><div class="price plain">\' + Beautify(MS.maxCookieChainReward(7)[0]) + \'</div></td><td><div class="price plain">\' + Beautify(MS.maxCookieChainReward(7)[1]) + \'</div></td></tr>\'';
-	statsString += ' + \'<tr><td class="listing"><b>Dragon Harvest:</b></td> <td><div class="price plain">\' + Beautify(MS.bankCookieChain(15)) + \'</div></td> <td><div class="price plain">\' + Beautify(MS.maxCookieChainReward(15)[0]) + \'</div></td><td><div class="price plain">\' + Beautify(MS.maxCookieChainReward(15)[1]) + \'</div></td></tr>\'';
+	statsString += ' + \'<tr><td class="listing"><b>Bank:</b></td> <td><div class="price plain">\' + Beautify(MS.bankCookieChain(1)) + \'</div></td> <td><div class="price plain">\' + Beautify(MS.bankCookieChain(7)) + \'</div></td> <td><div class="price plain">\' + Beautify(MS.bankCookieChain(15)) + \'</div></td></tr>\'';
+	statsString += ' + \'<tr><td class="listing"><b>Max. Reward:</b></td> <td><div class="price plain">\' + Beautify(MS.maxCookieChainReward(1)[0]) + \'</div></td> <td><div class="price plain">\' + Beautify(MS.maxCookieChainReward(7)[0]) + \'</div></td> <td><div class="price plain">\' + Beautify(MS.maxCookieChainReward(15)[0]) + \'</div></td></tr>\'';
+	statsString += ' + \'<tr><td class="listing"><b>Next CPS:</b></td> <td><div class="price plain">\' + Beautify(MS.maxCookieChainReward(1)[1]) + \'</div></td> <td><div class="price plain">\' + Beautify(MS.maxCookieChainReward(7)[1]) + \'</div></td> <td><div class="price plain">\' + Beautify(MS.maxCookieChainReward(15)[1]) + \'</div></td></tr>\'';
 	
 	// add blank row
 	statsString += ' + \'<tr style="height: 20px;"><td colspan="4"></td></tr>\'';

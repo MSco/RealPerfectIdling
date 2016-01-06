@@ -494,9 +494,22 @@ MS.neededCookiesForHC = function(HC)
 	
 	if (!(HC == null || isNaN(HC) || HC.length==0))
 		var hcsToAdd = parseInt(HC);
-		
-	var hcsOverallNeeded = Game.heavenlyChips + Game.heavenlyChipsSpent + hcsToAdd;
-	return Math.pow(hcsOverallNeeded,3)*Math.pow(10,12);
+	
+	/*	
+	if (Game.version >= 1.9)
+	{
+		var hcsOverallNeeded = Game.heavenlyChips + Game.heavenlyChipsSpent + hcsToAdd;
+		return Math.pow(hcsOverallNeeded,3)*Math.pow(10,12);
+	}
+	else
+	{
+		var hcsOverallNeeded = Game.HowMuchPrestige(Game.cookiesReset) + hcsToAdd;
+		return Game.HowManyCookiesReset(hcsOverallNeeded);
+	}
+	*/
+	
+	var hcsOverallNeeded = Game.HowMuchPrestige(Game.cookiesReset) + hcsToAdd;
+	return Game.HowManyCookiesReset(hcsOverallNeeded);
 }
 
 MS.priceForBuildings = function(building, amount)
@@ -590,6 +603,13 @@ if(!statsdone)
 	statsString += ' + \'<tr><td><div class="listing"><span class="title" style="font-size:15px;">Reindeers</span></div></td> <td><div class="listing"><span class="title" style="font-size:15px;">Plain</span></div></td> <td><div class="listing"><span class="title" style="font-size:15px;">Frenzy</span></div></td> <td><div class="listing"><span class="title" style="font-size:15px;">Dragon Harvest</span></div></td> <td><div class="listing"><span class="title" style="font-size:15px;">Elder Frenzy</span></div></td></tr>\'';
 	statsString += ' + \'<tr><td><div class="listing"><b>Reindeer reward:</b> </td><td> <div class="price plain">\' + Beautify(MS.reindeerReward(1)) + \'</div> </td><td> <div class="price plain">\' + Beautify(MS.reindeerReward(7)) + \'</div> </td><td> <div class="price plain">\' + Beautify(MS.reindeerReward(15)) + \'</div> </td><td> <div class="price plain">\' + Beautify(MS.reindeerReward(666)) + \'</div></td></div></tr>\'';
 	
+	// add blank row
+	statsString += ' + \'<tr style="height: 20px;"><td colspan="4"></td></tr>\'';
+	
+	// start Heavenly Chips table
+	statsString += ' + \'<tr><td><div class="listing"><span class="title" style="font-size:15px;">Heavenly Chips</span></div></td> <td><div class="listing"><span class="title" style="font-size:15px;">Earned (this game)</span></div></td> <td><div class="listing"><span class="title" style="font-size:15px;">Earned (all time)</span></div></td> <td><div class="listing"><span class="title" style="font-size:15px;">Wanted (this game)</span></div></td> <td><div class="listing"><span class="title" style="font-size:15px;">Cookies needed (all time)</span></div></td></tr>\'';
+	statsString += ' + \'<tr><td><div class="listing"><b>Heavenly Chips:</b> </td><td> <b>\' + Beautify(MS.hcThisGame()) + \' (\' + Beautify(MS.hcFactor()) + \'% of current) </b> </td><td> <b>\' + Beautify(MS.hcAllTime()) + \'</b> </td><td> <input type=number id="tfHC" autofocus=true min=0 max=99999999 style="width:75%;" value=\' + (thisInput=(l("tfHC")==null ? \'0\' : l("tfHC").value)) + \'></input> </td><td> <div class="price plain">\' + Beautify(MS.neededCookiesForHC(thisInput)) + \'</div></td></div></tr>\'';
+	
 	// end table
 	statsString += ' + \'<table>\'';
 	
@@ -609,13 +629,13 @@ if(!statsdone)
 	statsString += ' + \'<br>\'';
 
 	// HCs earned
-	statsString += ' + \'<tr><td><div class="listing"><b>HCs earned this game:</b> \' + Beautify(MS.hcThisGame()) + \' (\' + Beautify(MS.hcFactor()) + \'% of current HC) </div>\'';
-	statsString += ' + \'<tr><td><div class="listing"><b>HCs earned all time:</b> \' + Beautify(MS.hcAllTime()) + \'</div>\'';
+	//statsString += ' + \'<tr><td><div class="listing"><b>HCs earned this game:</b> \' + Beautify(MS.hcThisGame()) + \' (\' + Beautify(MS.hcFactor()) + \'% of current HC) </div>\'';
+	//statsString += ' + \'<tr><td><div class="listing"><b>HCs earned all time:</b> \' + Beautify(MS.hcAllTime()) + \'</div>\'';
 	// HCs to add -> cookies needed
 	if(Game.version >= 1.9)
 	{
 		//statsString += ' + \'<tr><td><div class="listing"><b>HCs you want to add:</b> <textarea id="tfHC" style="width:10%;height:11px;">\' + (thisInput=(l("tfHC")==null ? \'0\' : l("tfHC").value)) + \'</textarea> <b>Cookies (all time) needed:</b> <div class="price plain">\' + Beautify(MS.neededCookiesForHC(thisInput)) + \'</div></td></div></tr>\'';
-		statsString += ' + \'<tr><td><div class="listing"><b>HCs you want to add (this game):</b> <input type=number id="tfHC" autofocus=true min=0 max=99999999 style="width:8%;" value=\' + (thisInput=(l("tfHC")==null ? \'0\' : l("tfHC").value)) + \'></input> </td> <td><b>Cookies (all time) needed:</b> <div class="price plain">\' + Beautify(MS.neededCookiesForHC(thisInput)) + \'</div></td></div></tr>\'';
+		//statsString += ' + \'<tr><td><div class="listing"><b>HCs you want to add (this game):</b> <input type=number id="tfHC" autofocus=true min=0 max=99999999 style="width:8%;" value=\' + (thisInput=(l("tfHC")==null ? \'0\' : l("tfHC").value)) + \'></input> </td> <td><b>Cookies (all time) needed:</b> <div class="price plain">\' + Beautify(MS.neededCookiesForHC(thisInput)) + \'</div></td></div></tr>\'';
 	}
 	
 	// add blank line

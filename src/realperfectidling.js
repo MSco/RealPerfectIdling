@@ -1,7 +1,7 @@
 /* ================================================
     MSco Perfect Idling With Wrinklers - A Cookie Clicker plugin
 
-    Version: 0.9.8.8
+    Version: 0.9.9.0
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -19,13 +19,18 @@
 	- Wrinklers suck cookies (also increasing Game.cookiesSucked)
 	- CPS is reduced while wrinklers suck the big cookie
 	- Elder wrath increases
-	- Season timer decreases
-	- Research timer decreases
+	- Season timer decreases (Removed for 1.9, because its done ingame)
+	- Research timer decreases (Removed for 1.9, because its done ingame)
 	- Cookies are earned from global cps (concerning the reduced cps because of wrinklers)
 	- Add missed Golden Cookies
 	- Recalculate CPS regarding 'Century egg' from easter update. CPS of last save and current CPS are averaged for this.
+	- Undo offline cookie calculations of Twin Gates of Transcendence
+	- TotalCookies are added to each building (for Achievements like: Make x cookies just from y)
 
     Version History:
+    0.9.9:
+    	- Undo offline cookie calculations of Twin Gates of Transcendence
+    	- TotalCookies are added to each building
     0.9.8:
     	- Beta 1.9 support
     0.9.7:
@@ -458,48 +463,6 @@ RPI.undoOfflineEarned = function()
 	}
 }
 
-RPI.framesToString = function(time)
-{      
-        var str='';
-        time=Math.floor(time);
- 
-        var seconds = Math.floor(time/Game.fps);
-        var minutes = Math.floor(time/(Game.fps*60));
-        var hours = Math.floor(time/(Game.fps*60*60));
-        var days = Math.floor(time/(Game.fps*60*60*24));
- 
-        var numStrings = 0;
- 
-        if (days > 0 && numStrings<2)
-        {
-                str += days + ' days';
-                numStrings++;
-                if (numStrings<2)
-                        str += ', ';
-        }
-        if (hours > 0 && numStrings<2)
-        {
-                str += (hours-days*24) + ' hours';
-                numStrings++;
-                if (numStrings<2)
-                        str += ', ';
-        }
-        if (minutes > 0 && numStrings<2)
-        {
-                str += (minutes-hours*60) + ' minutes';
-                numStrings++;
-                if (numStrings<2)
-                        str += ', ';
-        }
-        if (seconds > 0 && numStrings<2)
-        {
-                str += Math.floor(time/Game.fps) - minutes*60 + ' seconds';
-                numStrings++;
-        }
- 
-        return str;
-}
-
 if (!idleDone)
 {
 	// how to add button:
@@ -510,7 +473,7 @@ if (!idleDone)
 	var secondsAfk = (new Date().getTime()-Game.lastDate)/1000 - (Game.T-MS.importSaveT)/Game.fps;
 	//var secondsAfk = 50*60; 					// for debug
 	var framesAfk = (new Date().getTime()-Game.lastDate)/1000*Game.fps - (Game.T-MS.importSaveT);
-	console.log('AFK: ' + RPI.framesToString(framesAfk));
+	console.log('AFK: ' + Game.sayTime(framesAfk));
 
 	// initialize global values
 	var cookiesEarned = 0;
@@ -553,8 +516,8 @@ if (!idleDone)
 	}
 	else 
 	{
-		Game.Notify('AFK: ' + RPI.framesToString(framesAfk),'Wrinklers sucked <b>'+Beautify(cookiesSucked)+'</b> cookies while you were away.',[19,8],6);
-		Game.Notify('AFK: ' + RPI.framesToString(framesAfk),'You earned <b>'+Beautify(cookiesEarned)+'</b> cookie'+(Math.floor(cookiesEarned)==1?'':'s')+' while you were away.',[10,0],6);
+		Game.Notify('AFK: ' + Game.sayTime(framesAfk),'Wrinklers sucked <b>'+Beautify(cookiesSucked)+'</b> cookies while you were away.',[19,8],6);
+		Game.Notify('AFK: ' + Game.sayTime(framesAfk),'You earned <b>'+Beautify(cookiesEarned)+'</b> cookie'+(Math.floor(cookiesEarned)==1?'':'s')+' while you were away.',[10,0],6);
 	}
 
 	console.log('Cookies earned while afk: ' + Beautify(cookiesEarned));

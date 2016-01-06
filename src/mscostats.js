@@ -139,6 +139,17 @@ Game.EarnHeavenlyChips=function(cookiesForfeited)
 	else return MS.EarnHeavenlyChipsOriginal();
 }
 
+MS.BeautifyShort=function(value,floats)
+{
+	var negative=(value<0);
+	var decimal='';
+	if (value<1000000 && floats>0 && Math.floor(value.toFixed(floats))!=value.toFixed(floats)) decimal='.'+(value.toFixed(floats).toString()).split('.')[1];
+	value=Math.floor(Math.abs(value));
+	var formatter=numberFormatters[2];
+	var output=formatter(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g,',');
+	return negative?'-'+output:output+decimal;
+}
+
 MS.readPledgeFromStr=function(str)
 {
 	var oldstr=str.split('|');

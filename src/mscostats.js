@@ -579,12 +579,12 @@ if(!statsdone)
 	statsString += ' + \'<br>\'';
 	
 	// start lucky table
-	statsString += ' + \'<table style="width: 90%;border-collapse: separate;">\'';
-	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Lucky</td> <td>Bank</td> <td>Time Left</td> <td>Max. Cookies to spend</td></tr>\'';
+	statsString += ' + \'<table style="width: 100%;border-collapse: separate;">\'';
+	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Lucky</td> <td>Bank</td> <td>Max. Cookies to spend</td> <td>Time Left</td></tr>\'';
 	// Lucky (plain, frenzy, dragon) bank + max to spend
-	statsString += ' + \'<tr><td class="listing"><b>Plain:</b></td> <td class="price plain">\' + Beautify(MS.bankLucky()) + \'</td><td style="font-weight:bold;">\' + ((time=MS.timeLeftForBank(MS.bankLucky())) > 0 ? Beautify(time) : "done") + \'</b></td> <td class="price plain"> \' + Beautify(MS.cookiesToSpend(1)) + \'</td></tr>\'';
-	statsString += ' + \'<tr><td class="listing"><b>Frenzy:</b></td> <td class="price plain">\' + Beautify(MS.bankFrenzyLucky()) + \'</td><td style="font-weight:bold;">\' + ((time=MS.timeLeftForBank(MS.bankFrenzyLucky())) > 0 ? Game.sayTime(time) : "done") + \' </td> <td class="price plain"> \' + Beautify(MS.cookiesToSpend(7)) + \'</td></tr>\'';
-	statsString += ' + \'<tr><td class="listing"><b>Dragon Harvest:</b></td> <td class="price plain">\' + Beautify(MS.bankDragonLucky()) + \'</td><td style="font-weight:bold;">\' + ((time=MS.timeLeftForBank(MS.bankDragonLucky())) > 0 ? Game.sayTime(time) : "done") + \' </td> <td class="price plain"> \' + Beautify(MS.cookiesToSpend(15)) + \'</td></tr>\'';
+	statsString += ' + \'<tr><td class="listing"><b>Plain:</b></td> <td><div class="price plain">\' + Beautify(MS.bankLucky()) + \'</div></td> <td><div class="price plain"> \' + Beautify(MS.cookiesToSpend(1)) + \'</div></td> <td style="font-weight:bold;">\' + ((time=MS.timeLeftForBank(MS.bankLucky())) > 0 ? Game.sayTime(time) : "done") + \'</b></td></tr>\'';
+	statsString += ' + \'<tr><td class="listing"><b>Frenzy:</b></td> <td><div class="price plain">\' + Beautify(MS.bankFrenzyLucky()) + \'</div></td> <td><div class="price plain"> \' + Beautify(MS.cookiesToSpend(7)) + \'</div></td> <td style="font-weight:bold;">\' + ((time=MS.timeLeftForBank(MS.bankFrenzyLucky())) > 0 ? Game.sayTime(time) : "done") + \' </td></tr>\'';
+	statsString += ' + \'<tr><td class="listing"><b>Dragon Harvest:</b></td> <td><div class="price plain">\' + Beautify(MS.bankDragonLucky()) + \'</div></td> <td><div class="price plain"> \' + Beautify(MS.cookiesToSpend(15)) + \'</div></td> <td style="font-weight:bold;">\' + ((time=MS.timeLeftForBank(MS.bankDragonLucky())) > 0 ? Game.sayTime(time) : "done") + \' </td></tr>\'';
 	
 	// add blank row
 	statsString += ' + \'<tr style="height: 20px;"><td colspan="4"></td></tr>\'';
@@ -610,37 +610,19 @@ if(!statsdone)
 	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Heavenly Chips</td> <td>Earned (this game)</td> <td>Earned (all time)</td> <td>Wanted (this game)</td> <td>Cookies needed (all time)</td></tr>\'';
 	statsString += ' + \'<tr><td class="listing"><b>Heavenly Chips:</b> </td><td> <b>\' + Beautify(MS.hcThisGame()) + \' (\' + Beautify(MS.hcFactor()) + \'%) </b> </td><td> <b>\' + Beautify(MS.hcAllTime()) + \'</b> </td><td> <input type=number id="tfHC" autofocus=true min=0 max=99999999 style="width:75%;" value=\' + (thisInput=(l("tfHC")==null ? \'0\' : l("tfHC").value)) + \'></input> </td><td class="price plain">\' + Beautify(MS.neededCookiesForHC(thisInput)) + \'</td></tr>\'';
 	
+	// add blank row
+	statsString += ' + \'<tr style="height: 20px;"><td colspan="4"></td></tr>\'';
+	
+	// start wrinkler table
+	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Wrinklers</td> <td>Full Elder Frenzy</td> <td>Killing Wrinklers</td> <td>Real Cookies per Hour</td></tr>\'';
+	statsString += ' + \'<tr><td class="listing"><b>Wrinkler Rewards:</b></td> <td><div class="price plain">\' + Beautify(MS.maxElderFrenzy()) + \'</div></td> <td><div class="price plain">\' + Beautify(MS.wrinklersreward()) + \'</div></td> <td><div class="price plain">\' + Beautify(MS.wrinklersCPH()) + \'</div></td></tr>\'';
+	
 	// end table
 	statsString += ' + \'<table>\'';
-	
-	// add blank line
-	statsString += ' + \'<br>\'';
-	
-	// Elder frenzy reward
-	statsString += ' + \'<tr><td><div class="listing"><b>Max. Elder Frenzy Reward (\'+MS.getWrinklersMax()+\' wrinklers):</b> <div class="price plain">\' + Beautify(MS.maxElderFrenzy()) + \'</div></td></div></tr>\'';
-
-	// Rewarded by Wrinklers
-	statsString += ' + \'<tr><td><div class="listing"><b>Cookies Rewarded killing Wrinklers:</b> <div class="price plain">\' + Beautify(MS.wrinklersreward()) + \'</div></td></div></tr>\'';
-
-	// Real Withered Cookies Per Hour
-	statsString += ' + \'<tr><td><div class="listing"><b>Real Withered Cookies per Hour:</b> <div class="price plain">\' + Beautify(MS.wrinklersCPH()) + \'</div></td></div></tr>\'';
 
 	// add blank line
 	statsString += ' + \'<br>\'';
 
-	// HCs earned
-	//statsString += ' + \'<tr><td><div class="listing"><b>HCs earned this game:</b> \' + Beautify(MS.hcThisGame()) + \' (\' + Beautify(MS.hcFactor()) + \'% of current HC) </div>\'';
-	//statsString += ' + \'<tr><td><div class="listing"><b>HCs earned all time:</b> \' + Beautify(MS.hcAllTime()) + \'</div>\'';
-	// HCs to add -> cookies needed
-	if(Game.version >= 1.9)
-	{
-		//statsString += ' + \'<tr><td><div class="listing"><b>HCs you want to add:</b> <textarea id="tfHC" style="width:10%;height:11px;">\' + (thisInput=(l("tfHC")==null ? \'0\' : l("tfHC").value)) + \'</textarea> <b>Cookies (all time) needed:</b> <div class="price plain">\' + Beautify(MS.neededCookiesForHC(thisInput)) + \'</div></td></div></tr>\'';
-		//statsString += ' + \'<tr><td><div class="listing"><b>HCs you want to add (this game):</b> <input type=number id="tfHC" autofocus=true min=0 max=99999999 style="width:8%;" value=\' + (thisInput=(l("tfHC")==null ? \'0\' : l("tfHC").value)) + \'></input> </td> <td><b>Cookies (all time) needed:</b> <div class="price plain">\' + Beautify(MS.neededCookiesForHC(thisInput)) + \'</div></td></div></tr>\'';
-	}
-	
-	// add blank line
-	statsString += ' + \'<br>\'';
-	
 	// Chocolate Egg reward
 	statsString += ' + \'<tr><td><div class="listing"><b>Chocolate egg reward for buildings:</b> <div class="price plain">\' + Beautify(MS.chocolateEggSellReward()) + \'</div></td></div></tr>\'';
 	statsString += ' + \'<tr><td><div class="listing"><b>Chocolate egg reward for buildings + bank:</b> <div class="price plain">\' + Beautify(MS.chocolateEggMaxReward()) + \'</div></td></div></tr>\'';

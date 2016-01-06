@@ -1,7 +1,7 @@
 /* ================================================
     MSco Cookie Stats - A Cookie Clicker plugin
 
-    Version: 0.9.11.2
+    Version: 0.9.11.3
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -17,7 +17,8 @@
     		- multiplier not affected by frenzy multipliers
     		- Cookies in bank includes wrinkler reward
     		- Cookies in baked (this game and all time) includes wrinkler reward and chocolate egg reward
-	- Show Cookies in bank needed to get the maximum reward of a Frenzy-Lucky-Combo of Golden Cookies
+	- Show Cookies in bank needed to get the maximum reward of Lucky, a Frenzy-Lucky-Combo or a Dragon-Lucky-Combo 
+	  (incl. time left to get it)
 	- Show maximum of cookies you can spend without getting under the Frenz-Lucky optimized bank
 	- Show reward for eldeers and elder frenzy with wrinklers
 	- Show Cookies you would earn after popping all wrinklers
@@ -34,6 +35,7 @@
     0.9.11:
     	- Added number input for HCs you want to generate this run
     	- Show Price for next Dragon Level
+    	- Show the time left to get bank for Lucky-Combos
     0.9.10:
     	- Removed HC stuff
     	- Added Dragon Lucky Bank
@@ -394,6 +396,14 @@ MS.goldenMult = function()
 	return mult;
 }
 
+MS.timeLeftForBank = function(newbank)
+{
+	var cookiesLeft = Math.max(0, newbank - Game.cookies);
+	var secondsLeft = cookiesLeft/(Game.cookiesPs/MS.frenzyMod());
+	
+	return secondsLeft * Game.fps;
+}
+
 MS.bankLucky = function()
 {
 	return Game.cookiesPs / MS.frenzyMod() * 1200 * 10 * MS.goldenMult() + 13;
@@ -540,9 +550,9 @@ if(!statsdone)
 	statsString = '\'<br><div class="subsection">\' + \'<div class="title">MSco Stats</div>\'';
 
 	// Lucky (plain, frenzy, dragon) bank + max to spend
-	statsString += ' + \'<div class="listing"><b>Bank for Lucky:</b> <div class="price plain">\' + Beautify(MS.bankLucky()) + \'</div> <b>Max cookies to spend: </b><div class="price plain">\' + Beautify(MS.cookiesToSpend(1)) + \'</div></div>\'';
-	statsString += ' + \'<div class="listing"><b>Bank for Frenzy Lucky:</b> <div class="price plain">\' + Beautify(MS.bankFrenzyLucky()) + \'</div> <b>Max cookies to spend: </b><div class="price plain">\' + Beautify(MS.cookiesToSpend(7)) + \'</div></div>\'';
-	statsString += ' + \'<div class="listing"><b>Bank for Dragon Lucky:</b> <div class="price plain">\' + Beautify(MS.bankDragonLucky()) + \'</div> <b>Max cookies to spend: </b><div class="price plain">\' + Beautify(MS.cookiesToSpend(15)) + \'</div></div>\'';
+	statsString += ' + \'<div class="listing"><b>Bank for Lucky:</b> <div class="price plain">\' + Beautify(MS.bankLucky()) + \'</div> (\' + ((time=MS.timeLeftForBank(MS.bankLucky())) > 0 ? Game.sayTime(time) : "done") + \') <b>Max cookies to spend: </b><div class="price plain">\' + Beautify(MS.cookiesToSpend(1)) + \'</div></div>\'';
+	statsString += ' + \'<div class="listing"><b>Bank for Frenzy Lucky:</b> <div class="price plain">\' + Beautify(MS.bankFrenzyLucky()) + \'</div> (\' + ((time=MS.timeLeftForBank(MS.bankFrenzyLucky())) > 0 ? Game.sayTime(time) : "done") + \') <b>Max cookies to spend: </b><div class="price plain">\' + Beautify(MS.cookiesToSpend(7)) + \'</div></div>\'';
+	statsString += ' + \'<div class="listing"><b>Bank for Dragon Lucky:</b> <div class="price plain">\' + Beautify(MS.bankDragonLucky()) + \'</div> (\' + ((time=MS.timeLeftForBank(MS.bankDragonLucky())) > 0 ? Game.sayTime(time) : "done") + \') <b>Max cookies to spend: </b><div class="price plain">\' + Beautify(MS.cookiesToSpend(15)) + \'</div></div>\'';
 	// Cookie Chain bank
 	statsString += ' + \'<div class="listing"><b>Bank for Cookie Chain:</b> <div class="price plain">\' + Beautify(MS.bankCookieChain(1)) + \'</div> <b>Frenzy: </b><div class="price plain">\' + Beautify(MS.bankCookieChain(7)) + \'</div> <b>Dragon: </b><div class="price plain">\' + Beautify(MS.bankCookieChain(15)) + \'</div></div>\'';
 	// Cookie Chain reward

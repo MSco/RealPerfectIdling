@@ -566,7 +566,9 @@ if(!statsdone)
 	var thisGameEarned = '<b>Cookies baked incl. wrinkl. and ch. egg (this game) :</b> <div class="price plain">\' + Game.tinyCookie() + Beautify(MS.maxEarnedThisGame()) + \'</div></div>\'';
 	eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('<b>Cookies baked (this game) :</b> <div class="price plain">\'+Game.tinyCookie()+Beautify(Game.cookiesEarned)+\'</div></div>\'', thisGameEarned));	
 	var allTimeEarned = '<b>Cookies baked incl. wrinkl. and ch. egg (all time):</b> <div class="price plain">\' + Game.tinyCookie() + Beautify(MS.maxEarnedAllTime()) + \'</div></div>\'';
-	eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('<b>Cookies baked (all time) :</b> <div class="price plain">\'+Game.tinyCookie()+Beautify(Game.cookiesEarned+Game.cookiesReset)+\'</div></div>\'', allTimeEarned));	
+	var chEggForBuildings = ' + \'<div class="listing"><b>Chocolate egg reward for buildings:</b> <div class="price plain">\' + Game.tinyCookie() + Beautify(MS.chocolateEggSellReward()) + \'</div></div>\'';
+	var chEggForBuildingsAndBank = ' + \'<div class="listing"><b>Chocolate egg reward for buildings + bank:</b> <div class="price plain">\' + Game.tinyCookie() + Beautify(MS.chocolateEggMaxReward()) + \'</div></div>\'';
+	eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('<b>Cookies baked (all time) :</b> <div class="price plain">\'+Game.tinyCookie()+Beautify(Game.cookiesEarned+Game.cookiesReset)+\'</div></div>\'', allTimeEarned+chEggForBuildings+chEggForBuildingsAndBank));	
 
 	var statsString;
 
@@ -622,19 +624,6 @@ if(!statsdone)
 
 	// add blank line
 	statsString += ' + \'<br>\'';
-
-	// Chocolate Egg reward
-	statsString += ' + \'<tr><td><div class="listing"><b>Chocolate egg reward for buildings:</b> <div class="price plain">\' + Beautify(MS.chocolateEggSellReward()) + \'</div></td></div></tr>\'';
-	statsString += ' + \'<tr><td><div class="listing"><b>Chocolate egg reward for buildings + bank:</b> <div class="price plain">\' + Beautify(MS.chocolateEggMaxReward()) + \'</div></td></div></tr>\'';
-	
-	if(Game.version >= 1.9)
-	{
-		// Price for next Dragon Level
-		statsString += ' + \'<tr><td><div class="listing"><b>Price for next Dragon Level:</b> <div class="price plain">\' + Beautify(MS.priceForNextDragonLevel()) + \'</div></td></div></tr>\'';
-	}
-	
-	// end table
-	statsString += ' + \'<table>\'';
 	
 	// add blank line
 	//statsString += ' + \'<br>\'';
@@ -655,6 +644,19 @@ if(!statsdone)
 	
 	// Paste string into the menu
 	eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('Game.version+\'</div>\'+', 'Game.version+\'</div>\' + ' + statsString + ' + '));
-
+	
+	if(Game.version >= 1.9)
+	{
+		// Fix issue: Special Menu were not unlocked only for dragons
+		var searchBug='((researchStr!=\'\' || wrathStr!=\'\'|| pledgeStr!=\'\'|| santaStr!=\'\'|| Game.season!=\'\')?';
+		var replaceBug='((researchStr!=\'\' || wrathStr!=\'\'|| pledgeStr!=\'\'|| santaStr!=\'\'|| Game.season!=\'\'|| dragonStr!=\'\')?';
+		eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace(searchBug, replaceBug));
+		
+		// Price for next Dragon Level
+		var search='\'<div class="listing"><b>Dragon training';
+		var replaceDragon='\'<div class="listing"><b>Price for next Dragon Level:</b> <div class="price plain">\' + Beautify(MS.priceForNextDragonLevel()) + \'</div></div>\' + ';
+		eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace(search, replaceDragon + search));
+	}
+	
 	var statsdone = 1;
 }

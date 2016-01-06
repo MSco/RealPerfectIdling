@@ -601,12 +601,18 @@ if(!statsdone)
 	//statsString += ' + \'<br>\'';
 	statsString += ' + \'<br><div class="subsection">\' + \'<div class="title">Efficiency</div>\'';
 
+	// start table
+    	statsString += ' + \'<table>\'';
+
 	// BCI
-	statsString += ' + \'<div class="listing"><b>' + Game.ObjectsById[0].name + ':</b> \' + Beautify(efc=MS.calcEfficiency(Game.ObjectsById[0], (best_bci=MS.calcBestBCI()))) + \'%\'+ \'</div>\'';
+	statsString += ' + \'<tr><td><div class="listing"><b>' + Game.ObjectsById[0].name + ':</td><td></b> \' + Beautify(efc=MS.calcEfficiency(Game.ObjectsById[0], (best_bci=MS.calcBestBCI()))) + \'%\'+ \'</div></tr></td>\'';
 	for (var i=1;i<Game.ObjectsN;i++)	
 	{
-		statsString += ' + \'<div class="listing"><b>' + Game.ObjectsById[i].name + ':</b> \' + Beautify(MS.calcEfficiency(Game.ObjectsById['+i+'], best_bci)) + \'%\'+ \'</div>\'';
+		statsString += ' + \'<tr><td><div class="listing"><b>' + Game.ObjectsById[i].name + ':</td><td></b> \' + Beautify(MS.calcEfficiency(Game.ObjectsById['+i+'], best_bci)) + \'%\'+ \'</div></tr></td>\'';
 	}
+	
+	// end table
+    	statsString += ' + \'<table>\'';
 	
 	// Paste string into the menu
 	eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('Game.version+\'</div>\'+', 'Game.version+\'</div>\' + ' + statsString + ' + '));

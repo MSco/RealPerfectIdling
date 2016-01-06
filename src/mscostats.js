@@ -593,6 +593,9 @@ if(!statsdone)
 	// end table
 	statsString += ' + \'<table>\'';
 	
+	// add blank line
+	statsString += ' + \'<br>\'';
+	
 	// Elder frenzy reward
 	statsString += ' + \'<tr><td><div class="listing"><b>Max. Elder Frenzy Reward (\'+MS.getWrinklersMax()+\' wrinklers):</b> <div class="price plain">\' + Beautify(MS.maxElderFrenzy()) + \'</div></td></div></tr>\'';
 

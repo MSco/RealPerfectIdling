@@ -634,6 +634,7 @@ if(!statsdone)
 
 	// BCI
 	statsString += ' + \'<tr><td><div class="listing"><b>' + Game.ObjectsById[0].name + ':</td><td></b> \' + Beautify(efc=MS.calcEfficiency(Game.ObjectsById[0], (best_bci=MS.calcBestBCI()))) + \'%\'+ \'</div></tr></td>\'';
+	eval('Game.ObjectsById[0].rebuild='+Game.ObjectsById[0].rebuild.toString().replace(searchStr, replaceStr));
 	for (var i=1;i<Game.ObjectsN;i++)	
 	{
 		statsString += ' + \'<tr><td><div class="listing"><b>' + Game.ObjectsById[i].name + ':</td><td></b> \' + Beautify(MS.calcEfficiency(Game.ObjectsById['+i+'], best_bci)) + \'%\'+ \'</div></tr></td>\'';
@@ -659,12 +660,19 @@ if(!statsdone)
 	}
 	
 	// Change Color of Building names:
+	/*
 	var searchStr = 'if (name.length>16) displayName=\'<span style="font-size:75%;">\'+name+\'</span>\';';
 	var replaceStr = 'var styleStr="color:red;"; if (name.length>16) styleStr+="font-size:75%;"; displayName=\'<span style="\'+styleStr+\'">\'+name+\'</span>\';';
+	*/
+	var searchStr = 'l(\'productPrice\'+me.id).innerHTML=Beautify(Math.round(me.price));';
+	var replaceStr = 'var best_bci=MS.calcBestBCI(); var efc=MS.calcEfficiency(me, best_bci); if(efc>=100)var bcolor="green";else if(efc>50)var bcolor="yellow";else var bcolor="red"; l(\'productPrice\'+me.id).innerHTML=\'<span style="color:\'+bcolor+\'">\' + Beautify(Math.round(me.price)) + \'(\'+Beautify(efc)+\'%)</span>\';';
 	for (var i in Game.ObjectsById)
 	{
 		eval('Game.ObjectsById['+i+'].rebuild='+Game.ObjectsById[i].rebuild.toString().replace(searchStr, replaceStr));
 	}
+	searchStr = 'l(\'menu\').innerHTML=str;';
+	var addStr = 'for (var i in Game.ObjectsById) Game.ObjectsById[i].rebuild();';
+	eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace(searchStr, searchStr + addStr));
 	
 	var statsdone = 1;
 }

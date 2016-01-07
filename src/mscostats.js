@@ -413,7 +413,7 @@ MS.goldenMult = function()
 MS.timeLeftForBank = function(newbank)
 {
 	var cookiesLeft = Math.max(0, newbank - Game.cookies);
-	var secondsLeft = cookiesLeft/(Game.cookiesPs/MS.frenzyMod());
+	var secondsLeft = cookiesLeft/(Game.cookiesPs*(1-Game.cpsSucked)/MS.frenzyMod());
 	
 	return secondsLeft * Game.fps;
 }

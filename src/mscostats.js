@@ -684,6 +684,14 @@ if(!statsdone)
 	//eval('Game.BuildStore='+Game.BuildStore.toString().replace('class="price" ', ''));
 	//Game.BuildStore();
 	
+	var str='';
+	for (var i in Game.Objects)
+	{
+		var me=Game.Objects[i];
+		str+='<div class="product toggledOff" '+Game.getDynamicTooltip('Game.ObjectsById['+me.id+'].tooltip','store')+' id="product'+me.id+'"><div class="icon off" id="productIconOff'+me.id+'" style=""></div><div class="icon" id="productIcon'+me.id+'" style=""></div><div class="content"><div class="lockedTitle">???</div><div class="title" id="productName'+me.id+'"></div><span id="productPrice'+me.id+'"></span><div class="title owned" id="productOwned'+me.id+'"></div></div><div class="buySell"><div style="left:0px;" id="buttonBuy10-'+me.id+'">Buy 10</div><div style="left:100px;" id="buttonSell-'+me.id+'">Sell 1</div><div style="left:200px;" id="buttonSellAll-'+me.id+'">Sell all</div></div></div>';	
+	}
+	l('products').innerHTML=str;
+	
 	//l('products').innerHTML = l('products').innerHTML.replace(new RegExp('class="price" id="productPrice', 'g'), 'id="productPrice');
 	
 	//searchStr = 'l(\'menu\').innerHTML=str;';

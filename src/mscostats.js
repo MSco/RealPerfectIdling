@@ -1,7 +1,7 @@
 /* ================================================
     MSco Cookie Stats - A Cookie Clicker plugin
 
-    Version: 0.9.11.4
+    Version: 0.9.12
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -32,6 +32,9 @@
 
     Version History:
 
+    0.9.12:
+    	- Building price colors depend on efficiency
+    	- MSco Stats Menu is shown in a table
     0.9.11:
     	- Added number input for HCs you want to generate this run
     	- Show Price for next Dragon Level
@@ -624,23 +627,21 @@ if(!statsdone)
 
 	// add blank line
 	statsString += ' + \'<br>\'';
-	
-	// add blank line
-	//statsString += ' + \'<br>\'';
-	statsString += ' + \'<br><div class="subsection">\' + \'<div class="title">Efficiency</div>\'';
 
+/*
+	// BCI	
+	statsString += ' + \'<br><div class="subsection">\' + \'<div class="title">Efficiency</div>\'';
 	// start table
     	statsString += ' + \'<table>\'';
-
-	// BCI
 	statsString += ' + \'<tr><td><div class="listing"><b>' + Game.ObjectsById[0].name + ':</td><td></b> \' + Beautify(efc=MS.calcEfficiency(Game.ObjectsById[0], (best_bci=MS.calcBestBCI()))) + \'%\'+ \'</div></tr></td>\'';
+	//eval('Game.ObjectsById[0].rebuild='+Game.ObjectsById[0].rebuild.toString().replace(searchStr, replaceStr));
 	for (var i=1;i<Game.ObjectsN;i++)	
 	{
 		statsString += ' + \'<tr><td><div class="listing"><b>' + Game.ObjectsById[i].name + ':</td><td></b> \' + Beautify(MS.calcEfficiency(Game.ObjectsById['+i+'], best_bci)) + \'%\'+ \'</div></tr></td>\'';
 	}
-	
 	// end table
     	statsString += ' + \'<table>\'';
+    	*/
 	
 	// Paste string into the menu
 	eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('Game.version+\'</div>\'+', 'Game.version+\'</div>\' + ' + statsString + ' + '));
@@ -657,6 +658,48 @@ if(!statsdone)
 		var replaceDragon='\'<div class="listing"><b>Price for next Dragon Level:</b> <div class="price plain">\' + Beautify(MS.priceForNextDragonLevel()) + \'</div></div>\' + ';
 		eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace(search, replaceDragon + search));
 	}
+	
+	// Change Color of Building names:
+	var searchStr = 'l(\'productPrice\'+me.id).innerHTML=Beautify(Math.round(me.price));';
+	var replaceStr = 'var best_bci=MS.calcBestBCI(); var efc=MS.calcEfficiency(me, best_bci); if(efc>=100)var bcolor="#66ff4e";else if(efc>50)var bcolor="yellow";else var bcolor="red"; l(\'productPrice\'+me.id).innerHTML=Beautify(Math.round(me.price)) + \' (\'+Beautify(efc)+\'%)\'; l(\'productPrice\'+me.id).style.color=bcolor;'; //l(\'productPrice\'+me.id).style.color=bcolor;
+	var thisRefresh = 'this.refresh();}';
+	var allRefresh = 'for (var i in Game.ObjectsById) Game.ObjectsById[i].refresh();}';
+	for (var i in Game.ObjectsById)
+	{
+		eval('Game.ObjectsById['+i+'].rebuild='+Game.ObjectsById[i].rebuild.toString().replace(searchStr, replaceStr));
+		eval('Game.ObjectsById['+i+'].buy='+Game.ObjectsById[i].buy.toString().replace(thisRefresh, allRefresh));
+		eval('Game.ObjectsById['+i+'].sell='+Game.ObjectsById[i].sell.toString().replace(thisRefresh, allRefresh));
+		if (Game.version >= 1.9)
+			eval('Game.ObjectsById['+i+'].sacrifice='+Game.ObjectsById[i].sacrifice.toString().replace(thisRefresh, allRefresh));
+		Game.ObjectsById[i].refresh();
+	}
+	var searchActivateUpgrade = 'this.activateFunction();';
+	var replaceActivateUpgrade = '{ this.activateFunction(); } for (var i in Game.ObjectsById) Game.ObjectsById[i].refresh(); ';
+	for (var i in Game.UpgradesById)
+	{
+		eval('Game.UpgradesById['+i+'].buy='+Game.UpgradesById[i].buy.toString().replace(searchActivateUpgrade, replaceActivateUpgrade));
+	}
+	//eval('Game.BuildStore='+Game.BuildStore.toString().replace('class="price" ', ''));
+	//Game.BuildStore();
+	
+	/*
+	var str='';
+	for (var i in Game.Objects)
+	{
+		var me=Game.Objects[i];
+		str+='<div class="product toggledOff" '+Game.getDynamicTooltip('Game.ObjectsById['+me.id+'].tooltip','store')+' id="product'+me.id+'"><div class="icon off" id="productIconOff'+me.id+'" style=""></div><div class="icon" id="productIcon'+me.id+'" style=""></div><div class="content"><div class="lockedTitle">???</div><div class="title" id="productName'+me.id+'"></div><span id="productPrice'+me.id+'"></span><div class="title owned" id="productOwned'+me.id+'"></div></div><div class="buySell"><div style="left:0px;" id="buttonBuy10-'+me.id+'">Buy 10</div><div style="left:100px;" id="buttonSell-'+me.id+'">Sell 1</div><div style="left:200px;" id="buttonSellAll-'+me.id+'">Sell all</div></div></div>';	
+	}
+	l('products').innerHTML=str;
+	*/
+	
+	//l('products').innerHTML = l('products').innerHTML.replace(new RegExp('class="price" id="productPrice', 'g'), 'id="productPrice');
+	//eval('l(\'products\').innerHTML='+l('products').innerHTML.toString().replace('class', 'class'));
+	//l('productPrice0').innerHTML=l('productPrice0').innerHTML.replace('class="price" id="productPrice', 'id="productPrice');
+	//l('products') = l('products');
+	
+	//searchStr = 'l(\'menu\').innerHTML=str;';
+	//var addStr = 'for (var i in Game.ObjectsById) Game.ObjectsById[i].rebuild();';
+	//eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace(searchStr, searchStr + addStr));
 	
 	var statsdone = 1;
 }

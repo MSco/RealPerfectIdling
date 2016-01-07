@@ -649,14 +649,24 @@ if(!statsdone)
 	if(Game.version >= 1.9)
 	{
 		// Fix issue: Special Menu were not unlocked only for dragons
-		var searchBug='((researchStr!=\'\' || wrathStr!=\'\'|| pledgeStr!=\'\'|| santaStr!=\'\'|| Game.season!=\'\')?';
-		var replaceBug='((researchStr!=\'\' || wrathStr!=\'\'|| pledgeStr!=\'\'|| santaStr!=\'\'|| Game.season!=\'\'|| dragonStr!=\'\')?';
+		//var searchBug='\\(\\(researchStr!=\'\' \\|\\| wrathStr!=\'\' \\|\\| pledgeStr!=\'\' \\|\\| santaStr!=\'\' \\|\\| Game.season!=\'\'\\)\\?';
+		//var replaceBug='((researchStr!=\'\' || wrathStr!=\'\'|| pledgeStr!=\'\'|| santaStr!=\'\'|| Game.season!=\'\'|| dragonStr!=\'\')?';
+		/***************** Remove this if Game.version > 1.9 !!!! *****************************/
+		var searchBug=' Game.season!=\'\'';
+		var replaceBug=' Game.season!=\'\'|| dragonStr!=\'\'';
 		eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace(searchBug, replaceBug));
+		/*************************************************************************/
 		
 		// Price for next Dragon Level
 		var search='\'<div class="listing"><b>Dragon training';
 		var replaceDragon='\'<div class="listing"><b>Price for next Dragon Level:</b> <div class="price plain">\' + Beautify(MS.priceForNextDragonLevel()) + \'</div></div>\' + ';
 		eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace(search, replaceDragon + search));
+		
+		/*
+		search = 'l(\'menu\').innerHTML=str;';
+		var replaceTest = search + 'console.log(\'dragonStr: \' + dragonStr);'
+		eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace(search, replaceTest));
+		*/
 	}
 	
 	// Change Color of Building names:

@@ -665,14 +665,23 @@ if(!statsdone)
 	var replaceStr = 'var styleStr="color:red;"; if (name.length>16) styleStr+="font-size:75%;"; displayName=\'<span style="\'+styleStr+\'">\'+name+\'</span>\';';
 	*/
 	var searchStr = 'l(\'productPrice\'+me.id).innerHTML=Beautify(Math.round(me.price));';
-	var replaceStr = 'var best_bci=MS.calcBestBCI(); var efc=MS.calcEfficiency(me, best_bci); if(efc>=100)var bcolor="green";else if(efc>50)var bcolor="yellow";else var bcolor="red"; l(\'productPrice\'+me.id).innerHTML=\'<span style="color:\'+bcolor+\'">\' + Beautify(Math.round(me.price)) + \'(\'+Beautify(efc)+\'%)</span>\';';
+	var replaceStr = 'var best_bci=MS.calcBestBCI(); var efc=MS.calcEfficiency(me, best_bci); if(efc>=100)var bcolor="green";else if(efc>50)var bcolor="yellow";else var bcolor="red"; l(\'productPrice\'+me.id).innerHTML=\'<span style="color:\'+bcolor+\'">\' + Beautify(Math.round(me.price)) + \' (\'+Beautify(efc)+\'%)</span>\';';
+	
+	var searchRefresh = 'this.refresh();}';
+	var replaceRefresh = 'for (var i in Game.ObjectsById) Game.ObjectsById[i].refresh();}';
+	
 	for (var i in Game.ObjectsById)
 	{
 		eval('Game.ObjectsById['+i+'].rebuild='+Game.ObjectsById[i].rebuild.toString().replace(searchStr, replaceStr));
+		eval('Game.ObjectsById['+i+'].buy='+Game.ObjectsById[i].buy.toString().replace(searchRefresh, replaceRefresh));
+		eval('Game.ObjectsById['+i+'].sell='+Game.ObjectsById[i].sell.toString().replace(searchRefresh, replaceRefresh));
+		eval('Game.ObjectsById['+i+'].sacrifice='+Game.ObjectsById[i].sacrifice.toString().replace(searchRefresh, replaceRefresh));
+		Game.ObjectsById[i].refresh();
 	}
-	searchStr = 'l(\'menu\').innerHTML=str;';
-	var addStr = 'for (var i in Game.ObjectsById) Game.ObjectsById[i].rebuild();';
-	eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace(searchStr, searchStr + addStr));
+	
+	//searchStr = 'l(\'menu\').innerHTML=str;';
+	//var addStr = 'for (var i in Game.ObjectsById) Game.ObjectsById[i].rebuild();';
+	//eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace(searchStr, searchStr + addStr));
 	
 	var statsdone = 1;
 }

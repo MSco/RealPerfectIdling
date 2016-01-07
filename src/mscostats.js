@@ -658,5 +658,13 @@ if(!statsdone)
 		eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace(search, replaceDragon + search));
 	}
 	
+	// Change Color of Building names:
+	var searchStr = 'if (name.length>16) displayName=\'<span style="font-size:75%;">\'+name+\'</span>\';';
+	var replaceStr = 'var styleStr="color:red;"; if (name.length>16) styleStr+="font-size:75%;"; displayName=\'<span style="\'+styleStr+\'">\'+name+\'</span>\';';
+	for (var i in Game.ObjectsById)
+	{
+		eval('Game.ObjectsById['+i+'].rebuild='+Game.ObjectsById[i].rebuild.toString().replace(searchStr, replaceStr));
+	}
+	
 	var statsdone = 1;
 }

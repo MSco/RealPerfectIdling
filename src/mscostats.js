@@ -671,7 +671,7 @@ if(!statsdone)
 	
 	// Change Color of Building names:
 	var searchStr = 'l(\'productPrice\'+me.id).innerHTML=Beautify(Math.round(me.price));';
-	var replaceStr = 'var best_bci=MS.calcBestBCI(); var efc=MS.calcEfficiency(me, best_bci); if(efc>=100)var bcolor="#66ff4e";else if(efc>50)var bcolor="yellow";else var bcolor="red"; l(\'productPrice\'+me.id).innerHTML=Beautify(Math.round(me.price)) + \' (\'+Beautify(efc)+\'%)\'; l(\'productPrice\'+me.id).style.color=bcolor;'; //l(\'productPrice\'+me.id).style.color=bcolor;
+	var replaceStr = 'var best_bci=MS.calcBestBCI(); var efc=MS.calcEfficiency(me, best_bci); if(efc>=100)var bcolor="#FF3232";else if(efc>50)var bcolor="yellow";else var bcolor="#FF3232"; l(\'productPrice\'+me.id).innerHTML=Beautify(Math.round(me.price)) + \' (\'+Beautify(efc)+\'%)\'; l(\'productPrice\'+me.id).style.color=bcolor;'; //l(\'productPrice\'+me.id).style.color=bcolor;
 	var thisRefresh = 'this.refresh();}';
 	var allRefresh = 'for (var i in Game.ObjectsById) Game.ObjectsById[i].refresh();}';
 	for (var i in Game.ObjectsById)

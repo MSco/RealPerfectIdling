@@ -660,16 +660,10 @@ if(!statsdone)
 	}
 	
 	// Change Color of Building names:
-	/*
-	var searchStr = 'if (name.length>16) displayName=\'<span style="font-size:75%;">\'+name+\'</span>\';';
-	var replaceStr = 'var styleStr="color:red;"; if (name.length>16) styleStr+="font-size:75%;"; displayName=\'<span style="\'+styleStr+\'">\'+name+\'</span>\';';
-	*/
 	var searchStr = 'l(\'productPrice\'+me.id).innerHTML=Beautify(Math.round(me.price));';
 	var replaceStr = 'var best_bci=MS.calcBestBCI(); var efc=MS.calcEfficiency(me, best_bci); if(efc>=100)var bcolor="green";else if(efc>50)var bcolor="yellow";else var bcolor="red"; l(\'productPrice\'+me.id).innerHTML=\'<span style="color:\'+bcolor+\'">\' + Beautify(Math.round(me.price)) + \' (\'+Beautify(efc)+\'%)</span>\';';
-	
 	var searchRefresh = 'this.refresh();}';
 	var replaceRefresh = 'for (var i in Game.ObjectsById) Game.ObjectsById[i].refresh();}';
-	
 	for (var i in Game.ObjectsById)
 	{
 		eval('Game.ObjectsById['+i+'].rebuild='+Game.ObjectsById[i].rebuild.toString().replace(searchStr, replaceStr));
@@ -677,6 +671,12 @@ if(!statsdone)
 		eval('Game.ObjectsById['+i+'].sell='+Game.ObjectsById[i].sell.toString().replace(searchRefresh, replaceRefresh));
 		eval('Game.ObjectsById['+i+'].sacrifice='+Game.ObjectsById[i].sacrifice.toString().replace(searchRefresh, replaceRefresh));
 		Game.ObjectsById[i].refresh();
+	}
+	var searchActivateUpgrade = 'this.activateFunction();';
+	var replaceActivateUpgrade = '{ this.activateFunction(); } for (var i in Game.ObjectsById) Game.ObjectsById[i].refresh(); ';
+	for (var i in Game.UpgradesById)
+	{
+		eval('Game.UpgradesById['+i+'].buy='+Game.UpgradesById[i].buy.toString().replace(searchActivateUpgrade, replaceActivateUpgrade));
 	}
 	
 	//searchStr = 'l(\'menu\').innerHTML=str;';

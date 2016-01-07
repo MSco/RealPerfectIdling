@@ -669,7 +669,7 @@ if(!statsdone)
 	var allRefresh = 'for (var i in Game.ObjectsById) Game.ObjectsById[i].refresh();}';
 	for (var i in Game.ObjectsById)
 	{
-		//eval('Game.ObjectsById['+i+'].rebuild='+Game.ObjectsById[i].rebuild.toString().replace(searchStr, replaceStr));
+		eval('Game.ObjectsById['+i+'].rebuild='+Game.ObjectsById[i].rebuild.toString().replace(searchStr, replaceStr));
 		eval('Game.ObjectsById['+i+'].buy='+Game.ObjectsById[i].buy.toString().replace(thisRefresh, allRefresh));
 		eval('Game.ObjectsById['+i+'].sell='+Game.ObjectsById[i].sell.toString().replace(thisRefresh, allRefresh));
 		eval('Game.ObjectsById['+i+'].sacrifice='+Game.ObjectsById[i].sacrifice.toString().replace(thisRefresh, allRefresh));

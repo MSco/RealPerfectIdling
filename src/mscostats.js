@@ -673,8 +673,8 @@ if(!statsdone)
 			eval('Game.ObjectsById['+i+'].sacrifice='+Game.ObjectsById[i].sacrifice.toString().replace(thisRefresh, allRefresh));
 		Game.ObjectsById[i].refresh();
 	}
-	var searchActivateUpgrade = 'this.activateFunction();';
-	var replaceActivateUpgrade = '{ this.activateFunction(); } for (var i in Game.ObjectsById) Game.ObjectsById[i].refresh(); ';
+	var searchActivateUpgrade = 'Game.UpgradesOwned++;';
+	var replaceActivateUpgrade = '{ Game.UpgradesOwned++; } for (var i in Game.ObjectsById) Game.ObjectsById[i].refresh(); ';
 	for (var i in Game.UpgradesById)
 	{
 		eval('Game.UpgradesById['+i+'].buy='+Game.UpgradesById[i].buy.toString().replace(searchActivateUpgrade, replaceActivateUpgrade));

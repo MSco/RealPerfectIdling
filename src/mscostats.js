@@ -1,7 +1,7 @@
 /* ================================================
     MSco Cookie Stats - A Cookie Clicker plugin
 
-    Version: 0.9.11.4
+    Version: 0.9.12
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -32,6 +32,9 @@
 
     Version History:
 
+    0.9.12:
+    	- Building price colors depend on efficiency
+    	- MSco Stats Menu is shown in a table
     0.9.11:
     	- Added number input for HCs you want to generate this run
     	- Show Price for next Dragon Level

@@ -666,7 +666,8 @@ if(!statsdone)
 		eval('Game.ObjectsById['+i+'].rebuild='+Game.ObjectsById[i].rebuild.toString().replace(searchStr, replaceStr));
 		eval('Game.ObjectsById['+i+'].buy='+Game.ObjectsById[i].buy.toString().replace(thisRefresh, allRefresh));
 		eval('Game.ObjectsById['+i+'].sell='+Game.ObjectsById[i].sell.toString().replace(thisRefresh, allRefresh));
-		eval('Game.ObjectsById['+i+'].sacrifice='+Game.ObjectsById[i].sacrifice.toString().replace(thisRefresh, allRefresh));
+		if (Game.version >= 1.9)
+			eval('Game.ObjectsById['+i+'].sacrifice='+Game.ObjectsById[i].sacrifice.toString().replace(thisRefresh, allRefresh));
 		Game.ObjectsById[i].refresh();
 	}
 	var searchActivateUpgrade = 'this.activateFunction();';

@@ -711,5 +711,7 @@ if(!statsdone)
 	//var addStr = 'for (var i in Game.ObjectsById) Game.ObjectsById[i].rebuild();';
 	//eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace(searchStr, searchStr + addStr));
 	
+	Game.UpdateMenu();
+	
 	var statsdone = 1;
 }

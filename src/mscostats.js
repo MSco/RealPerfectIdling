@@ -684,7 +684,7 @@ if(!statsdone)
 	//eval('Game.BuildStore='+Game.BuildStore.toString().replace('class="price" ', ''));
 	//Game.BuildStore();
 	
-	l('products').innerHTML = l('products').innerHTML.replace(new RegExp('class="price" id="productPrice', 'g'), 'id="productPrice');
+	//l('products').innerHTML = l('products').innerHTML.replace(new RegExp('class="price" id="productPrice', 'g'), 'id="productPrice');
 	
 	//searchStr = 'l(\'menu\').innerHTML=str;';
 	//var addStr = 'for (var i in Game.ObjectsById) Game.ObjectsById[i].rebuild();';

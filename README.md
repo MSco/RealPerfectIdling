@@ -50,7 +50,7 @@ have any suggestions.
 * Show Cookies earned per hour with 10 active wrinklers
 * Show max. Cookies earned (includes sucked cookies and chocolate egg reward)
 * Show Heavenly Chips you would earn additionally after resetting this game (including sucked cookies and chocolate egg)
-* Calculate Base Cost per Income (BCI) for each building and show their efficiencies corresponding the best BCI
+* Calculate Base Cost per Income (BCI) for each building and show their efficiencies corresponding to the best BCI
 * Show how much cookies you have to generate (all time) to add a specified number of HCs (specified via number input)
 * Show Price for next Dragon Level
 * Game-Breaking Bugs of beta 1.9 are fixed.

@@ -66,6 +66,7 @@ the original game.
 
 
 Following calculations are done "while game is closed":
+* Undo offline cookie calculations of Twin Gates of Transcendence
 * Wrinklers spawn if elder wrath is active as in the original game with all Math.random() stuff etc. ...
 * Wrinklers suck cookies (also increasing Game.cookiesSucked)
 * CPS is reduced while wrinklers suck the big cookie
@@ -75,5 +76,4 @@ Following calculations are done "while game is closed":
 * Cookies are earned from global cps (concerning the reduced cps because of wrinklers)
 * Add missed Golden Cookies
 * Recalculate CPS regarding 'Century egg' from easter update. CPS of last save and current CPS are averaged for this.
-* Undo offline cookie calculations of Twin Gates of Transcendence
 * TotalCookies are added to each building (for Achievements like: Make x cookies just from y)

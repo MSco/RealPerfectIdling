@@ -1,7 +1,7 @@
 /* ================================================
     MSco Cookie Stats - A Cookie Clicker plugin
 
-    Version: 0.9.12
+    Version: 0.9.13.0
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -32,6 +32,8 @@
 
     Version History:
 
+    0.9.13:
+    	- Appropriate Cookie Chain stats are colored if Cookie Chain is active
     0.9.12:
     	- Building price colors depend on efficiency
     	- MSco Stats Menu is shown in a table

@@ -29,6 +29,7 @@
           the best BCI
         - Show how much cookies you have to generate (all time) to add a specified number of HCs (specified via number input)
         - Show Price for next Dragon Level
+        - Game-Breaking Bugs of beta 1.9 are fixed.
 
     Version History:
 
@@ -86,7 +87,7 @@
 
 var MS = {};
 
-// set MS.importSaveT after importing a save
+// set MS.importSaveT after importing a save, this is for another MSco Addon: Real Perfect Idling
 MS.importSaveT = 0;
 MS.importSaveDate = new Date().getTime() - Game.T*1000/Game.fps;
 MS.saveImported = false;

@@ -30,3 +30,5 @@ javascript:(function(){with(document)(head.appendChild(createElement('script')).
 * Either import a save or not. **Important: Do not import a save, before you called MSco Stats!!!**
 * Click on your second created bookmark (Real Perfect Idling)
 
+MSco Stats Features
+----------

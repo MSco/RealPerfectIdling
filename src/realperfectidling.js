@@ -23,7 +23,7 @@
 	- Research timer decreases (Removed for 1.9, because its done ingame)
 	- Cookies are earned from global cps (concerning the reduced cps because of wrinklers)
 	- Add missed Golden Cookies
-	- Recalculate CPS regarding 'Century egg' from easter update. CPS of last save and current CPS are averaged for this.
+	- Recalculate CPS regarding 'Century egg' from easter update. CPS of last save and current CPS are averaged in 100 intervals for this.
 	- Undo offline cookie calculations of Twin Gates of Transcendence
 	- TotalCookies are added to each building (for Achievements like: Make x cookies just from y)
 
@@ -45,7 +45,7 @@
     	- Subtract Game.T (time after last reload) from afk time
     0.9.3:
 	- Implemented more methods to split up main code
-	- Own method to generae time string
+	- Own method to generate time string
     0.9.2:
 	- New calculation of average Golden Cookie spawn time, used for missedGoldenCookies
 	- Output of 'Missed Golden Cookies while afk' in console.

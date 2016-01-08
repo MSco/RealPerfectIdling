@@ -1,7 +1,7 @@
 /* ================================================
     MSco Cookie Stats - A Cookie Clicker plugin
 
-    Version: 1.0.0.0
+    Version: 1.0.1.0
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -12,6 +12,8 @@
 
     Version History:
 
+    1.0.1:
+    	- Performance upgrade for calculating BCI
     0.9.13:
     	- Appropriate Cookie Chain stats are colored if Cookie Chain is active
     0.9.12:

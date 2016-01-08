@@ -16,7 +16,7 @@
     		- cookies per second not affected by frenzy multipliers
     		- multiplier not affected by frenzy multipliers
     		- Cookies in bank includes wrinkler reward
-    		- Cookies in baked (this game and all time) includes wrinkler reward and chocolate egg reward
+    		- Cookies baked (this game and all time) include wrinkler reward and chocolate egg reward
 	- Show Cookies in bank needed to get the maximum reward of Lucky, a Frenzy-Lucky-Combo or a Dragon-Lucky-Combo 
 	  (incl. time left to get it)
 	- Show maximum of cookies you can spend without getting under the Frenz-Lucky optimized bank

@@ -13,12 +13,20 @@ How To Use
 
 MSco's RealPerfectIdling is available via a bookmarklet:
 
-* Paste the following code into a new bookmark in your browser:
+* Paste the following code into a new bookmark (MSco Stats) in your browser:
+
+```javascript
+javascript:(function(){with(document)(head.appendChild(createElement('script')).src='https://raw.githubusercontent.com/MSco/RealPerfectIdling/master/src/mscostats.js')._})();
+```
+
+* Paste the following code into a second new bookmark (Real Perfect Idling) in your browser:
 
 ```javascript
 javascript:(function(){with(document)(head.appendChild(createElement('script')).src='https://raw.githubusercontent.com/MSco/RealPerfectIdling/master/src/realperfectidling.js')._})();
 ```
 
 * Load up [Cookie Clicker](http://orteil.dashnet.org/cookieclicker/)
-* Click on your recently created bookmark
+* Click on your first recently created bookmark (MSco Stats)
+* Either import a save or not. **Important: Do not import a save, before you called MSco Stats!!!**
+* Click on your second created bookmark (Real Perfect Idling)
 

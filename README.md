@@ -30,8 +30,12 @@ javascript:(function(){with(document)(head.appendChild(createElement('script')).
 * Either import a save or not. **Important: Do not import a save, before you called MSco Stats!!!**
 * Click on your second created bookmark (Real Perfect Idling)
 
-MSco Stats Features
+MSco Stats
 ----------
+This code was written to be used, abused, extended and improved upon. Feel free to do with it as you please, 
+with or without permission from, nor credit given to the original author (me). Please send an email to me if you
+have any suggestions.
+
 * Original strings in statistics menu changed:
 	* Overloaded sayTime function: Time is displayed a bit more detailed now.
 	* cookies per second not affected by frenzy multipliers
@@ -39,6 +43,7 @@ MSco Stats Features
 	* Cookies in bank includes wrinkler reward
 	* Cookies in baked (this game and all time) includes wrinkler reward and chocolate egg reward
 * Show Cookies in bank needed to get the maximum reward of Lucky, a Frenzy-Lucky-Combo or a Dragon-Lucky-Combo (incl. time left to get it)
+* Show Cookies in bank needed to get the maximum reward of a Cookie Chain in Clot, Plain, Frenzy or Dragon Harvest mode.
 * Show maximum of cookies you can spend without getting under the Frenz-Lucky optimized bank
 * Show reward for eldeers and elder frenzy with wrinklers
 * Show Cookies you would earn after popping all wrinklers
@@ -49,3 +54,26 @@ MSco Stats Features
 * Show how much cookies you have to generate (all time) to add a specified number of HCs (specified via number input)
 * Show Price for next Dragon Level
 * Game-Breaking Bugs of beta 1.9 are fixed.
+
+Real Perfect Idling 
+----------
+This code was written to be used, abused, extended and improved upon. Feel free to do with it as you please, 
+with or without permission from, nor credit given to the original author (me). Please send an email to me if you
+have any suggestions.
+This add-on simulates cookies earned and cookies sucked while the game is closed. It calculates the amount of time
+between now and the last time the game was saved. Each feature listed below is simulated exactly like in
+the original game.
+
+
+Following calculations are done "while game is closed":
+* Wrinklers spawn if elder wrath is active as in the original game with all Math.random() stuff etc. ...
+* Wrinklers suck cookies (also increasing Game.cookiesSucked)
+* CPS is reduced while wrinklers suck the big cookie
+* Elder wrath increases
+* Season timer decreases (Removed for 1.9, because its done ingame)
+* Research timer decreases (Removed for 1.9, because its done ingame)
+* Cookies are earned from global cps (concerning the reduced cps because of wrinklers)
+* Add missed Golden Cookies
+* Recalculate CPS regarding 'Century egg' from easter update. CPS of last save and current CPS are averaged for this.
+* Undo offline cookie calculations of Twin Gates of Transcendence
+* TotalCookies are added to each building (for Achievements like: Make x cookies just from y)

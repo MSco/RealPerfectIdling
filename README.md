@@ -55,7 +55,7 @@ have any suggestions.
 * Show Price for next Dragon Level
 * Game-Breaking Bugs of beta 1.9 are fixed.
 
-![MSco Stats and main game window](https://cloud.githubusercontent.com/assets/7610889/12202486/6c371de0-b62a-11e5-9bbb-1963b1fd376c.jpg "MSco Stats")
+![MSco Stats and main game window](https://cloud.githubusercontent.com/assets/7610889/12203633/341d1652-b630-11e5-89f1-199e9dda06b6.jpg "MSco Stats")
 
 ![Special Menu in MSco Stats](https://cloud.githubusercontent.com/assets/7610889/12202318/8b0df6cc-b629-11e5-8092-03203b2326fb.jpg "MSco Stats")
 

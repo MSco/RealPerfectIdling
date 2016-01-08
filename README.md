@@ -79,5 +79,5 @@ Following calculations are done "while game is closed":
 * Research timer decreases (Removed for 1.9, because its done ingame)
 * Cookies are earned from global cps (concerning the reduced cps because of wrinklers)
 * Add missed Golden Cookies
-* Recalculate CPS regarding 'Century egg' from easter update. CPS of last save and current CPS are averaged in 100 intervals for this.
+* Recalculate CPS regarding 'Century egg' from easter update. An approximation to the original algorithm of 100 intervals between CPS of last save and current CPS is calculated for this.
 * TotalCookies are added to each building (for Achievements like: Make x cookies just from y)

@@ -461,14 +461,9 @@ MS.maxCookieChainReward = function(frenzyMultiplier)
 	return [moni, nextCps];
 }
 
-MS.cookiesToSpend = function(frenzyMultiplier)
+MS.cookiesToSpend = function(bank)
 {
-	if (frenzyMultiplier == 1)
-		return Game.cookies - MS.bankLucky();
-	if (frenzyMultiplier == 7)
-		return Game.cookies - MS.bankFrenzyLucky();
-	if (frenzyMultiplier == 15)
-        	return Game.cookies - MS.bankDragonLucky();
+	return Game.cookies - bank;
 }
 
 MS.reindeerReward = function(frenzyMultiplier)
@@ -583,42 +578,40 @@ if(!statsdone)
 	// add blank line
 	statsString += ' + \'<br>\'';
 	
-	// start lucky table
+	// Lucky (plain, frenzy, dragon) bank + max to spend
 	statsString += ' + \'<table style="width: 100%;border-collapse: separate;">\'';
 	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Lucky</td> <td>Bank</td> <td>Max. Cookies to spend</td> <td>Time Left</td></tr>\'';
-	// Lucky (plain, frenzy, dragon) bank + max to spend
-	statsString += ' + \'<tr><td class="listing"><b>Plain:</b></td> <td><div class="price plain">\' + Beautify(MS.bankLucky()) + \'</div></td> <td><div class="price plain"> \' + Beautify(MS.cookiesToSpend(1)) + \'</div></td> <td style="font-weight:bold;">\' + ((time=MS.timeLeftForBank(MS.bankLucky())) > 0 ? Game.sayTime(time) : "done") + \'</b></td></tr>\'';
-	statsString += ' + \'<tr><td class="listing"><b>Frenzy:</b></td> <td><div class="price plain">\' + Beautify(MS.bankFrenzyLucky()) + \'</div></td> <td><div class="price plain"> \' + Beautify(MS.cookiesToSpend(7)) + \'</div></td> <td style="font-weight:bold;">\' + ((time=MS.timeLeftForBank(MS.bankFrenzyLucky())) > 0 ? Game.sayTime(time) : "done") + \' </td></tr>\'';
-	statsString += ' + \'<tr><td class="listing"><b>Dragon Harvest:</b></td> <td><div class="price plain">\' + Beautify(MS.bankDragonLucky()) + \'</div></td> <td><div class="price plain"> \' + Beautify(MS.cookiesToSpend(15)) + \'</div></td> <td style="font-weight:bold;">\' + ((time=MS.timeLeftForBank(MS.bankDragonLucky())) > 0 ? Game.sayTime(time) : "done") + \' </td></tr>\'';
+	statsString += ' + \'<tr><td class="listing"><b>Plain:</b></td> <td><div class="price plain">\' + Beautify(MS.bankLucky()) + \'</div></td> <td><div class="price plain"> \' + Beautify(MS.cookiesToSpend(MS.bankLucky())) + \'</div></td> <td style="font-weight:bold;">\' + ((time=MS.timeLeftForBank(MS.bankLucky())) > 0 ? Game.sayTime(time) : "done") + \'</b></td></tr>\'';
+	statsString += ' + \'<tr><td class="listing"><b>Frenzy:</b></td> <td><div class="price plain">\' + Beautify(MS.bankFrenzyLucky()) + \'</div></td> <td><div class="price plain"> \' + Beautify(MS.cookiesToSpend(MS.bankFrenzyLucky())) + \'</div></td> <td style="font-weight:bold;">\' + ((time=MS.timeLeftForBank(MS.bankFrenzyLucky())) > 0 ? Game.sayTime(time) : "done") + \' </td></tr>\'';
+	statsString += ' + \'<tr><td class="listing"><b>Dragon Harvest:</b></td> <td><div class="price plain">\' + Beautify(MS.bankDragonLucky()) + \'</div></td> <td><div class="price plain"> \' + Beautify(MS.cookiesToSpend(MS.bankDragonLucky())) + \'</div></td> <td style="font-weight:bold;">\' + ((time=MS.timeLeftForBank(MS.bankDragonLucky())) > 0 ? Game.sayTime(time) : "done") + \' </td></tr>\'';
 	
 	// add blank row
 	statsString += ' + \'<tr style="height: 20px;"><td colspan="4"></td></tr>\'';
 	
-	// start cookie chain table
-	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Cookie Chains</td> <td>Bank</td> <td>Reward</td> <td>Next CPS</td></tr>\'';
 	// Cookie Chain stats
-	statsString += ' + \'<tr><td class="listing"><b>Plain:</b></td> <td><div class="price plain">\' + Beautify(MS.bankCookieChain(1)) + \'</div></td> <td><div class="price plain">\' + Beautify(MS.maxCookieChainReward(1)[0]) + \'</div></td><td><div class="price plain">\' + Beautify(MS.maxCookieChainReward(1)[1]) + \'</div></td></tr>\'';
-	statsString += ' + \'<tr><td class="listing"><b>Frenzy:</b></td> <td><div class="price plain">\' + Beautify(MS.bankCookieChain(7)) + \'</div></td> <td><div class="price plain">\' + Beautify(MS.maxCookieChainReward(7)[0]) + \'</div></td><td><div class="price plain">\' + Beautify(MS.maxCookieChainReward(7)[1]) + \'</div></td></tr>\'';
-	statsString += ' + \'<tr><td class="listing"><b>Dragon Harvest:</b></td> <td><div class="price plain">\' + Beautify(MS.bankCookieChain(15)) + \'</div></td> <td><div class="price plain">\' + Beautify(MS.maxCookieChainReward(15)[0]) + \'</div></td><td><div class="price plain">\' + Beautify(MS.maxCookieChainReward(15)[1]) + \'</div></td></tr>\'';
+	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Cookie Chains</td> <td>Bank</td> <td>Max. Cookies to spend</td> <td>Reward</td> <td>Next CPS</td></tr>\'';
+	statsString += ' + \'<tr><td class="listing"><b>Plain:</b></td> <td><div class="price plain">\' + Beautify(MS.bankCookieChain(1)) + \'</div></td> <td><div class="price plain"> \' + Beautify(MS.cookiesToSpend(MS.bankCookieChain(1))) + \'</div></td> <td><div class="price plain">\' + Beautify(MS.maxCookieChainReward(1)[0]) + \'</div></td><td><div class="price plain">\' + Beautify(MS.maxCookieChainReward(1)[1]) + \'</div></td></tr>\'';
+	statsString += ' + \'<tr><td class="listing"><b>Frenzy:</b></td> <td><div class="price plain">\' + Beautify(MS.bankCookieChain(7)) + \'</div></td> <td><div class="price plain"> \' + Beautify(MS.cookiesToSpend(MS.bankCookieChain(7))) + \'</div></td> <td><div class="price plain">\' + Beautify(MS.maxCookieChainReward(7)[0]) + \'</div></td><td><div class="price plain">\' + Beautify(MS.maxCookieChainReward(7)[1]) + \'</div></td></tr>\'';
+	statsString += ' + \'<tr><td class="listing"><b>Dragon Harvest:</b></td> <td><div class="price plain">\' + Beautify(MS.bankCookieChain(15)) + \'</div></td> <td><div class="price plain"> \' + Beautify(MS.cookiesToSpend(MS.bankCookieChain(15))) + \'</div></td> <td><div class="price plain">\' + Beautify(MS.maxCookieChainReward(15)[0]) + \'</div></td><td><div class="price plain">\' + Beautify(MS.maxCookieChainReward(15)[1]) + \'</div></td></tr>\'';
 	
 	// add blank row
 	statsString += ' + \'<tr style="height: 20px;"><td colspan="4"></td></tr>\'';
 	
-	// start Reindeer table
+	// Reindeer stats
 	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Reindeers</td> <td>Plain</td> <td>Frenzy</td> <td>Dragon Harvest</td> <td>Elder Frenzy</td></tr>\'';
 	statsString += ' + \'<tr><td class="listing"><b>Reindeer reward:</b> </td><td><div class="price plain">\' + Beautify(MS.reindeerReward(1)) + \'</div></td><td><div class="price plain">\' + Beautify(MS.reindeerReward(7)) + \'</div></td><td><div class="price plain">\' + Beautify(MS.reindeerReward(15)) + \'</div></td><td><div class="price plain">\' + Beautify(MS.reindeerReward(666)) + \'</div></td></tr>\'';
 	
 	// add blank row
 	statsString += ' + \'<tr style="height: 20px;"><td colspan="4"></td></tr>\'';
 	
-	// start Heavenly Chips table
+	// start Heavenly Chips stats
 	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Heavenly Chips</td> <td>Earned (this game)</td> <td>Earned (all time)</td> <td>Wanted (this game)</td> <td>Cookies needed (all time)</td></tr>\'';
 	statsString += ' + \'<tr><td class="listing"><b>Heavenly Chips:</b> </td><td style="font-weight:bold;">\' + Beautify(MS.hcThisGame()) + \' (\' + Beautify(MS.hcFactor()) + \'%) </td><td style="font-weight: bold;">\' + Beautify(MS.hcAllTime()) + \'</td><td> <input type=number id="tfHC" autofocus=true min=0 max=99999999 style="width:75%;" value=\' + (thisInput=(l("tfHC")==null ? \'0\' : l("tfHC").value)) + \'></input> </td><td class="price plain">\' + Beautify(MS.neededCookiesForHC(thisInput)) + \'</td></tr>\'';
 	
 	// add blank row
 	statsString += ' + \'<tr style="height: 20px;"><td colspan="4"></td></tr>\'';
 	
-	// start wrinkler table
+	// Wrinkler stats
 	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Wrinklers</td> <td>Full Elder Frenzy</td> <td>Killing Wrinklers</td> <td>Real Cookies per Hour</td></tr>\'';
 	statsString += ' + \'<tr><td class="listing"><b>Wrinkler Rewards:</b></td> <td><div class="price plain">\' + Beautify(MS.maxElderFrenzy()) + \'</div></td> <td><div class="price plain">\' + Beautify(MS.wrinklersreward()) + \'</div></td> <td><div class="price plain">\' + Beautify(MS.wrinklersCPH()) + \'</div></td></tr>\'';
 	

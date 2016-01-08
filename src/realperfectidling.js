@@ -11,22 +11,8 @@
     have any suggestions.
 
     This add-on simulates cookies earned and cookies sucked while the game is closed. It calculates the amount of time
-    between now and the last time the game was saved. Each feature listed below is simulated exactly like in
+    between now and the last time the game was saved. Each feature listed in the readme.md is simulated exactly like in
     the original game.
-
-    Following calculations are done "while game is closed":
-	- Wrinklers spawn if elder wrath is active as in the original game with all Math.random() stuff etc. ...
-	- Wrinklers suck cookies (also increasing Game.cookiesSucked)
-	- CPS is reduced while wrinklers suck the big cookie
-	- Elder wrath increases
-	- Season timer decreases (Removed for 1.9, because its done ingame)
-	- Research timer decreases (Removed for 1.9, because its done ingame)
-	- Cookies are earned from global cps (concerning the reduced cps because of wrinklers)
-	- Add missed Golden Cookies
-	- Recalculate CPS regarding 'Century egg' from easter update. An approximation to the original 
-	  algorithm of 100 intervals between CPS of last save and current CPS is calculated for this.
-	- Undo offline cookie calculations of Twin Gates of Transcendence
-	- TotalCookies are added to each building (for Achievements like: Make x cookies just from y)
 
     Version History:
     0.9.9:

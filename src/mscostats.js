@@ -376,6 +376,19 @@ MS.calcEfficiency = function(building, bestbci)
 	}
 }
 
+MS.refreshBuildingPrice = function(building, bestbci)
+{
+	var efc = MS.calcEfficiency(building, bestbci);
+	if(efc>=100) 
+		var bcolor="#66ff4e";
+	else if(efc>50) 
+		var bcolor="yellow";
+	else 
+		var bcolor="#FF3232";
+	l('productPrice'+building.id).innerHTML=Beautify(Math.round(building.price)) + '(' + Beautify(efc) + '%)';
+	l('productPrice'+building.id).style.color=bcolor;
+}
+
 MS.frenzyMod = function()
 {
 	return ((Game.frenzy > 0) ? Game.frenzyPower : 1);
@@ -635,17 +648,11 @@ if(!statsdone)
 	/********************************************* Change Color of Building prices: **********************************************/
 	// in this code snippet, the product price is written into the store. Here we set the color.
 	var oldProductPriceStr = 'l(\'productPrice\'+me.id).innerHTML=Beautify(Math.round(me.price));';
-	var coloredProductPriceStr = 'var best_bci=MS.calcBestBCI(); ';
-	coloredProductPriceStr += 'var efc=MS.calcEfficiency(me, best_bci); ';
-	coloredProductPriceStr += 'if(efc>=100) var bcolor="#66ff4e";';
-	coloredProductPriceStr += 'else if(efc>50) var bcolor="yellow";';
-	coloredProductPriceStr += 'else var bcolor="#FF3232"; '
-	coloredProductPriceStr += 'l(\'productPrice\'+me.id).innerHTML=Beautify(Math.round(me.price)) + \' (\'+Beautify(efc)+\'%)\'; '
-	coloredProductPriceStr += 'l(\'productPrice\'+me.id).style.color=bcolor;'; 
+	var coloredProductPriceStr = 'var bestbci=MS.calcBestBCI(); MS.refreshBuildingPrice(me, bestbci)';
 	
 	// Originally, in each building action the building itself is refreshed. We replace that by refreshing all buildings.
 	var thisRefreshStr = 'this.refresh();}';
-	var allRefreshStr = 'for (var i in Game.ObjectsById) Game.ObjectsById[i].refresh();}';
+	var allRefreshStr = 'this.refresh(); var bestbci=MS.calcBestBCI(); for (var i in Game.ObjectsById) MS.refreshBuildingPrice(Game.ObjectsById[i], bestbci);}';
 	for (var i in Game.ObjectsById)
 	{
 		// replace prices by colored prices in function rebuild:

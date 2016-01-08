@@ -466,7 +466,7 @@ MS.bankCookieChain = function(frenzyMultiplier)
 
 MS.coloredCookieChainString = function(numberString, frenzyMultiplier)
 {
-	var str = '<div class="price\'+(Game.goldenCookie.chain>0 && Game.frenzyPower=='+frenzyMultiplier+'?\'">\':\' plain">\') + Beautify(' + numberString + ') + \'</div>';
+	var str = '<div class="price\'+(Game.goldenCookie.chain>0 && MS.frenzyMod()=='+frenzyMultiplier+'?\'">\':\' plain">\') + Beautify(' + numberString + ') + \'</div>';
 	return str;
 }
 

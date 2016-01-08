@@ -275,8 +275,10 @@ RPI.runElderPledge = function(cps, durationSeconds)
 		}
 		
 		MS.readPledgeFromStr(str);
+	
 	}
 	
+	Game.pledgeT = MS.pledgeT;
 	Game.pledgeT = Math.max(0, Game.pledgeT-(Game.T-MS.importSaveT));
 	
 	if(Game.pledgeT > 0)

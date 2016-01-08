@@ -24,7 +24,7 @@
 	- Cookies are earned from global cps (concerning the reduced cps because of wrinklers)
 	- Add missed Golden Cookies
 	- Recalculate CPS regarding 'Century egg' from easter update. An approximation to the original 
-	algorithm of 100 intervals between CPS of last save and current CPS is calculated for this.
+	  algorithm of 100 intervals between CPS of last save and current CPS is calculated for this.
 	- Undo offline cookie calculations of Twin Gates of Transcendence
 	- TotalCookies are added to each building (for Achievements like: Make x cookies just from y)
 

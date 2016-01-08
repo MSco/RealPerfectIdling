@@ -43,7 +43,7 @@ have any suggestions.
 	* Cookies in bank includes wrinkler reward
 	* Cookies baked (this game and all time) include wrinkler reward and chocolate egg reward
 * Show Cookies in bank needed to get the maximum reward of Lucky, a Frenzy-Lucky-Combo or a Dragon-Lucky-Combo (incl. time left to get it)
-* Show Cookies in bank needed to get the maximum reward of a Cookie Chain in Clot, Plain, Frenzy or Dragon Harvest mode.
+* Show Cookies in bank needed to get the maximum reward of a Cookie Chain in Clot, Plain, Frenzy or Dragon Harvest mode. During an active cookie chain, the corresponding cookie chain stats are colored green in the menu.
 * Show maximum of cookies you can spend without getting under the Frenz-Lucky optimized bank
 * Show reward for eldeers and elder frenzy with wrinklers
 * Show Cookies you would earn after popping all wrinklers

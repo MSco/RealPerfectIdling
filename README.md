@@ -55,9 +55,9 @@ have any suggestions.
 * Show Price for next Dragon Level
 * Game-Breaking Bugs of beta 1.9 are fixed.
 
-![MSco Stats and main game window](https://rawgit.com/MSco/RealPerfectIdling/master/images/MScoScreen1-withborders.jpg "MSco Stats")
+![MSco Stats and main game window](https://rawgit.com/MSco/RealPerfectIdling/master/images/MScoScreen1-withborders.jpg "Main Window in MSco Stats")
 
-![Special Menu in MSco Stats](https://rawgit.com/MSco/RealPerfectIdling/master/images/MScoScreen2-withborders.jpg "MSco Stats")
+![Special Menu in MSco Stats](https://rawgit.com/MSco/RealPerfectIdling/master/images/MScoScreen2-withborders.jpg "Special Menu in MSco Stats")
 
 Real Perfect Idling 
 ----------

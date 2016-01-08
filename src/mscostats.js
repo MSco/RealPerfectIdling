@@ -10,27 +10,6 @@
     with or without permission from, nor credit given to the original author (me). Please send an email to me if you
     have any suggestions.
 
-    Features:
-    	- Original strings in statistics menu changed:
-    		- Overloaded sayTime function: Time is displayed a bit more detailed now.
-    		- cookies per second not affected by frenzy multipliers
-    		- multiplier not affected by frenzy multipliers
-    		- Cookies in bank includes wrinkler reward
-    		- Cookies baked (this game and all time) include wrinkler reward and chocolate egg reward
-	- Show Cookies in bank needed to get the maximum reward of Lucky, a Frenzy-Lucky-Combo or a Dragon-Lucky-Combo 
-	  (incl. time left to get it)
-	- Show maximum of cookies you can spend without getting under the Frenz-Lucky optimized bank
-	- Show reward for eldeers and elder frenzy with wrinklers
-	- Show Cookies you would earn after popping all wrinklers
-	- Show Cookies earned per hour with 10 active wrinklers
-	- Show max. Cookies earned (includes sucked cookies and chocolate egg reward)
-	- Show Heavenly Chips you would earn additionally after resetting this game (including sucked cookies and chocolate egg)
-	- Calculate Base Cost per Income (BCI) for each building and show their efficiencies corresponding 
-          the best BCI
-        - Show how much cookies you have to generate (all time) to add a specified number of HCs (specified via number input)
-        - Show Price for next Dragon Level
-        - Game-Breaking Bugs of beta 1.9 are fixed.
-
     Version History:
 
     0.9.13:

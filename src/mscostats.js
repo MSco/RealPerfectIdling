@@ -695,6 +695,9 @@ if(!statsdone)
 	//eval('Game.BuildStore='+Game.BuildStore.toString().replace('class="price" ', ''));
 	//Game.BuildStore();
 	
+	// refresh Update Menu after cookie chain:
+	eval('Game.goldenCookie.click='+Game.goldenCookie.click.toString().replace('me.chain++;', 'me.chain++; Game.UpdateMenu();'));
+	
 	/*
 	var str='';
 	for (var i in Game.Objects)

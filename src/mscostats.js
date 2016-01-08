@@ -87,10 +87,11 @@
 
 var MS = {};
 
-// set MS.importSaveT after importing a save, this is for another MSco Addon: Real Perfect Idling
+// set MS.importSaveT after importing a save, this is exclusively for another MSco Addon: Real Perfect Idling
 MS.importSaveT = 0;
 MS.importSaveDate = new Date().getTime() - Game.T*1000/Game.fps;
 MS.saveImported = false;
+MS.pledgeT = 0;
 MS.importSaveCodeOrignal = Game.ImportSaveCode;
 Game.ImportSaveCode = function(save)
 {
@@ -167,7 +168,7 @@ MS.readPledgeFromStr=function(str)
 	}
 	str=str.split('|');
     	var spl=str[4].split(';');
-    	Game.pledgeT=spl[11]?parseInt(spl[11]):0;
+    	MS.pledgeT=spl[11]?parseInt(spl[11]):0;
     	MS.saveImported = true;
 }
 

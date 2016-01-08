@@ -55,7 +55,7 @@ have any suggestions.
 * Show Price for next Dragon Level
 * Game-Breaking Bugs of beta 1.9 are fixed.
 
-![MSco Stats and main game window](https://github.com/greenc/CookieMaster/raw/master/site/images/cookiemaster.v.1.9.2-main.png "MSco Stats")
+![MSco Stats and main game window](https://cloud.githubusercontent.com/assets/7610889/12202311/836c155c-b629-11e5-9637-72830ce9fc7e.jpg "MSco Stats")
 
 Real Perfect Idling 
 ----------

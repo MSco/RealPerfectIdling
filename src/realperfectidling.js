@@ -337,9 +337,11 @@ RPI.runWrath = function(cps, durationSeconds)
 					if (Math.random()<chance) 
 					{
 						Game.wrinklers[i].phase=2;
-						Game.wrinklers[i].hp=Game.wrinklerHP;
+						Game.wrinklers[i].hp=3;
+						
 						if (Game.version >= 1.9)
 						{
+							Game.wrinklers[i].hp=Game.wrinklerHP;
 							Game.wrinklers[i].type=0;
 							if (Math.random()<0.001) 
 								Game.wrinklers[i].type=1; // shiny wrinkler

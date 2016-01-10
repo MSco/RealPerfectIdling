@@ -1,7 +1,7 @@
 /* ================================================
     MSco Cookie Stats - A Cookie Clicker plugin
 
-    Version: 1.0.2.0
+    Version: 1.0.2.1
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -14,6 +14,7 @@
 
     1.0.2:
     	- Added remaining Price for a user-specified amount of buildings (via input number field)
+    	- Show time left to get remaining price
     1.0.1:
     	- Performance upgrade for calculating BCI
     	- Dragon Harvest Stats only shown for Game.version>=1.9
@@ -652,10 +653,10 @@ if(!statsdone)
 	statsString += ' + \'<tr style="height: 20px;"><td colspan="4"></td></tr>\'';
 	
 	// Building stats
-	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Buildings</td> <td>Amount wanted</td> <td>Remaining Price</td></tr>\'';
+	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Buildings</td> <td>Amount wanted</td> <td>Remaining Price</td> <td>Time Left</td></tr>\'';
 	for (var i in Game.ObjectsById)
 	{
-		statsString += ' + \'<tr><td class="listing"><b>'+Game.ObjectsById[i].name+':</b></td> <td><input type=number id="tfBuildingAmount'+i+'" autofocus=true min=\'+(minAmount=(Game.ObjectsById['+i+'].amount+1))+\' style="width:25%;" value=\' + (thisInput=(l("tfBuildingAmount'+i+'")==null ? minAmount : l("tfBuildingAmount'+i+'").value)) + \'></input></td> <td class="price plain">\' + Beautify(MS.PriceForBuildingAmount(thisInput, '+i+')) + \'</td></tr>\'';
+		statsString += ' + \'<tr><td class="listing"><b>'+Game.ObjectsById[i].name+':</b></td> <td><input type=number id="tfBuildingAmount'+i+'" autofocus=true min=\'+(minAmount=(Game.ObjectsById['+i+'].amount+1))+\' style="width:25%;" value=\' + (thisInput=(l("tfBuildingAmount'+i+'")==null ? minAmount : l("tfBuildingAmount'+i+'").value)) + \'></input></td> <td class="price plain">\' + Beautify(price=MS.PriceForBuildingAmount(thisInput, '+i+')) + \'</td> <td style="font-weight:bold;">\' + ((time=MS.timeLeftForBank(price)) > 0 ? Game.sayTime(time) : "done") + \'</b></td></tr>\'';
 	}
 	
 	// end table

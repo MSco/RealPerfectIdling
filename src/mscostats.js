@@ -1,7 +1,7 @@
 /* ================================================
     MSco Cookie Stats - A Cookie Clicker plugin
 
-    Version: 1.0.1.1
+    Version: 1.0.2.0
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -12,6 +12,8 @@
 
     Version History:
 
+    1.0.2:
+    	- Added remaining Price for a user-specified amount of buildings (via input number field)
     1.0.1:
     	- Performance upgrade for calculating BCI
     	- Dragon Harvest Stats only shown for Game.version>=1.9
@@ -532,14 +534,15 @@ MS.priceForSacrificeBuildings = function(building, amount)
 
 MS.PriceForBuildingAmount = function(inputFieldValue, i)
 {
-	var building = Game.ObjectById[i];
+	var building = Game.ObjectsById[i];
+	var buildingfree = (Game.version>=1.9 ? building.free : 0);
 	var amount = building.amount+1;
 	
 	if (!(inputFieldValue == null || isNaN(inputFieldValue) || inputFieldValue.length==0))
-		var amount = parseInt(inputField.value);
+		var amount = parseInt(inputFieldValue);
 	
-	var lowAmount = Math.max(building.amount-building.free, 0);
-	var highAmount = Math.max(amount-building.free,0);
+	var lowAmount = Math.max(building.amount-buildingfree, 0);
+	var highAmount = Math.max(amount-buildingfree,0);
 	
 	var price = building.basePrice*(Math.pow(Game.priceIncrease, highAmount)-Math.pow(Game.priceIncrease, lowAmount))/0.15;
 	if (Game.Has('Season savings')) price*=0.99;
@@ -640,18 +643,19 @@ if(!statsdone)
 	// add blank row
 	statsString += ' + \'<tr style="height: 20px;"><td colspan="4"></td></tr>\'';
 	
-	// add blank row
-	statsString += ' + \'<tr style="height: 20px;"><td colspan="4"></td></tr>\'';
 	
 	// Wrinkler stats
 	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Wrinklers</td> <td>Full Elder Frenzy</td> <td>Killing Wrinklers</td> <td>Real Cookies per Hour</td></tr>\'';
 	statsString += ' + \'<tr><td class="listing"><b>Wrinkler Rewards:</b></td> <td><div class="price plain">\' + Beautify(MS.maxElderFrenzy()) + \'</div></td> <td><div class="price plain">\' + Beautify(MS.wrinklersreward()) + \'</div></td> <td><div class="price plain">\' + Beautify(MS.wrinklersCPH()) + \'</div></td></tr>\'';
 	
+	// add blank row
+	statsString += ' + \'<tr style="height: 20px;"><td colspan="4"></td></tr>\'';
+	
 	// Building stats
-	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Buildings</td> <td>Amount wanted</td> <td>Price</td></tr>\'';
+	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Buildings</td> <td>Amount wanted</td> <td>Remaining Price</td></tr>\'';
 	for (var i in Game.ObjectsById)
 	{
-		statsString += ' + \'<tr><td class="listing"><b>'+Game.ObjectsById[i].name+':</b></td> <td><input type=number id="tfBuildingAmount\'+i+\'" autofocus=true min=\'+(minAmount=Game.ObjectsById['+i+'].amount+1)+\' style="width:25%;" value=\' + (thisInput=(l("tfBuildingAmount'+i+'")==null ? minAmount : l("tfBuildingAmount'+i+'").value)) + \'></input> </td> <td class="price plain">\' + Beautify(MS.PriceForBuildingAmount(thisInput, '+i+')) + \'</td></tr>\'';
+		statsString += ' + \'<tr><td class="listing"><b>'+Game.ObjectsById[i].name+':</b></td> <td><input type=number id="tfBuildingAmount'+i+'" autofocus=true min=\'+(minAmount=(Game.ObjectsById['+i+'].amount+1))+\' style="width:25%;" value=\' + (thisInput=(l("tfBuildingAmount'+i+'")==null ? minAmount : l("tfBuildingAmount'+i+'").value)) + \'></input></td> <td class="price plain">\' + Beautify(MS.PriceForBuildingAmount(thisInput, '+i+')) + \'</td></tr>\'';
 	}
 	
 	// end table

@@ -1,7 +1,7 @@
 /* ================================================
     MSco Cookie Stats - A Cookie Clicker plugin
 
-    Version: 1.0.2.1
+    Version: 1.0.2.2
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -420,6 +420,14 @@ MS.timeLeftForBank = function(newbank)
 	return secondsLeft * Game.fps;
 }
 
+MS.timeLeftForCookies = function(cookies)
+{
+	var cookiesLeft = Math.max(0, cookies - Game.cookies - MS.wrinklersreward());
+	var secondsLeft = cookiesLeft/MS.wrinklersCPH();
+	
+	return secondsLeft * 60 * 60 * Game.fps;
+}
+
 MS.bankLucky = function()
 {
 	return Game.cookiesPs / MS.frenzyMod() * 1200 * 10 * MS.goldenMult() + 13;
@@ -612,7 +620,7 @@ if(!statsdone)
 	
 	// Lucky (plain, frenzy, dragon) bank + max to spend
 	statsString += ' + \'<table style="width: 100%;border-collapse: separate;">\'';
-	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Lucky</td> <td>Bank</td> <td>Max. Cookies to spend</td> <td>Time Left</td></tr>\'';
+	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Lucky</td> <td>Bank</td> <td>Max. Cookies to spend</td> <td>Time Left (with CPS)</td></tr>\'';
 	statsString += ' + \'<tr><td class="listing"><b>Plain:</b></td> <td><div class="price plain">\' + Beautify(MS.bankLucky()) + \'</div></td> <td><div class="price plain"> \' + Beautify(MS.cookiesToSpend(MS.bankLucky())) + \'</div></td> <td style="font-weight:bold;">\' + ((time=MS.timeLeftForBank(MS.bankLucky())) > 0 ? Game.sayTime(time) : "done") + \'</b></td></tr>\'';
 	statsString += ' + \'<tr><td class="listing"><b>Frenzy:</b></td> <td><div class="price plain">\' + Beautify(MS.bankFrenzyLucky()) + \'</div></td> <td><div class="price plain"> \' + Beautify(MS.cookiesToSpend(MS.bankFrenzyLucky())) + \'</div></td> <td style="font-weight:bold;">\' + ((time=MS.timeLeftForBank(MS.bankFrenzyLucky())) > 0 ? Game.sayTime(time) : "done") + \' </td></tr>\'';
 	statsString += ' + ((Game.version >= 1.9) ? \'<tr><td class="listing"><b>Dragon Harvest:</b></td> <td><div class="price plain">\' + Beautify(MS.bankDragonLucky()) + \'</div></td> <td><div class="price plain"> \' + Beautify(MS.cookiesToSpend(MS.bankDragonLucky())) + \'</div></td> <td style="font-weight:bold;">\' + ((time=MS.timeLeftForBank(MS.bankDragonLucky())) > 0 ? Game.sayTime(time) : "done") + \' </td></tr>\' : \'\')';
@@ -653,10 +661,10 @@ if(!statsdone)
 	statsString += ' + \'<tr style="height: 20px;"><td colspan="4"></td></tr>\'';
 	
 	// Building stats
-	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Buildings</td> <td>Amount wanted</td> <td>Remaining Price</td> <td>Time Left</td></tr>\'';
+	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Buildings</td> <td>Amount wanted</td> <td>Remaining Price</td> <td>Time Left (with wrinklers)</td></tr>\'';
 	for (var i in Game.ObjectsById)
 	{
-		statsString += ' + \'<tr><td class="listing"><b>'+Game.ObjectsById[i].name+':</b></td> <td><input type=number id="tfBuildingAmount'+i+'" autofocus=true min=\'+(minAmount=(Game.ObjectsById['+i+'].amount+1))+\' style="width:25%;" value=\' + (thisInput=(l("tfBuildingAmount'+i+'")==null ? minAmount : l("tfBuildingAmount'+i+'").value)) + \'></input></td> <td class="price plain">\' + Beautify(price=MS.PriceForBuildingAmount(thisInput, '+i+')) + \'</td> <td style="font-weight:bold;">\' + ((time=MS.timeLeftForBank(price)) > 0 ? Game.sayTime(time) : "done") + \'</b></td></tr>\'';
+		statsString += ' + \'<tr><td class="listing"><b>'+Game.ObjectsById[i].name+':</b></td> <td><input type=number id="tfBuildingAmount'+i+'" autofocus=true min=\'+(minAmount=(Game.ObjectsById['+i+'].amount+1))+\' style="width:25%;" value=\' + (thisInput=(l("tfBuildingAmount'+i+'")==null ? minAmount : l("tfBuildingAmount'+i+'").value)) + \'></input></td> <td class="price plain">\' + Beautify(price=MS.PriceForBuildingAmount(thisInput, '+i+')) + \'</td> <td style="font-weight:bold;">\' + ((time=MS.timeLeftForCookies(price)) > 0 ? Game.sayTime(time) : "done") + \'</b></td></tr>\'';
 	}
 	
 	// end table

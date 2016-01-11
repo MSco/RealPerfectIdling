@@ -1,7 +1,7 @@
 /* ================================================
     MSco Cookie Stats - A Cookie Clicker plugin
 
-    Version: 1.0.2.2
+    Version: 1.0.2.3
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -564,6 +564,16 @@ MS.PriceForBuildingAmount = function(inputFieldValue, i)
 	return Math.ceil(price);
 }
 
+/*
+MS.getInitialAmountWanted = function(i)
+{
+	var building = Game.ObjectsByID[i];
+	var minAmount = building.amount+1;
+	
+	
+}
+*/
+
 MS.priceForNextDragonLevel = function()
 {
 	if (Game.dragonLevel <= 4)
@@ -664,7 +674,7 @@ if(!statsdone)
 	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Buildings</td> <td>Amount wanted</td> <td>Remaining Price</td> <td>Time Left (with wrinklers)</td></tr>\'';
 	for (var i in Game.ObjectsById)
 	{
-		statsString += ' + \'<tr><td class="listing"><b>'+Game.ObjectsById[i].name+':</b></td> <td><input type=number id="tfBuildingAmount'+i+'" autofocus=true min=\'+(minAmount=(Game.ObjectsById['+i+'].amount+1))+\' style="width:25%;" value=\' + (thisInput=(l("tfBuildingAmount'+i+'")==null ? minAmount : l("tfBuildingAmount'+i+'").value)) + \'></input></td> <td class="price plain">\' + Beautify(price=MS.PriceForBuildingAmount(thisInput, '+i+')) + \'</td> <td style="font-weight:bold;">\' + ((time=MS.timeLeftForCookies(price)) > 0 ? Game.sayTime(time) : "done") + \'</b></td></tr>\'';
+		statsString += ' + \'<tr><td class="listing"><b>'+Game.ObjectsById[i].name+':</b></td> <td><input type=number id="tfBuildingAmount'+i+'" autofocus=true min=\'+(minAmount=(Game.ObjectsById['+i+'].amount+1))+\' style="width:25%;" value=\' + (thisInput=(l("tfBuildingAmount'+i+'")==null ? minAmount : Math.max(minAmount,l("tfBuildingAmount'+i+'").value))) + \'></input></td> <td class="price plain">\' + Beautify(price=MS.PriceForBuildingAmount(thisInput, '+i+')) + \'</td> <td style="font-weight:bold;">\' + ((time=MS.timeLeftForCookies(price)) > 0 ? Game.sayTime(time) : "done") + \'</b></td></tr>\'';
 	}
 	
 	// end table
@@ -698,9 +708,10 @@ if(!statsdone)
 	var oldProductPriceStr = 'l(\'productPrice\'+me.id).innerHTML=Beautify(Math.round(me.price));';
 	var coloredProductPriceStr = 'var bestbci=MS.calcBestBCI(); MS.refreshBuildingPrice(me, bestbci)';
 	
-	// Originally, in each building action the building itself is refreshed. We replace that by refreshing all buildings.
+	// Originally, in each building action the building itself is refreshed. We replace that by refreshing all buildings. 
+	// Additionally, the menu is updated (for Amount wanted)
 	var thisRefreshStr = 'this.refresh();}';
-	var allRefreshStr = 'this.refresh(); var bestbci=MS.calcBestBCI(); for (var i in Game.ObjectsById) MS.refreshBuildingPrice(Game.ObjectsById[i], bestbci);}';
+	var allRefreshStr = 'this.refresh(); var bestbci=MS.calcBestBCI(); for (var i in Game.ObjectsById) MS.refreshBuildingPrice(Game.ObjectsById[i], bestbci); Game.UpdateMenu(); }';
 	for (var i in Game.ObjectsById)
 	{
 		// replace prices by colored prices in function rebuild:

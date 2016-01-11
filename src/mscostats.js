@@ -597,6 +597,24 @@ MS.priceForNextDragonLevel = function()
 	else return 0;
 }
 
+var activeid = '';
+
+MS.drawOriginal = Game.Draw;
+Game.Draw = function()
+{
+	console.log('startDraw: ' + document.activeElement.id);
+	MS.drawOriginal();
+	console.log('endDraw: ' + document.activeElement.id);
+	/*
+	if(Game.onMenu=='stats' && activeid && l(activeid))
+	{
+		console.log(activeid)
+		l(activeid).focus();
+	}
+	*/
+}
+
+
 if(!statsdone)
 {
 	// Replace strings in original Statistics menu
@@ -657,7 +675,7 @@ if(!statsdone)
 	
 	// start Heavenly Chips stats
 	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Heavenly Chips</td> <td>Earned (this game)</td> <td>Earned (all time)</td> <td>Wanted (this game)</td> <td>Cookies needed (all time)</td></tr>\'';
-	statsString += ' + \'<tr><td class="listing"><b>Heavenly Chips:</b> </td><td style="font-weight:bold;">\' + Beautify(MS.hcThisGame()) + \' (\' + Beautify(MS.hcFactor()) + \'%) </td><td style="font-weight: bold;">\' + Beautify(MS.hcAllTime()) + \'</td><td> <input type=number id="tfHC" autofocus=true min=0 max=99999999 style="width:75%;" value=\' + (thisInput=(l("tfHC")==null ? \'0\' : l("tfHC").value)) + \'></input> </td><td class="price plain">\' + Beautify(MS.neededCookiesForHC(thisInput)) + \'</td></tr>\'';
+	statsString += ' + \'<tr><td class="listing"><b>Heavenly Chips:</b> </td><td style="font-weight:bold;">\' + Beautify(MS.hcThisGame()) + \' (\' + Beautify(MS.hcFactor()) + \'%) </td><td style="font-weight: bold;">\' + Beautify(MS.hcAllTime()) + \'</td><td> <input type=number id="tfHC" min=0 max=99999999 style="width:75%;" value=\' + (thisInput=(l("tfHC")==null ? \'0\' : l("tfHC").value)) + \'></input> </td><td class="price plain">\' + Beautify(MS.neededCookiesForHC(thisInput)) + \'</td></tr>\'';
 	
 	// add blank row
 	statsString += ' + \'<tr style="height: 20px;"><td colspan="4"></td></tr>\'';
@@ -674,7 +692,7 @@ if(!statsdone)
 	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Buildings</td> <td>Amount wanted</td> <td>Remaining Price</td> <td>Time Left (with wrinklers)</td></tr>\'';
 	for (var i in Game.ObjectsById)
 	{
-		statsString += ' + \'<tr><td class="listing"><b>'+Game.ObjectsById[i].name+':</b></td> <td><input type=number id="tfBuildingAmount'+i+'" autofocus=true min=\'+(minAmount=(Game.ObjectsById['+i+'].amount+1))+\' style="width:25%;" value=\' + (thisInput=(l("tfBuildingAmount'+i+'")==null ? minAmount : Math.max(minAmount,l("tfBuildingAmount'+i+'").value))) + \'></input></td> <td class="price plain">\' + Beautify(price=MS.PriceForBuildingAmount(thisInput, '+i+')) + \'</td> <td style="font-weight:bold;">\' + ((time=MS.timeLeftForCookies(price)) > 0 ? Game.sayTime(time) : "done") + \'</b></td></tr>\'';
+		statsString += ' + \'<tr><td class="listing"><b>'+Game.ObjectsById[i].name+':</b></td> <td><input type=number id="tfBuildingAmount'+i+'" min=\'+(minAmount=(Game.ObjectsById['+i+'].amount+1))+\' style="width:25%;" value=\' + (thisInput=(l("tfBuildingAmount'+i+'")==null ? minAmount : Math.max(minAmount,l("tfBuildingAmount'+i+'").value))) + \'></input></td> <td class="price plain">\' + Beautify(price=MS.PriceForBuildingAmount(thisInput, '+i+')) + \'</td> <td style="font-weight:bold;">\' + ((time=MS.timeLeftForCookies(price)) > 0 ? Game.sayTime(time) : "done") + \'</b></td></tr>\'';
 	}
 	
 	// end table
@@ -736,8 +754,13 @@ if(!statsdone)
 	}
 	/******************************************************************************************************************************/
 	
-	// refresh Update Menu after cookie chain:
+	// Update Menu after cookie chain:
 	eval('Game.goldenCookie.click='+Game.goldenCookie.click.toString().replace('me.chain++;', 'me.chain++; Game.UpdateMenu();'));
+
+	//eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('var str=\'\';', 'activeid = document.activeElement.id; var str=\'\';'));
+	//eval('Game.UpdateMenu='+Game.UpdateMenu.toString().slice(0, -1) + 'console.log(\'end: \' + document.activeElement.id); }');
+	eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('var str=\'\';', 'console.log(\'startUpdateMenu: \' + document.activeElement.id); var str=\'\'; '));
+	eval('Game.UpdateMenu='+Game.UpdateMenu.toString().slice(0, -1) + 'console.log(\'endUpdateMenu: \' + document.activeElement.id); }');
 	
 	// Update the Menu after calling this addon:
 	Game.UpdateMenu();

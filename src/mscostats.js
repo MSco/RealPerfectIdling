@@ -1,7 +1,7 @@
 /* ================================================
     MSco Cookie Stats - A Cookie Clicker plugin
 
-    Version: 1.0.2.3
+    Version: 1.0.2.4
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -597,24 +597,6 @@ MS.priceForNextDragonLevel = function()
 	else return 0;
 }
 
-var activeid = '';
-
-MS.drawOriginal = Game.Draw;
-Game.Draw = function()
-{
-	console.log('startDraw: ' + document.activeElement.id);
-	MS.drawOriginal();
-	console.log('endDraw: ' + document.activeElement.id);
-	/*
-	if(Game.onMenu=='stats' && activeid && l(activeid))
-	{
-		console.log(activeid)
-		l(activeid).focus();
-	}
-	*/
-}
-
-
 if(!statsdone)
 {
 	// Replace strings in original Statistics menu
@@ -759,8 +741,14 @@ if(!statsdone)
 
 	//eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('var str=\'\';', 'activeid = document.activeElement.id; var str=\'\';'));
 	//eval('Game.UpdateMenu='+Game.UpdateMenu.toString().slice(0, -1) + 'console.log(\'end: \' + document.activeElement.id); }');
-	eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('var str=\'\';', 'console.log(\'startUpdateMenu: \' + document.activeElement.id); var str=\'\'; '));
-	eval('Game.UpdateMenu='+Game.UpdateMenu.toString().slice(0, -1) + 'console.log(\'endUpdateMenu: \' + document.activeElement.id); }');
+	//eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('var str=\'\';', 'console.log(\'startUpdateMenu: \' + document.activeElement.id); var str=\'\'; '));
+	//eval('Game.UpdateMenu='+Game.UpdateMenu.toString().slice(0, -1) + 'console.log(\'endUpdateMenu: \' + document.activeElement.id); }');
+	
+	var storeActiveId = 'var activeid = document.activeElement.id; ';
+	storeActiveId += 'l(\'menu\').innerHTML=str; ';
+	storeActiveId += 'if(Game.onMenu==\'stats\' && activeid && l(activeid)) l(activeid).focus();';
+	eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace(new RegExp('l\\(\'menu\'\\).innerHTML=str;'), storeActiveId));
+	;
 	
 	// Update the Menu after calling this addon:
 	Game.UpdateMenu();

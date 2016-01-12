@@ -556,14 +556,21 @@ MS.storeActiveId = function(str)
 {
 	var activeid = document.activeElement.id; 
 	var curPos=0;
+	var endPos=0
 	if ('selectionStart' in document.activeElement)
+	{
 		curPos = document.activeElement.selectionStart;
+		endPos = document.activeElement.selectionEnd;
+	}
 	l('menu').innerHTML=str;
 	if(Game.onMenu=='stats' && activeid && l(activeid)) 
 		l(activeid).focus();
 		
-	if(curPos>0) 
+	if(curPos>0)
+	{
 		l(activeid).selectionStart=curPos;
+		l(activeid).selectionEnd=endPos;
+	}
 }
 
 MS.priceForNextDragonLevel = function()

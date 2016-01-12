@@ -510,19 +510,6 @@ MS.neededCookiesForHC = function(HC)
 	if (!(HC == null || isNaN(HC) || HC.length==0))
 		var hcsToAdd = parseInt(HC);
 	
-	/*	
-	if (Game.version >= 1.9)
-	{
-		var hcsOverallNeeded = Game.heavenlyChips + Game.heavenlyChipsSpent + hcsToAdd;
-		return Math.pow(hcsOverallNeeded,3)*Math.pow(10,12);
-	}
-	else
-	{
-		var hcsOverallNeeded = Game.HowMuchPrestige(Game.cookiesReset) + hcsToAdd;
-		return Game.HowManyCookiesReset(hcsOverallNeeded);
-	}
-	*/
-	
 	var hcsOverallNeeded = Game.HowMuchPrestige(Game.cookiesReset) + hcsToAdd;
 	return Game.HowManyCookiesReset(hcsOverallNeeded);
 }
@@ -603,8 +590,10 @@ MS.priceForNextDragonLevel = function()
 
 if(!statsdone)
 {
-	// Replace strings in original Statistics menu
+	// How to add a button
 	//eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('when out of focus)</label><br>\'+', 'when out of focus)</label><br>\'+\'<div class="listing"><a class="option" \'+Game.clickStr+\'="myfunc();">Real Perfect Idling</a><label>Simulate the game untilt the last Save)</label></div>\' + '))
+	
+	// Replace strings in original Statistics menu
 	
 	// cookies in bank with wrinklers
 	eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('<b>Cookies in bank :</b> <div class="price plain">\'+Game.tinyCookie()+Beautify(Game.cookies)+\'</div></div>\'','<b>Cookies in bank (with wrinklers) :</b> <div class="price plain">\'+Game.tinyCookie()+Beautify(Game.cookies+MS.wrinklersreward())+\'</div></div>\''));
@@ -743,9 +732,7 @@ if(!statsdone)
 	// Update Menu after cookie chain:
 	eval('Game.goldenCookie.click='+Game.goldenCookie.click.toString().replace('me.chain++;', 'me.chain++; Game.UpdateMenu();'));
 
-	//eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('var str=\'\';', 'activeid = document.activeElement.id; var str=\'\';'));
-	//eval('Game.UpdateMenu='+Game.UpdateMenu.toString().slice(0, -1) + 'console.log(\'end: \' + document.activeElement.id); }');
-	//eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('var str=\'\';', 'console.log(\'startUpdateMenu: \' + document.activeElement.id); var str=\'\'; '));
+	// How to append a string to a function
 	//eval('Game.UpdateMenu='+Game.UpdateMenu.toString().slice(0, -1) + 'console.log(\'endUpdateMenu: \' + document.activeElement.id); }');
 
 	eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace(new RegExp('l\\(\'menu\'\\).innerHTML=str;'), 'MS.storeActiveId(str)'));

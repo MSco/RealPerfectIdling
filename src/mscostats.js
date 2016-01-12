@@ -564,15 +564,19 @@ MS.PriceForBuildingAmount = function(inputFieldValue, i)
 	return Math.ceil(price);
 }
 
-/*
-MS.getInitialAmountWanted = function(i)
+MS.storeActiveId = function(str)
 {
-	var building = Game.ObjectsByID[i];
-	var minAmount = building.amount+1;
-	
-	
+	var activeid = document.activeElement.id; 
+	var curPos=0;
+	if ('selectionStart' in document.activeElement)
+		curPos = document.activeElement.selectionStart;
+	l('menu').innerHTML=str;
+	if(Game.onMenu=='stats' && activeid && l(activeid)) 
+		l(activeid).focus();
+		
+	if(curPos>0) 
+		l(activeid).selectionStart=curPos;
 }
-*/
 
 MS.priceForNextDragonLevel = function()
 {
@@ -743,15 +747,8 @@ if(!statsdone)
 	//eval('Game.UpdateMenu='+Game.UpdateMenu.toString().slice(0, -1) + 'console.log(\'end: \' + document.activeElement.id); }');
 	//eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('var str=\'\';', 'console.log(\'startUpdateMenu: \' + document.activeElement.id); var str=\'\'; '));
 	//eval('Game.UpdateMenu='+Game.UpdateMenu.toString().slice(0, -1) + 'console.log(\'endUpdateMenu: \' + document.activeElement.id); }');
-	
-	
-	var storeActiveId = 'var activeid = document.activeElement.id; var curPos=0; ';
-	//storeActiveId += 'var changeType = 0; ';
-	storeActiveId += 'if (document.activeElement.type == "number" || document.activeElement.type == "text") { curPos = document.activeElement.selectionStart; } ';
-	storeActiveId += 'l(\'menu\').innerHTML=str; ';
-	storeActiveId += 'if(Game.onMenu==\'stats\' && activeid && l(activeid)) l(activeid).focus(); ';
-	storeActiveId += 'if(curPos>0) l(activeid).selectionStart=curPos; ';
-	eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace(new RegExp('l\\(\'menu\'\\).innerHTML=str;'), storeActiveId));
+
+	eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace(new RegExp('l\\(\'menu\'\\).innerHTML=str;'), 'MS.storeActiveId(str)'));
 	
 	// Update the Menu after calling this addon:
 	Game.UpdateMenu();

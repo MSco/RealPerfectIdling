@@ -15,6 +15,7 @@
     1.0.2:
     	- Added remaining Price for a user-specified amount of buildings (via input number field)
     	- Show time left to get remaining price
+    	- Focus of input textfields working correctly now
     1.0.1:
     	- Performance upgrade for calculating BCI
     	- Dragon Harvest Stats only shown for Game.version>=1.9

@@ -1,7 +1,7 @@
 /* ================================================
     MSco Cookie Stats - A Cookie Clicker plugin
 
-    Version: 1.0.2.3
+    Version: 1.0.2.4
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -15,6 +15,7 @@
     1.0.2:
     	- Added remaining Price for a user-specified amount of buildings (via input number field)
     	- Show time left to get remaining price
+    	- Focus of input textfields working correctly now
     1.0.1:
     	- Performance upgrade for calculating BCI
     	- Dragon Harvest Stats only shown for Game.version>=1.9
@@ -510,19 +511,6 @@ MS.neededCookiesForHC = function(HC)
 	if (!(HC == null || isNaN(HC) || HC.length==0))
 		var hcsToAdd = parseInt(HC);
 	
-	/*	
-	if (Game.version >= 1.9)
-	{
-		var hcsOverallNeeded = Game.heavenlyChips + Game.heavenlyChipsSpent + hcsToAdd;
-		return Math.pow(hcsOverallNeeded,3)*Math.pow(10,12);
-	}
-	else
-	{
-		var hcsOverallNeeded = Game.HowMuchPrestige(Game.cookiesReset) + hcsToAdd;
-		return Game.HowManyCookiesReset(hcsOverallNeeded);
-	}
-	*/
-	
 	var hcsOverallNeeded = Game.HowMuchPrestige(Game.cookiesReset) + hcsToAdd;
 	return Game.HowManyCookiesReset(hcsOverallNeeded);
 }
@@ -564,15 +552,19 @@ MS.PriceForBuildingAmount = function(inputFieldValue, i)
 	return Math.ceil(price);
 }
 
-/*
-MS.getInitialAmountWanted = function(i)
+MS.storeActiveId = function(str)
 {
-	var building = Game.ObjectsByID[i];
-	var minAmount = building.amount+1;
-	
-	
+	var activeid = document.activeElement.id; 
+	var curPos=0;
+	if ('selectionStart' in document.activeElement)
+		curPos = document.activeElement.selectionStart;
+	l('menu').innerHTML=str;
+	if(Game.onMenu=='stats' && activeid && l(activeid)) 
+		l(activeid).focus();
+		
+	if(curPos>0) 
+		l(activeid).selectionStart=curPos;
 }
-*/
 
 MS.priceForNextDragonLevel = function()
 {
@@ -599,8 +591,10 @@ MS.priceForNextDragonLevel = function()
 
 if(!statsdone)
 {
-	// Replace strings in original Statistics menu
+	// How to add a button
 	//eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('when out of focus)</label><br>\'+', 'when out of focus)</label><br>\'+\'<div class="listing"><a class="option" \'+Game.clickStr+\'="myfunc();">Real Perfect Idling</a><label>Simulate the game untilt the last Save)</label></div>\' + '))
+	
+	// Replace strings in original Statistics menu
 	
 	// cookies in bank with wrinklers
 	eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('<b>Cookies in bank :</b> <div class="price plain">\'+Game.tinyCookie()+Beautify(Game.cookies)+\'</div></div>\'','<b>Cookies in bank (with wrinklers) :</b> <div class="price plain">\'+Game.tinyCookie()+Beautify(Game.cookies+MS.wrinklersreward())+\'</div></div>\''));
@@ -657,7 +651,7 @@ if(!statsdone)
 	
 	// start Heavenly Chips stats
 	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Heavenly Chips</td> <td>Earned (this game)</td> <td>Earned (all time)</td> <td>Wanted (this game)</td> <td>Cookies needed (all time)</td></tr>\'';
-	statsString += ' + \'<tr><td class="listing"><b>Heavenly Chips:</b> </td><td style="font-weight:bold;">\' + Beautify(MS.hcThisGame()) + \' (\' + Beautify(MS.hcFactor()) + \'%) </td><td style="font-weight: bold;">\' + Beautify(MS.hcAllTime()) + \'</td><td> <input type=number id="tfHC" autofocus=true min=0 max=99999999 style="width:75%;" value=\' + (thisInput=(l("tfHC")==null ? \'0\' : l("tfHC").value)) + \'></input> </td><td class="price plain">\' + Beautify(MS.neededCookiesForHC(thisInput)) + \'</td></tr>\'';
+	statsString += ' + \'<tr><td class="listing"><b>Heavenly Chips:</b> </td><td style="font-weight:bold;">\' + Beautify(MS.hcThisGame()) + \' (\' + Beautify(MS.hcFactor()) + \'%) </td><td style="font-weight: bold;">\' + Beautify(MS.hcAllTime()) + \'</td><td> <input type="text" onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="tfHC" min=0 max=99999999 style="width:75%;" value=\' + (thisInput=(l("tfHC")==null ? \'0\' : l("tfHC").value)) + \'></input> </td><td class="price plain">\' + Beautify(MS.neededCookiesForHC(thisInput)) + \'</td></tr>\'';
 	
 	// add blank row
 	statsString += ' + \'<tr style="height: 20px;"><td colspan="4"></td></tr>\'';
@@ -674,7 +668,7 @@ if(!statsdone)
 	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Buildings</td> <td>Amount wanted</td> <td>Remaining Price</td> <td>Time Left (with wrinklers)</td></tr>\'';
 	for (var i in Game.ObjectsById)
 	{
-		statsString += ' + \'<tr><td class="listing"><b>'+Game.ObjectsById[i].name+':</b></td> <td><input type=number id="tfBuildingAmount'+i+'" autofocus=true min=\'+(minAmount=(Game.ObjectsById['+i+'].amount+1))+\' style="width:25%;" value=\' + (thisInput=(l("tfBuildingAmount'+i+'")==null ? minAmount : Math.max(minAmount,l("tfBuildingAmount'+i+'").value))) + \'></input></td> <td class="price plain">\' + Beautify(price=MS.PriceForBuildingAmount(thisInput, '+i+')) + \'</td> <td style="font-weight:bold;">\' + ((time=MS.timeLeftForCookies(price)) > 0 ? Game.sayTime(time) : "done") + \'</b></td></tr>\'';
+		statsString += ' + \'<tr><td class="listing"><b>'+Game.ObjectsById[i].name+':</b></td> <td><input type="text" onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="tfBuildingAmount'+i+'" min=\'+(minAmount=(Game.ObjectsById['+i+'].amount+1))+\' style="width:20%;" value=\' + (thisInput=(l("tfBuildingAmount'+i+'")==null ? minAmount : Math.max(minAmount,l("tfBuildingAmount'+i+'").value))) + \'></input></td> <td class="price plain">\' + Beautify(price=MS.PriceForBuildingAmount(thisInput, '+i+')) + \'</td> <td style="font-weight:bold;">\' + ((time=MS.timeLeftForCookies(price)) > 0 ? Game.sayTime(time) : "done") + \'</b></td></tr>\'';
 	}
 	
 	// end table
@@ -736,8 +730,13 @@ if(!statsdone)
 	}
 	/******************************************************************************************************************************/
 	
-	// refresh Update Menu after cookie chain:
+	// Update Menu after cookie chain:
 	eval('Game.goldenCookie.click='+Game.goldenCookie.click.toString().replace('me.chain++;', 'me.chain++; Game.UpdateMenu();'));
+
+	// How to append a string to a function
+	//eval('Game.UpdateMenu='+Game.UpdateMenu.toString().slice(0, -1) + 'console.log(\'endUpdateMenu: \' + document.activeElement.id); }');
+
+	eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace(new RegExp('l\\(\'menu\'\\).innerHTML=str;'), 'MS.storeActiveId(str)'));
 	
 	// Update the Menu after calling this addon:
 	Game.UpdateMenu();

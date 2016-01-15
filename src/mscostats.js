@@ -1,7 +1,7 @@
 /* ================================================
     MSco Cookie Stats - A Cookie Clicker plugin
 
-    Version: 1.0.2.4
+    Version: 1.0.2.5
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -450,7 +450,12 @@ MS.bankDragonLucky = function()
 
 MS.maxCookieChainReward = function(frenzyMultiplier)
 {
-	var digit = (Game.elderWrath < 3) ? 7 : 6;
+	if (frenzyMultiplier == 0.5)
+		var digit = 6;
+	else if (frenzyMultiplier == 7)
+		var digit = 7;
+	else
+		var digit = (Game.elderWrath < 3) ? 7 : 6;
 		
 	var mult = MS.goldenMult();
 	
@@ -634,9 +639,9 @@ if(!statsdone)
 	
 	// Cookie Chain stats
 	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Cookie Chains</td> <td>Bank</td> <td>Max. Cookies to spend</td> <td>Reward</td> <td>Next CPS</td></tr>\'';
-	statsString += ' + (Game.elderWrath > 0 ? (\'<tr><td class="listing"><b>Clot:</b></td> <td>'+MS.coloredCookieChainString('MS.bankCookieChain(0.5)', 0.5)+'</td> <td><div class="price plain"> \' + Beautify(MS.cookiesToSpend(MS.bankCookieChain(0.5))) + \'</div></td> <td>'+MS.coloredCookieChainString('MS.maxCookieChainReward(0.5)[0]', 0.5)+'</td><td><div class="price plain">\' + Beautify(MS.maxCookieChainReward(0.5)[1]) + \'</div></td></tr>\') : \'\')';
+	statsString += ' + \'<tr><td class="listing"><b>Clot:</b></td> <td>'+MS.coloredCookieChainString('MS.bankCookieChain(0.5)', 0.5)+'</td> <td><div class="price plain"> \' + Beautify(MS.cookiesToSpend(MS.bankCookieChain(0.5))) + \'</div></td> <td>'+MS.coloredCookieChainString('MS.maxCookieChainReward(0.5)[0]', 0.5)+'</td><td><div class="price plain">\' + Beautify(MS.maxCookieChainReward(0.5)[1]) + \'</div></td></tr>\'';
 	statsString += ' + \'<tr><td class="listing"><b>Plain:</b></td> <td>'+MS.coloredCookieChainString('MS.bankCookieChain(1)', 1)+'</td> <td><div class="price plain"> \' + Beautify(MS.cookiesToSpend(MS.bankCookieChain(1))) + \'</div></td> <td>'+MS.coloredCookieChainString('MS.maxCookieChainReward(1)[0]', 1)+'</td><td><div class="price plain">\' + Beautify(MS.maxCookieChainReward(1)[1]) + \'</div></td></tr>\'';
-	statsString += ' + (Game.elderWrath == 0 ? (\'<tr><td class="listing"><b>Frenzy:</b></td> <td>'+MS.coloredCookieChainString('MS.bankCookieChain(7)', 7)+'</td> <td><div class="price plain"> \' + Beautify(MS.cookiesToSpend(MS.bankCookieChain(7))) + \'</div></td> <td>'+MS.coloredCookieChainString('MS.maxCookieChainReward(7)[0]', 7)+'</td><td><div class="price plain">\' + Beautify(MS.maxCookieChainReward(7)[1]) + \'</div></td></tr>\') : \'\')';
+	statsString += ' + \'<tr><td class="listing"><b>Frenzy:</b></td> <td>'+MS.coloredCookieChainString('MS.bankCookieChain(7)', 7)+'</td> <td><div class="price plain"> \' + Beautify(MS.cookiesToSpend(MS.bankCookieChain(7))) + \'</div></td> <td>'+MS.coloredCookieChainString('MS.maxCookieChainReward(7)[0]', 7)+'</td><td><div class="price plain">\' + Beautify(MS.maxCookieChainReward(7)[1]) + \'</div></td></tr>\'';
 	statsString += ' + ((Game.version >= 1.9) ? \'<tr><td class="listing"><b>Dragon Harvest:</b></td> <td>'+MS.coloredCookieChainString('MS.bankCookieChain(15)', 15)+'</td> <td><div class="price plain"> \' + Beautify(MS.cookiesToSpend(MS.bankCookieChain(15))) + \'</div></td> <td>'+MS.coloredCookieChainString('MS.maxCookieChainReward(15)[0]',15)+'</td><td><div class="price plain">\' + Beautify(MS.maxCookieChainReward(15)[1]) + \'</div></td></tr>\' : \'\')';
 	
 	// add blank row

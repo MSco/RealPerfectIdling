@@ -560,15 +560,22 @@ MS.PriceForBuildingAmount = function(inputFieldValue, i)
 MS.storeActiveId = function(str)
 {
 	var activeid = document.activeElement.id; 
-	var curPos=0;
+	var curPos=-1;
+	var endPos=-1
 	if ('selectionStart' in document.activeElement)
+	{
 		curPos = document.activeElement.selectionStart;
+		endPos = document.activeElement.selectionEnd;
+	}
 	l('menu').innerHTML=str;
 	if(Game.onMenu=='stats' && activeid && l(activeid)) 
 		l(activeid).focus();
 		
-	if(curPos>0) 
+	if(curPos>=0)
+	{
 		l(activeid).selectionStart=curPos;
+		l(activeid).selectionEnd=endPos;
+	}
 }
 
 MS.priceForNextDragonLevel = function()

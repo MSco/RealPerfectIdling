@@ -461,14 +461,14 @@ MS.maxCookieChainReward = function(frenzyMultiplier)
 	
 	var chain = 0;
 	var moni = 0, nextMoni = 0;
-	while (moni < Game.cookiesPs*frenzyMultiplier/MS.frenzyMod()*60*60*3*mult)
+	while (moni < Game.cookiesPs*frenzyMultiplier/MS.frenzyMod()*60*60*6*mult)
 	{
 		chain++;
 		moni = Math.max(digit,Math.floor(1/9*Math.pow(10,chain)*digit*mult));
 	}
 	
 	moni = Math.max(digit,Math.floor(1/9*Math.pow(10,chain-1)*digit*mult));
-	var nextCps = Math.max(digit,Math.floor(1/9*Math.pow(10,chain)*digit*mult))/(60*60*3*mult*frenzyMultiplier);
+	var nextCps = Math.max(digit,Math.floor(1/9*Math.pow(10,chain)*digit*mult))/(60*60*6*mult*frenzyMultiplier);
 	
 	return [moni, nextCps];
 }

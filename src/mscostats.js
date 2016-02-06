@@ -1,7 +1,7 @@
 /* ================================================
     MSco Cookie Stats - A Cookie Clicker plugin
 
-    Version: 1.0.2.5
+    Version: 1.0.3.0
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -12,6 +12,8 @@
 
     Version History:
 
+    1.0.3:
+    	- Compatibility of beta 1.903
     1.0.2:
     	- Added remaining Price for a user-specified amount of buildings (via input number field)
     	- Show time left to get remaining price
@@ -93,43 +95,6 @@ Game.ImportSaveCode = function(save)
     
     console.log('MS.importSaveT: ' + MS.importSaveT);
     console.log('MS.importSaveDate: ' + MS.importSaveDate);
-}
-
-MS.GetHeavenlyMultiplierOriginal = Game.GetHeavenlyMultiplier;
-Game.GetHeavenlyMultiplier=function()
-{
-	if (Game.beta==1 && Game.version==1.9)
-	{
-		var heavenlyMult=0;
-		if (Game.Has('Heavenly chip secret')) heavenlyMult+=5;
-		if (Game.Has('Heavenly cookie stand')) heavenlyMult+=20;
-		if (Game.Has('Heavenly bakery')) heavenlyMult+=25;
-		if (Game.Has('Heavenly confectionery')) heavenlyMult+=25;
-		if (Game.Has('Heavenly key')) heavenlyMult+=25;
-		if (Game.hasAura('Dragon God')) heavenlyMult*=1.05;
-		heavenlyMult*=0.01
-		return heavenlyMult;
-	}
-	else return MS.GetHeavenlyMultiplierOriginal();
-}
-
-MS.EarnHeavenlyChipsOriginal = Game.EarnHeavenlyChips;
-Game.EarnHeavenlyChips=function(cookiesForfeited)
-{
-	if (Game.beta==1 && Game.version==1.9)
-	{
-		//recalculate prestige and chips owned
-		var prestige=Math.floor(Game.HowMuchPrestige(Game.cookiesReset+cookiesForfeited));
-		if (prestige>Game.prestige)//did we gain prestige levels?
-		{
-			var prestigeDifference=prestige-Game.prestige;
-			Game.heavenlyChips+=prestige-Game.heavenlyChips-Game.heavenlyChipsSpent;
-			Game.prestige=prestige;
-			if (Game.prefs.popups) Game.Popup('You gain '+Beautify(prestigeDifference)+' prestige level'+(prestigeDifference==1?'':'s')+'!');
-			else Game.Notify('You forfeit your '+Beautify(cookiesForfeited)+' cookies.','You gain <b>'+Beautify(prestigeDifference)+'</b> prestige level'+(prestigeDifference==1?'':'s')+'!',[19,7]);
-		}
-	}
-	else return MS.EarnHeavenlyChipsOriginal();
 }
 
 MS.BeautifyShort=function(value,floats)
@@ -431,7 +396,7 @@ MS.timeLeftForCookies = function(cookies)
 
 MS.bankLucky = function()
 {
-	return Game.cookiesPs / MS.frenzyMod() * 1200 * 10 * MS.goldenMult() + 13;
+	return Game.cookiesPs / MS.frenzyMod() * 60 * 15 * 15 * MS.goldenMult() + 13;
 }
 
 MS.bankFrenzyLucky = function()
@@ -440,12 +405,12 @@ MS.bankFrenzyLucky = function()
 	if (Game.version >= 1.9)
 		if (Game.hasAura('Ancestral Metamorphosis')) mult*=1.1;
 	
-	return Game.cookiesPs / MS.frenzyMod() * 1200 * 10 * 7 * mult + 13;
+	return Game.cookiesPs / MS.frenzyMod() * 60 * 15 * 15 * 7 * mult + 13;
 }
 
 MS.bankDragonLucky = function()
 {
-	return Game.cookiesPs / MS.frenzyMod() * 1200 * 10 * 15 * MS.goldenMult() + 13;
+	return Game.cookiesPs / MS.frenzyMod() * 60 * 15 * 15 * 15 * MS.goldenMult() + 13;
 }
 
 MS.maxCookieChainReward = function(frenzyMultiplier)
@@ -458,17 +423,18 @@ MS.maxCookieChainReward = function(frenzyMultiplier)
 		var digit = (Game.elderWrath < 3) ? 7 : 6;
 		
 	var mult = MS.goldenMult();
+	var cookieChainFactor = (Game.version >= 1.903 ? 60*60*6*mult : 60*60*3*mult)
 	
 	var chain = 0;
 	var moni = 0, nextMoni = 0;
-	while (moni < Game.cookiesPs*frenzyMultiplier/MS.frenzyMod()*60*60*3*mult)
+	while (moni < Game.cookiesPs*frenzyMultiplier/MS.frenzyMod()*cookieChainFactor)
 	{
 		chain++;
 		moni = Math.max(digit,Math.floor(1/9*Math.pow(10,chain)*digit*mult));
 	}
 	
 	moni = Math.max(digit,Math.floor(1/9*Math.pow(10,chain-1)*digit*mult));
-	var nextCps = Math.max(digit,Math.floor(1/9*Math.pow(10,chain)*digit*mult))/(60*60*3*mult*frenzyMultiplier);
+	var nextCps = Math.max(digit,Math.floor(1/9*Math.pow(10,chain)*digit*mult))/(cookieChainFactor*frenzyMultiplier);
 	
 	return [moni, nextCps];
 }

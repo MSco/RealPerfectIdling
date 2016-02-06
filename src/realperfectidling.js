@@ -1,7 +1,7 @@
 /* ================================================
     MSco's Real Perfect Idling - A Cookie Clicker plugin
 
-    Version: 1.0.0.1
+    Version: 1.0.1.0
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -15,6 +15,8 @@
     the original game.
 
     Version History:
+    1.0.1:
+    	- Compatibility of beta 1.903
     0.9.9:
     	- Undo offline cookie calculations of Twin Gates of Transcendence
     	- TotalCookies are added to each building
@@ -343,7 +345,7 @@ RPI.runWrath = function(cps, durationSeconds)
 						{
 							Game.wrinklers[i].hp=Game.wrinklerHP;
 							Game.wrinklers[i].type=0;
-							if (Math.random()<0.001) 
+							if (Math.random()<0.0001) 
 								Game.wrinklers[i].type=1; // shiny wrinkler
 						}
 						numWrinklers++;

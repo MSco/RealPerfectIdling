@@ -343,7 +343,7 @@ RPI.runWrath = function(cps, durationSeconds)
 						{
 							Game.wrinklers[i].hp=Game.wrinklerHP;
 							Game.wrinklers[i].type=0;
-							if (Math.random()<0.001) 
+							if (Math.random()<0.0001) 
 								Game.wrinklers[i].type=1; // shiny wrinkler
 						}
 						numWrinklers++;

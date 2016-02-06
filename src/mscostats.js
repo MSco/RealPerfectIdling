@@ -660,15 +660,6 @@ if(!statsdone)
 	
 	if(Game.version >= 1.9)
 	{
-		// Fix issue: Special Menu were not unlocked only for dragons
-		//var searchBug='\\(\\(researchStr!=\'\' \\|\\| wrathStr!=\'\' \\|\\| pledgeStr!=\'\' \\|\\| santaStr!=\'\' \\|\\| Game.season!=\'\'\\)\\?';
-		//var replaceBug='((researchStr!=\'\' || wrathStr!=\'\'|| pledgeStr!=\'\'|| santaStr!=\'\'|| Game.season!=\'\'|| dragonStr!=\'\')?';
-		/***************** Remove this if Game.version > 1.9 !!!! *****************************/
-		var searchBug=' Game.season!=\'\'';
-		var replaceBug=' Game.season!=\'\'|| dragonStr!=\'\'';
-		eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace(searchBug, replaceBug));
-		/*************************************************************************/
-		
 		// Price for next Dragon Level
 		var search='\'<div class="listing"><b>Dragon training';
 		var replaceDragon='\'<div class="listing"><b>Price for next Dragon Level:</b> <div class="price plain">\' + Beautify(MS.priceForNextDragonLevel()) + \'</div></div>\' + ';
@@ -676,6 +667,7 @@ if(!statsdone)
 	}
 	
 	/********************************************* Change Color of Building prices: **********************************************/
+	
 	// in this code snippet, the product price is written into the store. Here we set the color.
 	var oldProductPriceStr = 'l(\'productPrice\'+me.id).innerHTML=Beautify(Math.round(me.price));';
 	var coloredProductPriceStr = 'var bestbci=MS.calcBestBCI(); MS.refreshBuildingPrice(me, bestbci)';
@@ -699,6 +691,7 @@ if(!statsdone)
 		Game.ObjectsById[i].refresh();
 	}
 	
+	
 	// We also refresh the buildings after buying an upgrade:
 	var oldActivateUpgrade = 'Game.UpgradesOwned++;';
 	var newActivateUpgrade = '{ Game.UpgradesOwned++; } for (var i in Game.ObjectsById) Game.ObjectsById[i].refresh(); ';
@@ -706,6 +699,8 @@ if(!statsdone)
 	{
 		eval('Game.UpgradesById['+i+'].buy='+Game.UpgradesById[i].buy.toString().replace(oldActivateUpgrade, newActivateUpgrade));
 	}
+	
+	
 	/******************************************************************************************************************************/
 	
 	// Update Menu after cookie chain:

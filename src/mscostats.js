@@ -1,7 +1,7 @@
 /* ================================================
     MSco Cookie Stats - A Cookie Clicker plugin
 
-    Version: 1.0.2.5
+    Version: 1.0.3.0
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -12,6 +12,8 @@
 
     Version History:
 
+    1.0.3:
+    	- Compatibility of beta 1.903
     1.0.2:
     	- Added remaining Price for a user-specified amount of buildings (via input number field)
     	- Show time left to get remaining price

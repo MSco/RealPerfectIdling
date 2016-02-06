@@ -95,43 +95,6 @@ Game.ImportSaveCode = function(save)
     console.log('MS.importSaveDate: ' + MS.importSaveDate);
 }
 
-MS.GetHeavenlyMultiplierOriginal = Game.GetHeavenlyMultiplier;
-Game.GetHeavenlyMultiplier=function()
-{
-	if (Game.beta==1 && Game.version==1.9)
-	{
-		var heavenlyMult=0;
-		if (Game.Has('Heavenly chip secret')) heavenlyMult+=5;
-		if (Game.Has('Heavenly cookie stand')) heavenlyMult+=20;
-		if (Game.Has('Heavenly bakery')) heavenlyMult+=25;
-		if (Game.Has('Heavenly confectionery')) heavenlyMult+=25;
-		if (Game.Has('Heavenly key')) heavenlyMult+=25;
-		if (Game.hasAura('Dragon God')) heavenlyMult*=1.05;
-		heavenlyMult*=0.01
-		return heavenlyMult;
-	}
-	else return MS.GetHeavenlyMultiplierOriginal();
-}
-
-MS.EarnHeavenlyChipsOriginal = Game.EarnHeavenlyChips;
-Game.EarnHeavenlyChips=function(cookiesForfeited)
-{
-	if (Game.beta==1 && Game.version==1.9)
-	{
-		//recalculate prestige and chips owned
-		var prestige=Math.floor(Game.HowMuchPrestige(Game.cookiesReset+cookiesForfeited));
-		if (prestige>Game.prestige)//did we gain prestige levels?
-		{
-			var prestigeDifference=prestige-Game.prestige;
-			Game.heavenlyChips+=prestige-Game.heavenlyChips-Game.heavenlyChipsSpent;
-			Game.prestige=prestige;
-			if (Game.prefs.popups) Game.Popup('You gain '+Beautify(prestigeDifference)+' prestige level'+(prestigeDifference==1?'':'s')+'!');
-			else Game.Notify('You forfeit your '+Beautify(cookiesForfeited)+' cookies.','You gain <b>'+Beautify(prestigeDifference)+'</b> prestige level'+(prestigeDifference==1?'':'s')+'!',[19,7]);
-		}
-	}
-	else return MS.EarnHeavenlyChipsOriginal();
-}
-
 MS.BeautifyShort=function(value,floats)
 {
 	var negative=(value<0);

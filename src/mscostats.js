@@ -257,14 +257,9 @@ MS.wrinklersreward = function()
 		},0);	
 }
 
-MS.getWrinklersMax = function()
-{
-	return Game.version >= 1.9 ? Game.getWrinklersMax() : 10;
-}
-
 MS.wrinklersCPH = function()
 {
-	var wrinkFactor = MS.getWrinklersMax()*0.5*MS.getSuckFactor();
+	var wrinkFactor = Game.getWrinklersMax()*0.5*MS.getSuckFactor();
 	wrinkFactor += 0.5
 
 	return Game.cookiesPs / MS.frenzyMod() * wrinkFactor * 3600;
@@ -460,7 +455,7 @@ MS.reindeerReward = function(frenzyMultiplier)
 
 MS.maxElderFrenzy = function()
 {
-	var wrinklersMax = MS.getWrinklersMax();
+	var wrinklersMax = Game.getWrinklersMax();
 	var wrinkFactor = wrinklersMax*wrinklersMax*0.05*MS.getSuckFactor();
 	wrinkFactor += (1-wrinklersMax*0.05);
 	

@@ -1,7 +1,7 @@
 /* ================================================
     MSco Cookie Stats - A Cookie Clicker plugin
 
-    Version: 1.0.4.0
+    Version: 1.0.5.0
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -12,6 +12,8 @@
 
     Version History:
 
+    1.0.5:
+    	- Compatibility of version 2
     1.0.4:
     	- Compatibility of beta 1.907
     1.0.3:
@@ -189,18 +191,13 @@ MS.hcThisGame = function()
 
 MS.buildingSellReward = function(building)
 {
-	var buildingfree = (Game.version >= 1.9) ? building.free : 0;
 	var buildingamount = building.amount;
-	if (Game.version >= 1.9)
-		if (building.id == Game.ObjectsN-1 && Game.dragonLevel>=9 && !Game.hasAura('Earth Shatterer'))
-			buildingamount--;
+	if (building.id == Game.ObjectsN-1 && Game.dragonLevel>=9 && !Game.hasAura('Earth Shatterer'))
+		buildingamount--;
 	
-	var price = Math.ceil(building.basePrice * (Math.pow(Game.priceIncrease, Math.max(0,building.amount-buildingfree)+1) - Game.priceIncrease) / 0.15);
+	var price = Math.ceil(building.basePrice * (Math.pow(Game.priceIncrease, Math.max(0,building.amount-building.free)+1) - Game.priceIncrease) / 0.15);
 	
-	var giveBack=0.5;
-	if (Game.version >= 1.9)
-		if (Game.dragonLevel>=9) 
-			giveBack=0.85
+	var giveBack = (Game.dragonLevel>=9) ? 0.85 : 0.5;
 	
 	var reward = price * giveBack;
 	
@@ -208,9 +205,7 @@ MS.buildingSellReward = function(building)
 	if (Game.Has('Santa\'s dominion')) reward*=0.99;
 	if (Game.Has('Faberge egg')) reward*=0.99;
 	if (Game.Has('Divine discount')) reward*=0.99;
-	
-	if (Game.version >= 1.9)
-        	if (Game.hasAura('Fierce Hoarder')) price*=0.98;
+	if (Game.hasAura('Fierce Hoarder')) price*=0.98;
 	
 	return reward;
 }
@@ -264,14 +259,9 @@ MS.wrinklersreward = function()
 		},0);	
 }
 
-MS.getWrinklersMax = function()
-{
-	return Game.version >= 1.9 ? Game.getWrinklersMax() : 10;
-}
-
 MS.wrinklersCPH = function()
 {
-	var wrinkFactor = MS.getWrinklersMax()*0.5*MS.getSuckFactor();
+	var wrinkFactor = Game.getWrinklersMax()*0.5*MS.getSuckFactor();
 	wrinkFactor += 0.5
 
 	return Game.cookiesPs / MS.frenzyMod() * wrinkFactor * 3600;
@@ -350,8 +340,6 @@ MS.calcEfficiencies = function()
 
 MS.refreshBuildingPrice = function(building)
 {
-	var price = Game.version >= 1.907 ? building.bulkPrice : building.price;
-	
 	var efc = MS.efc[building.id];
 	if(efc>=100) 
 		var bcolor="#66ff4e";
@@ -359,7 +347,7 @@ MS.refreshBuildingPrice = function(building)
 		var bcolor="yellow";
 	else 
 		var bcolor="#FF3232";
-	l('productPrice'+building.id).innerHTML=Beautify(Math.round(price)) + '(' + Beautify(efc) + '%)';
+	l('productPrice'+building.id).innerHTML=Beautify(Math.round(building.bulkPrice)) + '(' + Beautify(efc) + '%)';
 	l('productPrice'+building.id).style.color=bcolor;
 }
 
@@ -371,11 +359,9 @@ MS.frenzyMod = function()
 MS.goldenMult = function()
 {
 	var mult=1;
-	if (Game.version >= 1.9)
-	{
-		if (Game.elderWrath>0 && Game.hasAura('Unholy Dominion')) mult*=1.1;
-		else if (Game.elderWrath==0 && Game.hasAura('Ancestral Metamorphosis')) mult*=1.1;
-	}
+	
+	if (Game.elderWrath>0 && Game.hasAura('Unholy Dominion')) mult*=1.1;
+	else if (Game.elderWrath==0 && Game.hasAura('Ancestral Metamorphosis')) mult*=1.1;
 	
 	return mult;
 }
@@ -404,8 +390,7 @@ MS.bankLucky = function()
 MS.bankFrenzyLucky = function()
 {
 	var mult = 1;
-	if (Game.version >= 1.9)
-		if (Game.hasAura('Ancestral Metamorphosis')) mult*=1.1;
+	if (Game.hasAura('Ancestral Metamorphosis')) mult*=1.1;
 	
 	return Game.cookiesPs / MS.frenzyMod() * 60 * 15 * 15 * 7 * mult + 13;
 }
@@ -425,18 +410,17 @@ MS.maxCookieChainReward = function(frenzyMultiplier)
 		var digit = (Game.elderWrath < 3) ? 7 : 6;
 		
 	var mult = MS.goldenMult();
-	var cookieChainFactor = (Game.version >= 1.903 ? 60*60*6*mult : 60*60*3*mult)
 	
 	var chain = 0;
 	var moni = 0, nextMoni = 0;
-	while (moni < Game.cookiesPs*frenzyMultiplier/MS.frenzyMod()*cookieChainFactor)
+	while (moni < Game.cookiesPs*frenzyMultiplier/MS.frenzyMod()*60*60*6*mult)
 	{
 		chain++;
 		moni = Math.max(digit,Math.floor(1/9*Math.pow(10,chain)*digit*mult));
 	}
 	
 	moni = Math.max(digit,Math.floor(1/9*Math.pow(10,chain-1)*digit*mult));
-	var nextCps = Math.max(digit,Math.floor(1/9*Math.pow(10,chain)*digit*mult))/(cookieChainFactor*frenzyMultiplier);
+	var nextCps = Math.max(digit,Math.floor(1/9*Math.pow(10,chain)*digit*mult))/(60*60*6*mult*frenzyMultiplier);
 	
 	return [moni, nextCps];
 }
@@ -467,7 +451,7 @@ MS.reindeerReward = function(frenzyMultiplier)
 
 MS.maxElderFrenzy = function()
 {
-	var wrinklersMax = MS.getWrinklersMax();
+	var wrinklersMax = Game.getWrinklersMax();
 	var wrinkFactor = wrinklersMax*wrinklersMax*0.05*MS.getSuckFactor();
 	wrinkFactor += (1-wrinklersMax*0.05);
 	
@@ -505,22 +489,20 @@ MS.priceForSacrificeBuildings = function(building, amount)
 MS.PriceForBuildingAmount = function(inputFieldValue, i)
 {
 	var building = Game.ObjectsById[i];
-	var buildingfree = (Game.version>=1.9 ? building.free : 0);
 	var amount = building.amount+1;
 	
 	if (!(inputFieldValue == null || isNaN(inputFieldValue) || inputFieldValue.length==0))
 		var amount = parseInt(inputFieldValue);
 	
-	var lowAmount = Math.max(building.amount-buildingfree, 0);
-	var highAmount = Math.max(amount-buildingfree,0);
+	var lowAmount = Math.max(building.amount-building.free, 0);
+	var highAmount = Math.max(amount-building.free,0);
 	
 	var price = building.basePrice*(Math.pow(Game.priceIncrease, highAmount)-Math.pow(Game.priceIncrease, lowAmount))/0.15;
 	if (Game.Has('Season savings')) price*=0.99;
 	if (Game.Has('Santa\'s dominion')) price*=0.99;
 	if (Game.Has('Faberge egg')) price*=0.99;
 	if (Game.Has('Divine discount')) price*=0.99;
-	if (Game.version >= 1.9)
-		if (Game.hasAura('Fierce Hoarder')) price*=0.98;
+	if (Game.hasAura('Fierce Hoarder')) price*=0.98;
 	
 	return Math.ceil(price);
 }
@@ -607,7 +589,7 @@ if(!statsdone)
 	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Lucky</td> <td>Bank</td> <td>Max. Cookies to spend</td> <td>Time Left (with CPS)</td></tr>\'';
 	statsString += ' + \'<tr><td class="listing"><b>Plain:</b></td> <td><div class="price plain">\' + Beautify(MS.bankLucky()) + \'</div></td> <td><div class="price plain"> \' + Beautify(MS.cookiesToSpend(MS.bankLucky())) + \'</div></td> <td style="font-weight:bold;">\' + ((time=MS.timeLeftForBank(MS.bankLucky())) > 0 ? Game.sayTime(time) : "done") + \'</b></td></tr>\'';
 	statsString += ' + \'<tr><td class="listing"><b>Frenzy:</b></td> <td><div class="price plain">\' + Beautify(MS.bankFrenzyLucky()) + \'</div></td> <td><div class="price plain"> \' + Beautify(MS.cookiesToSpend(MS.bankFrenzyLucky())) + \'</div></td> <td style="font-weight:bold;">\' + ((time=MS.timeLeftForBank(MS.bankFrenzyLucky())) > 0 ? Game.sayTime(time) : "done") + \' </td></tr>\'';
-	statsString += ' + ((Game.version >= 1.9) ? \'<tr><td class="listing"><b>Dragon Harvest:</b></td> <td><div class="price plain">\' + Beautify(MS.bankDragonLucky()) + \'</div></td> <td><div class="price plain"> \' + Beautify(MS.cookiesToSpend(MS.bankDragonLucky())) + \'</div></td> <td style="font-weight:bold;">\' + ((time=MS.timeLeftForBank(MS.bankDragonLucky())) > 0 ? Game.sayTime(time) : "done") + \' </td></tr>\' : \'\')';
+	statsString += ' + \'<tr><td class="listing"><b>Dragon Harvest:</b></td> <td><div class="price plain">\' + Beautify(MS.bankDragonLucky()) + \'</div></td> <td><div class="price plain"> \' + Beautify(MS.cookiesToSpend(MS.bankDragonLucky())) + \'</div></td> <td style="font-weight:bold;">\' + ((time=MS.timeLeftForBank(MS.bankDragonLucky())) > 0 ? Game.sayTime(time) : "done") + \' </td></tr>\'';
 	
 	// add blank row
 	statsString += ' + \'<tr style="height: 20px;"><td colspan="4"></td></tr>\'';
@@ -617,14 +599,14 @@ if(!statsdone)
 	statsString += ' + \'<tr><td class="listing"><b>Clot:</b></td> <td>'+MS.coloredCookieChainString('MS.bankCookieChain(0.5)', 0.5)+'</td> <td><div class="price plain"> \' + Beautify(MS.cookiesToSpend(MS.bankCookieChain(0.5))) + \'</div></td> <td>'+MS.coloredCookieChainString('MS.maxCookieChainReward(0.5)[0]', 0.5)+'</td><td><div class="price plain">\' + Beautify(MS.maxCookieChainReward(0.5)[1]) + \'</div></td></tr>\'';
 	statsString += ' + \'<tr><td class="listing"><b>Plain:</b></td> <td>'+MS.coloredCookieChainString('MS.bankCookieChain(1)', 1)+'</td> <td><div class="price plain"> \' + Beautify(MS.cookiesToSpend(MS.bankCookieChain(1))) + \'</div></td> <td>'+MS.coloredCookieChainString('MS.maxCookieChainReward(1)[0]', 1)+'</td><td><div class="price plain">\' + Beautify(MS.maxCookieChainReward(1)[1]) + \'</div></td></tr>\'';
 	statsString += ' + \'<tr><td class="listing"><b>Frenzy:</b></td> <td>'+MS.coloredCookieChainString('MS.bankCookieChain(7)', 7)+'</td> <td><div class="price plain"> \' + Beautify(MS.cookiesToSpend(MS.bankCookieChain(7))) + \'</div></td> <td>'+MS.coloredCookieChainString('MS.maxCookieChainReward(7)[0]', 7)+'</td><td><div class="price plain">\' + Beautify(MS.maxCookieChainReward(7)[1]) + \'</div></td></tr>\'';
-	statsString += ' + ((Game.version >= 1.9) ? \'<tr><td class="listing"><b>Dragon Harvest:</b></td> <td>'+MS.coloredCookieChainString('MS.bankCookieChain(15)', 15)+'</td> <td><div class="price plain"> \' + Beautify(MS.cookiesToSpend(MS.bankCookieChain(15))) + \'</div></td> <td>'+MS.coloredCookieChainString('MS.maxCookieChainReward(15)[0]',15)+'</td><td><div class="price plain">\' + Beautify(MS.maxCookieChainReward(15)[1]) + \'</div></td></tr>\' : \'\')';
+	statsString += ' + \'<tr><td class="listing"><b>Dragon Harvest:</b></td> <td>'+MS.coloredCookieChainString('MS.bankCookieChain(15)', 15)+'</td> <td><div class="price plain"> \' + Beautify(MS.cookiesToSpend(MS.bankCookieChain(15))) + \'</div></td> <td>'+MS.coloredCookieChainString('MS.maxCookieChainReward(15)[0]',15)+'</td><td><div class="price plain">\' + Beautify(MS.maxCookieChainReward(15)[1]) + \'</div></td></tr>\'';
 	
 	// add blank row
 	statsString += ' + \'<tr style="height: 20px;"><td colspan="4"></td></tr>\'';
 	
 	// Reindeer stats
-	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Reindeers</td> <td>Plain</td> <td>Frenzy</td>\'+(Game.version>=1.9?\'<td>Dragon Harvest</td>\':\'\')+\' <td>Elder Frenzy</td></tr>\'';
-	statsString += ' + \'<tr><td class="listing"><b>Reindeer reward:</b> </td><td><div class="price plain">\' + Beautify(MS.reindeerReward(1)) + \'</div></td><td><div class="price plain">\' + Beautify(MS.reindeerReward(7)) + \'</div></td>\'+(Game.version>=1.9?\'<td><div class="price plain">\' + Beautify(MS.reindeerReward(15)) + \'</div></td>\':\'\')+\'<td><div class="price plain">\' + Beautify(MS.reindeerReward(666)) + \'</div></td></tr>\'';
+	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Reindeers</td> <td>Plain</td> <td>Frenzy</td><td>Dragon Harvest</td><td>Elder Frenzy</td></tr>\'';
+	statsString += ' + \'<tr><td class="listing"><b>Reindeer reward:</b> </td><td><div class="price plain">\' + Beautify(MS.reindeerReward(1)) + \'</div></td><td><div class="price plain">\' + Beautify(MS.reindeerReward(7)) + \'</div></td><td><div class="price plain">\' + Beautify(MS.reindeerReward(15)) + \'</div></td><td><div class="price plain">\' + Beautify(MS.reindeerReward(666)) + \'</div></td></tr>\'';
 	
 	// add blank row
 	statsString += ' + \'<tr style="height: 20px;"><td colspan="4"></td></tr>\'';
@@ -660,18 +642,16 @@ if(!statsdone)
 	// Paste string into the menu
 	eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('Game.version+\'</div>\'+', 'Game.version+\'</div>\' + ' + statsString + ' + '));
 	
-	if(Game.version >= 1.9)
-	{
-		// Price for next Dragon Level
-		var search='\'<div class="listing"><b>Dragon training';
-		var replaceDragon='\'<div class="listing"><b>Price for next Dragon Level:</b> <div class="price plain">\' + Beautify(MS.priceForNextDragonLevel()) + \'</div></div>\' + ';
-		eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace(search, replaceDragon + search));
-	}
+	// Price for next Dragon Level
+	var search='\'<div class="listing"><b>Dragon training';
+	var replaceDragon='\'<div class="listing"><b>Price for next Dragon Level:</b> <div class="price plain">\' + Beautify(MS.priceForNextDragonLevel()) + \'</div></div>\' + ';
+	eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace(search, replaceDragon + search));
+
 	
 	/********************************************* Change Color of Building prices: **********************************************/
 	
 	// in this code snippet, the product price is written into the store. Here we set the color.
-	var oldProductPriceStr = Game.version >= 1.907 ? 'l(\'productPrice\'+me.id).innerHTML=Beautify(Math.round(price));' : 'l(\'productPrice\'+me.id).innerHTML=Beautify(Math.round(me.price));';
+	var oldProductPriceStr = 'l(\'productPrice\'+me.id).innerHTML=Beautify(Math.round(price));';
 	var coloredProductPriceStr = 'MS.refreshBuildingPrice(me)';
 	
 	// Originally, in each building action the building itself is refreshed. We replace that by refreshing all buildings. 
@@ -690,8 +670,7 @@ if(!statsdone)
 		// replace refreshing of one building by refreshing of all buildings in functions buy(), sell() and sacrifice():
 		eval('Game.ObjectsById['+i+'].buy='+Game.ObjectsById[i].buy.toString().replace(thisRefreshStr, allRefreshStr));
 		eval('Game.ObjectsById['+i+'].sell='+Game.ObjectsById[i].sell.toString().replace(thisRefreshStr, allRefreshStr));
-		if (Game.version >= 1.9)
-			eval('Game.ObjectsById['+i+'].sacrifice='+Game.ObjectsById[i].sacrifice.toString().replace(thisRefreshStr, allRefreshStr));
+		eval('Game.ObjectsById['+i+'].sacrifice='+Game.ObjectsById[i].sacrifice.toString().replace(thisRefreshStr, allRefreshStr));
 			
 		// Additionally, refresh building after calling this addon:
 		Game.ObjectsById[i].refresh();

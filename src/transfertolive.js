@@ -1,8 +1,8 @@
 // Remove Achievements: make x from y #1
-Game.Achievements['Click delegator'].won=0
-Game.Achievements['Gushing grannies'].won=0
-Game.Achievements['Never dig down'].won=0
-Game.Achievements['The incredible machine'].won=0
+//Game.Achievements['Click delegator'].won=0
+//Game.Achievements['Gushing grannies'].won=0
+//Game.Achievements['Never dig down'].won=0
+//Game.Achievements['The incredible machine'].won=0
 //Game.Achievements['Vested interest'].won=0
 //Game.Achievements['New world order'].won=0
 //Game.Achievements['Hocus pocus'].won=0

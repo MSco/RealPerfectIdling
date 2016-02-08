@@ -1,7 +1,7 @@
 /* ================================================
     MSco's Real Perfect Idling - A Cookie Clicker plugin
 
-    Version: 1.0.1.0
+    Version: 1.0.2.0
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -15,6 +15,8 @@
     the original game.
 
     Version History:
+    1.0.2:
+    	- Compatibility of version 2
     1.0.1:
     	- Compatibility of beta 1.903
     0.9.9:
@@ -90,7 +92,7 @@ halfday/60/60/24;
 
 var RPI = {};
 
-RPI.supportedVersion = 1.907
+RPI.supportedVersion = 2
 if (RPI.supportedVersion < Game.version)
 {
 	Game.Notify('Unsupported version','MSco\'s Real Perfect Idling has not been tested on this version of Cookie Clicker. Continue on your own peril!',[3,5],6);
@@ -119,8 +121,7 @@ RPI.addMissedGoldenCookies = function(durationFrames)
 	        if (Game.Has('Lucky day')) dur*=2;
 	        if (Game.Has('Serendipity')) dur*=2;
 		if (Game.Has('Decisive fate')) dur*=1.05;
-		if (Game.version >= 1.9)
-			if (Game.hasAura('Epoch Manipulator')) dur*=1.05;
+		if (Game.hasAura('Epoch Manipulator')) dur*=1.05;
 	        
 		var thisMissed = Math.round(durationFrames/(RPI.calcGCSpawnTime()+dur))
 		Game.missedGoldenClicks += thisMissed;
@@ -237,7 +238,7 @@ RPI.addTotalCookies = function(cps, durationSeconds)
 
 RPI.runElderPledge = function(cps, durationSeconds)
 {
-	if (!MS.saveImported && Game.version >= 1.9)
+	if (!MS.saveImported)
 	{
 		var str='';
 		if (Game.useLocalStorage)
@@ -333,21 +334,17 @@ RPI.runWrath = function(cps, durationSeconds)
 			{
 				if (Game.wrinklers[i].phase==0 && Game.elderWrath>0 && numWrinklers<Game.getWrinklersMax())
 				{
-					var chance = (Game.version >= 1.9) ? 0.00001*Game.elderWrath : 0.00003*Game.elderWrath;
+					var chance = 0.00001*Game.elderWrath;
 					if (Game.Has('Unholy bait')) chance*=5;
 					if (Game.Has('Wrinkler doormat')) chance=0.1;
 					if (Math.random()<chance) 
 					{
 						Game.wrinklers[i].phase=2;
-						Game.wrinklers[i].hp=3;
+						Game.wrinklers[i].hp=Game.wrinklerHP;
+						Game.wrinklers[i].type=0;
+						if (Math.random()<0.0001) 
+							Game.wrinklers[i].type=1; // shiny wrinkler
 						
-						if (Game.version >= 1.9)
-						{
-							Game.wrinklers[i].hp=Game.wrinklerHP;
-							Game.wrinklers[i].type=0;
-							if (Math.random()<0.0001) 
-								Game.wrinklers[i].type=1; // shiny wrinkler
-						}
 						numWrinklers++;
 						console.log("Time to spawn wrinkler " + i + ": " + frames/Game.fps/60 + " minutes. ")
 					}//respawn
@@ -489,6 +486,7 @@ if (!idleDone)
 	
 	RPI.addTotalCookies(averageCps, secondsAfk);
 	
+	/*
 	// recalculate timers of the current season and current research
 	if (Game.version < 1.9)
 	{
@@ -497,6 +495,7 @@ if (!idleDone)
 		if (Game.researchT > 0)
 			Game.researchT = Math.max(Game.researchT -secondsAfk*Game.fps, 0);
 	}
+	*/
 
 	// add missed golden cookies
 	RPI.addMissedGoldenCookies(framesAfk);

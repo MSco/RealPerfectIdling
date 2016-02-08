@@ -1,7 +1,7 @@
 /* ================================================
     MSco Cookie Stats - A Cookie Clicker plugin
 
-    Version: 1.0.3.0
+    Version: 1.0.4.0
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -12,6 +12,8 @@
 
     Version History:
 
+    1.0.4:
+    	- Compatibility of beta 1.907
     1.0.3:
     	- Compatibility of beta 1.903
     1.0.2:
@@ -315,6 +317,9 @@ MS.getBuildingWorth = function(building)
 	return income - Game['cookiesPs']/MS.frenzyMod();
 }
 
+MS.bci = [];
+MS.efc = [];
+
 MS.getBCI = function(building)
 {
 	return building.price/MS.getBuildingWorth(building);
@@ -322,42 +327,49 @@ MS.getBCI = function(building)
 
 MS.calcBestBCI = function()
 {
-	var best_bci = Number.POSITIVE_INFINITY;
+	var bestbci = Number.POSITIVE_INFINITY;
 	for (var i=0; i<Game.ObjectsN; i++) 
 	{
-		var bci = MS.getBCI(Game.ObjectsById[i]);
-		if (bci > -1)
+		MS.bci[i] = MS.getBCI(Game.ObjectsById[i]);
+		
+		if (MS.bci[i] > -1)
 		{
-			best_bci = Math.min(bci, best_bci);
+			bestbci = Math.min(MS.bci[i], bestbci);
 		}
 	}
 
-	return best_bci;
+	return bestbci;
 }
 
 MS.calcEfficiency = function(building, bestbci)
 {
-	var bci = MS.getBCI(building);
-	if (bci < 0) 
+	var bci = MS.bci[building.id];
+	MS.efc[building.id] = (bci >= 0) ? bestbci/bci*100 : 0;
+	
+	return MS.efc[building.id];
+}
+
+MS.calcEfficiencies = function()
+{
+	var bestbci = MS.calcBestBCI();
+	for (var i=0; i<Game.ObjectsN; i++) 
 	{
-		return 0;
-	}
-	else
-	{
-		return bestbci/bci*100;
+		MS.calcEfficiency(Game.ObjectsById[i], bestbci);
 	}
 }
 
-MS.refreshBuildingPrice = function(building, bestbci)
+MS.refreshBuildingPrice = function(building)
 {
-	var efc = MS.calcEfficiency(building, bestbci);
+	var price = Game.version >= 1.907 ? building.bulkPrice : building.price;
+	
+	var efc = MS.efc[building.id];
 	if(efc>=100) 
 		var bcolor="#66ff4e";
 	else if(efc>50) 
 		var bcolor="yellow";
 	else 
 		var bcolor="#FF3232";
-	l('productPrice'+building.id).innerHTML=Beautify(Math.round(building.price)) + '(' + Beautify(efc) + '%)';
+	l('productPrice'+building.id).innerHTML=Beautify(Math.round(price)) + '(' + Beautify(efc) + '%)';
 	l('productPrice'+building.id).style.color=bcolor;
 }
 
@@ -669,13 +681,17 @@ if(!statsdone)
 	/********************************************* Change Color of Building prices: **********************************************/
 	
 	// in this code snippet, the product price is written into the store. Here we set the color.
-	var oldProductPriceStr = 'l(\'productPrice\'+me.id).innerHTML=Beautify(Math.round(me.price));';
-	var coloredProductPriceStr = 'var bestbci=MS.calcBestBCI(); MS.refreshBuildingPrice(me, bestbci)';
+	var oldProductPriceStr = 'l(\'productPrice\'+me.id).innerHTML=Beautify(Math.round(price));';
+	var coloredProductPriceStr = 'MS.refreshBuildingPrice(me)';
 	
 	// Originally, in each building action the building itself is refreshed. We replace that by refreshing all buildings. 
 	// Additionally, the menu is updated (for Amount wanted)
 	var thisRefreshStr = 'this.refresh();}';
-	var allRefreshStr = 'this.refresh(); var bestbci=MS.calcBestBCI(); for (var i in Game.ObjectsById) MS.refreshBuildingPrice(Game.ObjectsById[i], bestbci); Game.UpdateMenu(); }';
+	var allRefreshStr = 'this.refresh(); MS.calcEfficiencies(); for (var i in Game.ObjectsById) MS.refreshBuildingPrice(Game.ObjectsById[i]); Game.UpdateMenu(); }';
+
+	// Initially, calculate all efficiencies after calling this addon:
+	MS.calcEfficiencies()
+	
 	for (var i in Game.ObjectsById)
 	{
 		// replace prices by colored prices in function rebuild:

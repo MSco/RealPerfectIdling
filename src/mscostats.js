@@ -568,7 +568,7 @@ if(!statsdone)
 
 	// cookies baked
 	var thisGameEarned = '<b>Cookies baked incl. wrinkl. and ch. egg (this game) :</b> <div class="price plain">\' + Game.tinyCookie() + Beautify(MS.maxEarnedThisGame()) + \'</div></div>\'';
-	eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('<b>Cookies baked (this game) :</b> <div class="price plain">\'+Game.tinyCookie()+Beautify(Game.cookiesEarned)+\'</div></div>\'', thisGameEarned));	
+	eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('<b>Cookies baked (this ascension) :</b> <div class="price plain">\'+Game.tinyCookie()+Beautify(Game.cookiesEarned)+\'</div></div>\'', thisGameEarned));	
 	var allTimeEarned = '<b>Cookies baked incl. wrinkl. and ch. egg (all time):</b> <div class="price plain">\' + Game.tinyCookie() + Beautify(MS.maxEarnedAllTime()) + \'</div></div>\'';
 	var chEggForBuildings = ' + \'<div class="listing"><b>Chocolate egg reward for buildings:</b> <div class="price plain">\' + Game.tinyCookie() + Beautify(MS.chocolateEggSellReward()) + \'</div></div>\'';
 	var chEggForBuildingsAndBank = ' + \'<div class="listing"><b>Chocolate egg reward for buildings + bank:</b> <div class="price plain">\' + Game.tinyCookie() + Beautify(MS.chocolateEggMaxReward()) + \'</div></div>\'';

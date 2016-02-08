@@ -544,7 +544,7 @@ MS.priceForNextDragonLevel = function()
 		var price = 0;
 		for (var i in Game.ObjectsById)
 		{
-			price += MS.priceForSacrificeBuildings(Game.ObjectsById[i], (Game.dragonLevel == 19 ? 10 : 200));
+			price += MS.priceForSacrificeBuildings(Game.ObjectsById[i], (Game.dragonLevel == 19 ? 50 : 200));
 		}
 		return price;
 	}

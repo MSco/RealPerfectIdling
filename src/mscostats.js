@@ -385,6 +385,11 @@ MS.timeLeftForCookies = function(cookies)
 
 MS.bankLucky = function(frenzyMultiplier)
 {
+	return 1.0/0.15 * MS.maxLuckyReward(frenzyMultiplier);
+}
+
+MS.maxLuckyReward = function(frenzyMultiplier)
+{
 	var mult = MS.goldenMult();
 	if (frenzyMultiplier == 7)
 	{
@@ -392,12 +397,7 @@ MS.bankLucky = function(frenzyMultiplier)
 		if (Game.hasAura('Ancestral Metamorphosis')) mult*=1.1;
 	}
 	
-	return Game.cookiesPs / MS.frenzyMod() * 60 * 15 * 15 * frenzyMultiplier * mult + 13;
-}
-
-MS.maxLuckyReward = function(frenzyMultiplier)
-{
-	return 0.15 * MS.bankLucky(frenzyMultiplier);
+	return Game.cookiesPs / MS.frenzyMod() * 60 * 15 * frenzyMultiplier * mult + 13;
 }
 
 MS.maxCookieChainReward = function(frenzyMultiplier)

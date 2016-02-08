@@ -53,7 +53,6 @@ have any suggestions.
 * Calculate Base Cost per Income (BCI) for each building and show their efficiencies corresponding to the best BCI
 * Show how much cookies you have to generate (all time) to add a specified number of HCs (specified via number input)
 * Show Price for next Dragon Level
-* Game-Breaking Bugs of beta 1.9 are fixed.
 
 ![MSco Stats and main game window](https://rawgit.com/MSco/RealPerfectIdling/master/images/MScoScreen1-withborders.jpg "Main Window in MSco Stats")
 

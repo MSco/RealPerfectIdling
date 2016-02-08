@@ -681,7 +681,7 @@ if(!statsdone)
 	/********************************************* Change Color of Building prices: **********************************************/
 	
 	// in this code snippet, the product price is written into the store. Here we set the color.
-	var oldProductPriceStr = 'l(\'productPrice\'+me.id).innerHTML=Beautify(Math.round(price));';
+	var oldProductPriceStr = Game.version >= 1.907 ? 'l(\'productPrice\'+me.id).innerHTML=Beautify(Math.round(price));' : 'l(\'productPrice\'+me.id).innerHTML=Beautify(Math.round(me.price));';
 	var coloredProductPriceStr = 'MS.refreshBuildingPrice(me)';
 	
 	// Originally, in each building action the building itself is refreshed. We replace that by refreshing all buildings. 

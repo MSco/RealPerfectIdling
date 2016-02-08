@@ -189,18 +189,13 @@ MS.hcThisGame = function()
 
 MS.buildingSellReward = function(building)
 {
-	var buildingfree = (Game.version >= 1.9) ? building.free : 0;
 	var buildingamount = building.amount;
-	if (Game.version >= 1.9)
-		if (building.id == Game.ObjectsN-1 && Game.dragonLevel>=9 && !Game.hasAura('Earth Shatterer'))
-			buildingamount--;
+	if (building.id == Game.ObjectsN-1 && Game.dragonLevel>=9 && !Game.hasAura('Earth Shatterer'))
+		buildingamount--;
 	
-	var price = Math.ceil(building.basePrice * (Math.pow(Game.priceIncrease, Math.max(0,building.amount-buildingfree)+1) - Game.priceIncrease) / 0.15);
+	var price = Math.ceil(building.basePrice * (Math.pow(Game.priceIncrease, Math.max(0,building.amount-building.free)+1) - Game.priceIncrease) / 0.15);
 	
-	var giveBack=0.5;
-	if (Game.version >= 1.9)
-		if (Game.dragonLevel>=9) 
-			giveBack=0.85
+	var giveBack = (Game.dragonLevel>=9) ? 0.85 : 0.5;
 	
 	var reward = price * giveBack;
 	
@@ -208,9 +203,7 @@ MS.buildingSellReward = function(building)
 	if (Game.Has('Santa\'s dominion')) reward*=0.99;
 	if (Game.Has('Faberge egg')) reward*=0.99;
 	if (Game.Has('Divine discount')) reward*=0.99;
-	
-	if (Game.version >= 1.9)
-        	if (Game.hasAura('Fierce Hoarder')) price*=0.98;
+	if (Game.hasAura('Fierce Hoarder')) price*=0.98;
 	
 	return reward;
 }

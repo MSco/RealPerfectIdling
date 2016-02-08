@@ -1,7 +1,7 @@
 /* ================================================
     MSco Cookie Stats - A Cookie Clicker plugin
 
-    Version: 1.0.5.2
+    Version: 1.0.5.3
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -14,6 +14,7 @@
 
     1.0.5:
     	- Compatibility of version 2
+    	- Rewards of Lucky, Frenzy Lucky and Dragon Harvest Lucky are re-added to the stats
     1.0.4:
     	- Compatibility of beta 1.907
     1.0.3:
@@ -382,22 +383,21 @@ MS.timeLeftForCookies = function(cookies)
 	return secondsLeft * 60 * 60 * Game.fps;
 }
 
-MS.bankLucky = function()
+MS.bankLucky = function(frenzyMultiplier)
 {
-	return Game.cookiesPs / MS.frenzyMod() * 60 * 15 * 15 * MS.goldenMult() + 13;
-}
-
-MS.bankFrenzyLucky = function()
-{
-	var mult = 1;
-	if (Game.hasAura('Ancestral Metamorphosis')) mult*=1.1;
+	var mult = MS.goldenMult();
+	if (frenzyMultiplier == 7)
+	{
+		mult = 1;
+		if (Game.hasAura('Ancestral Metamorphosis')) mult*=1.1;
+	}
 	
-	return Game.cookiesPs / MS.frenzyMod() * 60 * 15 * 15 * 7 * mult + 13;
+	return Game.cookiesPs / MS.frenzyMod() * 60 * 15 * 15 * frenzyMultiplier * mult + 13;
 }
 
-MS.bankDragonLucky = function()
+MS.maxLuckyReward = function(frenzyMultiplier)
 {
-	return Game.cookiesPs / MS.frenzyMod() * 60 * 15 * 15 * 15 * MS.goldenMult() + 13;
+	return 0.15 * MS.bankLucky(frenzyMultiplier);
 }
 
 MS.maxCookieChainReward = function(frenzyMultiplier)
@@ -586,20 +586,20 @@ if(!statsdone)
 	
 	// Lucky (plain, frenzy, dragon) bank + max to spend
 	statsString += ' + \'<table style="width: 100%;border-collapse: separate;">\'';
-	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Lucky</td> <td>Bank</td> <td>Max. Cookies to spend</td> <td>Time Left (with CPS)</td></tr>\'';
-	statsString += ' + \'<tr><td class="listing"><b>Plain:</b></td> <td><div class="price plain">\' + Beautify(MS.bankLucky()) + \'</div></td> <td><div class="price plain"> \' + Beautify(MS.cookiesToSpend(MS.bankLucky())) + \'</div></td> <td style="font-weight:bold;">\' + ((time=MS.timeLeftForBank(MS.bankLucky())) > 0 ? Game.sayTime(time) : "done") + \'</b></td></tr>\'';
-	statsString += ' + \'<tr><td class="listing"><b>Frenzy:</b></td> <td><div class="price plain">\' + Beautify(MS.bankFrenzyLucky()) + \'</div></td> <td><div class="price plain"> \' + Beautify(MS.cookiesToSpend(MS.bankFrenzyLucky())) + \'</div></td> <td style="font-weight:bold;">\' + ((time=MS.timeLeftForBank(MS.bankFrenzyLucky())) > 0 ? Game.sayTime(time) : "done") + \' </td></tr>\'';
-	statsString += ' + \'<tr><td class="listing"><b>Dragon Harvest:</b></td> <td><div class="price plain">\' + Beautify(MS.bankDragonLucky()) + \'</div></td> <td><div class="price plain"> \' + Beautify(MS.cookiesToSpend(MS.bankDragonLucky())) + \'</div></td> <td style="font-weight:bold;">\' + ((time=MS.timeLeftForBank(MS.bankDragonLucky())) > 0 ? Game.sayTime(time) : "done") + \' </td></tr>\'';
+	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Lucky</td> <td>Bank</td> <td>Max. Reward</td> <td>Max. Cookies to spend</td> <td>Time Left (with CPS)</td></tr>\'';
+	statsString += ' + \'<tr><td class="listing"><b>Plain:</b></td> <td><div class="price plain">\' + Beautify(MS.bankLucky(1)) + \'</div></td> <td><div class="price plain">\' + Beautify(MS.maxLuckyReward(1)) + \'</div></td> <td><div class="price plain"> \' + Beautify(MS.cookiesToSpend(MS.bankLucky(1))) + \'</div></td> <td style="font-weight:bold;">\' + ((time=MS.timeLeftForBank(MS.bankLucky(1))) > 0 ? Game.sayTime(time) : "done") + \'</b></td></tr>\'';
+	statsString += ' + \'<tr><td class="listing"><b>Frenzy:</b></td> <td><div class="price plain">\' + Beautify(MS.bankLucky(7)) + \'</div></td> <td><div class="price plain">\' + Beautify(MS.maxLuckyReward(7)) + \'</div></td> <td><div class="price plain"> \' + Beautify(MS.cookiesToSpend(MS.bankLucky(7))) + \'</div></td> <td style="font-weight:bold;">\' + ((time=MS.timeLeftForBank(MS.bankLucky(7))) > 0 ? Game.sayTime(time) : "done") + \' </td></tr>\'';
+	statsString += ' + \'<tr><td class="listing"><b>Dragon Harvest:</b></td> <td><div class="price plain">\' + Beautify(MS.bankLucky(15)) + \'</div></td> <td><div class="price plain">\' + Beautify(MS.maxLuckyReward(15)) + \'</div></td> <td><div class="price plain"> \' + Beautify(MS.cookiesToSpend(MS.bankLucky(15))) + \'</div></td> <td style="font-weight:bold;">\' + ((time=MS.timeLeftForBank(MS.bankLucky(15))) > 0 ? Game.sayTime(time) : "done") + \' </td></tr>\'';
 	
 	// add blank row
 	statsString += ' + \'<tr style="height: 20px;"><td colspan="4"></td></tr>\'';
 	
 	// Cookie Chain stats
-	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Cookie Chains</td> <td>Bank</td> <td>Max. Cookies to spend</td> <td>Reward</td> <td>Next CPS</td></tr>\'';
-	statsString += ' + \'<tr><td class="listing"><b>Clot:</b></td> <td>'+MS.coloredCookieChainString('MS.bankCookieChain(0.5)', 0.5)+'</td> <td><div class="price plain"> \' + Beautify(MS.cookiesToSpend(MS.bankCookieChain(0.5))) + \'</div></td> <td>'+MS.coloredCookieChainString('MS.maxCookieChainReward(0.5)[0]', 0.5)+'</td><td><div class="price plain">\' + Beautify(MS.maxCookieChainReward(0.5)[1]) + \'</div></td></tr>\'';
-	statsString += ' + \'<tr><td class="listing"><b>Plain:</b></td> <td>'+MS.coloredCookieChainString('MS.bankCookieChain(1)', 1)+'</td> <td><div class="price plain"> \' + Beautify(MS.cookiesToSpend(MS.bankCookieChain(1))) + \'</div></td> <td>'+MS.coloredCookieChainString('MS.maxCookieChainReward(1)[0]', 1)+'</td><td><div class="price plain">\' + Beautify(MS.maxCookieChainReward(1)[1]) + \'</div></td></tr>\'';
-	statsString += ' + \'<tr><td class="listing"><b>Frenzy:</b></td> <td>'+MS.coloredCookieChainString('MS.bankCookieChain(7)', 7)+'</td> <td><div class="price plain"> \' + Beautify(MS.cookiesToSpend(MS.bankCookieChain(7))) + \'</div></td> <td>'+MS.coloredCookieChainString('MS.maxCookieChainReward(7)[0]', 7)+'</td><td><div class="price plain">\' + Beautify(MS.maxCookieChainReward(7)[1]) + \'</div></td></tr>\'';
-	statsString += ' + \'<tr><td class="listing"><b>Dragon Harvest:</b></td> <td>'+MS.coloredCookieChainString('MS.bankCookieChain(15)', 15)+'</td> <td><div class="price plain"> \' + Beautify(MS.cookiesToSpend(MS.bankCookieChain(15))) + \'</div></td> <td>'+MS.coloredCookieChainString('MS.maxCookieChainReward(15)[0]',15)+'</td><td><div class="price plain">\' + Beautify(MS.maxCookieChainReward(15)[1]) + \'</div></td></tr>\'';
+	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Cookie Chains</td> <td>Bank</td> <td>Max. Reward</td> <td>Max. Cookies to spend</td> <td>Next CPS</td></tr>\'';
+	statsString += ' + \'<tr><td class="listing"><b>Clot:</b></td> <td>'+MS.coloredCookieChainString('MS.bankCookieChain(0.5)', 0.5)+'</td> <td>'+MS.coloredCookieChainString('MS.maxCookieChainReward(0.5)[0]', 0.5)+'</td> <td><div class="price plain"> \' + Beautify(MS.cookiesToSpend(MS.bankCookieChain(0.5))) + \'</div></td> <td><div class="price plain">\' + Beautify(MS.maxCookieChainReward(0.5)[1]) + \'</div></td></tr>\'';
+	statsString += ' + \'<tr><td class="listing"><b>Plain:</b></td> <td>'+MS.coloredCookieChainString('MS.bankCookieChain(1)', 1)+'</td> <td>'+MS.coloredCookieChainString('MS.maxCookieChainReward(1)[0]', 1)+'</td> <td><div class="price plain"> \' + Beautify(MS.cookiesToSpend(MS.bankCookieChain(1))) + \'</div></td> <td><div class="price plain">\' + Beautify(MS.maxCookieChainReward(1)[1]) + \'</div></td></tr>\'';
+	statsString += ' + \'<tr><td class="listing"><b>Frenzy:</b></td> <td>'+MS.coloredCookieChainString('MS.bankCookieChain(7)', 7)+'</td> <td>'+MS.coloredCookieChainString('MS.maxCookieChainReward(7)[0]', 7)+'</td> <td><div class="price plain"> \' + Beautify(MS.cookiesToSpend(MS.bankCookieChain(7))) + \'</div></td> <td><div class="price plain">\' + Beautify(MS.maxCookieChainReward(7)[1]) + \'</div></td></tr>\'';
+	statsString += ' + \'<tr><td class="listing"><b>Dragon Harvest:</b></td> <td>'+MS.coloredCookieChainString('MS.bankCookieChain(15)', 15)+'</td> <td>'+MS.coloredCookieChainString('MS.maxCookieChainReward(15)[0]',15)+'</td> <td><div class="price plain"> \' + Beautify(MS.cookiesToSpend(MS.bankCookieChain(15))) + \'</div></td> <td><div class="price plain">\' + Beautify(MS.maxCookieChainReward(15)[1]) + \'</div></td></tr>\'';
 	
 	// add blank row
 	statsString += ' + \'<tr style="height: 20px;"><td colspan="4"></td></tr>\'';

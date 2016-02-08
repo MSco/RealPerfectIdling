@@ -1,7 +1,7 @@
 /* ================================================
     MSco Cookie Stats - A Cookie Clicker plugin
 
-    Version: 1.0.3.0
+    Version: 1.0.4.0
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -12,6 +12,8 @@
 
     Version History:
 
+    1.0.4:
+    	- Compatibility of beta 1.907
     1.0.3:
     	- Compatibility of beta 1.903
     1.0.2:
@@ -358,6 +360,8 @@ MS.calcEfficiencies = function()
 
 MS.refreshBuildingPrice = function(building)
 {
+	var price = Game.version >= 1.907 ? building.bulkPrice : building.price;
+	
 	var efc = MS.efc[building.id];
 	if(efc>=100) 
 		var bcolor="#66ff4e";
@@ -365,7 +369,7 @@ MS.refreshBuildingPrice = function(building)
 		var bcolor="yellow";
 	else 
 		var bcolor="#FF3232";
-	l('productPrice'+building.id).innerHTML=Beautify(Math.round(building.price)) + '(' + Beautify(efc) + '%)';
+	l('productPrice'+building.id).innerHTML=Beautify(Math.round(price)) + '(' + Beautify(efc) + '%)';
 	l('productPrice'+building.id).style.color=bcolor;
 }
 
@@ -677,7 +681,7 @@ if(!statsdone)
 	/********************************************* Change Color of Building prices: **********************************************/
 	
 	// in this code snippet, the product price is written into the store. Here we set the color.
-	var oldProductPriceStr = 'l(\'productPrice\'+me.id).innerHTML=Beautify(Math.round(me.price));';
+	var oldProductPriceStr = 'l(\'productPrice\'+me.id).innerHTML=Beautify(Math.round(price));';
 	var coloredProductPriceStr = 'MS.refreshBuildingPrice(me)';
 	
 	// Originally, in each building action the building itself is refreshed. We replace that by refreshing all buildings. 

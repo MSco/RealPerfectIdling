@@ -1,7 +1,7 @@
 /* ================================================
     MSco Cookie Stats - A Cookie Clicker plugin
 
-    Version: 1.0.5.4
+    Version: 1.0.5.5
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -15,6 +15,7 @@
     1.0.5:
     	- Compatibility of version 2
     	- Rewards of Lucky, Frenzy Lucky and Dragon Harvest Lucky are re-added to the stats
+    	- Lucky and Cookie Chain stats not affected by Golden Switch
     1.0.4:
     	- Compatibility of beta 1.907
     1.0.3:
@@ -357,6 +358,23 @@ MS.frenzyMod = function()
 	return ((Game.frenzy > 0) ? Game.frenzyPower : 1);
 }
 
+MS.goldenSwitchMod = function()
+{
+	var goldenSwitchMult=1.0;
+	
+	if (Game.Has('Golden switch [off]'))
+	{
+		goldenSwitchMult=1.5;
+		if (Game.Has('Residual luck'))
+		{
+			var upgrades=['Get lucky','Lucky day','Serendipity','Heavenly luck','Lasting fortune','Decisive fate'];
+			for (var i in upgrades) {if (Game.Has(upgrades[i])) goldenSwitchMult+=0.1;}
+		}
+	}
+	
+	return goldenSwitchMult;
+}
+
 MS.goldenMult = function()
 {
 	var mult=1;
@@ -397,7 +415,7 @@ MS.maxLuckyReward = function(frenzyMultiplier)
 		if (Game.hasAura('Ancestral Metamorphosis')) mult*=1.1;
 	}
 	
-	return Game.cookiesPs / MS.frenzyMod() * 60 * 15 * frenzyMultiplier * mult + 13;
+	return Game.cookiesPs / MS.frenzyMod() / MS.goldenSwitchMod() * 60 * 15 * frenzyMultiplier * mult + 13;
 }
 
 MS.maxCookieChainReward = function(frenzyMultiplier)
@@ -412,8 +430,8 @@ MS.maxCookieChainReward = function(frenzyMultiplier)
 	var mult = MS.goldenMult();
 	
 	var chain = 0;
-	var moni = 0, nextMoni = 0;
-	while (moni < Game.cookiesPs*frenzyMultiplier/MS.frenzyMod()*60*60*6*mult)
+	var moni = 0;
+	while (moni < Game.cookiesPs*frenzyMultiplier/MS.frenzyMod()/MS.goldenSwitchMod()*60*60*6*mult)
 	{
 		chain++;
 		moni = Math.max(digit,Math.floor(1/9*Math.pow(10,chain)*digit*mult));

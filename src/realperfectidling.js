@@ -1,7 +1,7 @@
 /* ================================================
     MSco's Real Perfect Idling - A Cookie Clicker plugin
 
-    Version: 1.0.2.1
+    Version: 1.0.2.2
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de

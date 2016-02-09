@@ -288,6 +288,7 @@ RPI.runElderPledge = function(cps, durationSeconds)
 			Game.elderWrath = 1;
 		}
 		console.log('Cookies earned from pledge: ' + Beautify(pledgeEarned));
+		console.log('Time in pledge: ' + Game.sayTime(pledgeSeconds*Game.fps));
 
 		return [pledgeEarned, secondsRemaining];
 	}

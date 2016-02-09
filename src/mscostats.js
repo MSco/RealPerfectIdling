@@ -1,7 +1,7 @@
 /* ================================================
     MSco Cookie Stats - A Cookie Clicker plugin
 
-    Version: 1.0.5.5
+    Version: 1.0.5.6
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -15,7 +15,7 @@
     1.0.5:
     	- Compatibility of version 2
     	- Rewards of Lucky, Frenzy Lucky and Dragon Harvest Lucky are re-added to the stats
-    	- Lucky and Cookie Chain stats not affected by Golden Switch
+    	- Lucky, Cookie Chain, frenzied reindeer and full elder frenzy stats not affected by Golden Switch
     1.0.4:
     	- Compatibility of beta 1.907
     1.0.3:
@@ -463,6 +463,7 @@ MS.reindeerReward = function(frenzyMultiplier)
 {
 	var moni=Math.max(25,Game.cookiesPs/MS.frenzyMod()*frenzyMultiplier*60*1);//1 minute of cookie production, or 25 cookies - whichever is highest
 	if (Game.Has('Ho ho ho-flavored frosting')) moni*=2;
+	if (frenzyMultiplier > 1) moni/=MS.goldenSwitchMod();
 	
 	return moni;
 }
@@ -475,7 +476,7 @@ MS.maxElderFrenzy = function()
 	
 	var time=Math.ceil(6*Game.goldenCookie.getEffectDurMod());
 		
-	var moni = Game.cookiesPs / MS.frenzyMod() * wrinkFactor * 666 * time;
+	var moni = Game.cookiesPs / MS.frenzyMod() / MS.goldenSwitchMod() * wrinkFactor * 666 * time;
 	return moni;
 }
 

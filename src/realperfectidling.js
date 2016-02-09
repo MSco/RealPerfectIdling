@@ -320,7 +320,8 @@ RPI.runWrath = function(cps, durationSeconds)
 		}
 
 		// spawn remaining wrinklers
-		while(numWrinklers<Game.getWrinklersMax() && frames<durationFrames)
+		var max = Game.getWrinklersMax();
+		while(numWrinklers<max && frames<durationFrames)
 		{
 			// increase elder wrath
 			var potentialWrath = Game.Has('One mind')+Game.Has('Communal brainsweep')+Game.Has('Elder Pact');
@@ -332,7 +333,7 @@ RPI.runWrath = function(cps, durationSeconds)
 	
 			for (var i in Game.wrinklers)
 			{
-				if (Game.wrinklers[i].phase==0 && Game.elderWrath>0 && numWrinklers<Game.getWrinklersMax())
+				if (Game.wrinklers[i].phase==0 && Game.elderWrath>0 && numWrinklers<max && Game.wrinklers[i].id<max)
 				{
 					var chance = 0.00001*Game.elderWrath;
 					if (Game.Has('Unholy bait')) chance*=5;

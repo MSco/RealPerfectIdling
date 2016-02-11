@@ -57,6 +57,7 @@ have any suggestions.
 ##### Changelog:
 * 1.0.6:
 	* Calculation for Time Left (with wrinklers) now also includes the Golden Switch, even if the Switch is off.
+	* Real cookies per hour now also includes the Golden Switch, even if the Switch is off.
 * 1.0.5:
 	* Compatibility of version 2.0
 	* Rewards of Lucky, Frenzy Lucky and Dragon Harvest Lucky are re-added to the stats

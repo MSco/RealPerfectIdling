@@ -9,76 +9,7 @@
     This code was written to be used, abused, extended and improved upon. Feel free to do with it as you please, 
     with or without permission from, nor credit given to the original author (me). Please send an email to me if you
     have any suggestions.
-
-    Version History:
-
-    1.0.6:
-    	- Calculation for Time Left (with wrinklers) now also includes the Golden Switch, even if the Switch is off.
-    1.0.5:
-    	- Compatibility of version 2.0
-    	- Rewards of Lucky, Frenzy Lucky and Dragon Harvest Lucky are re-added to the stats
-    	- Lucky, Cookie Chain, frenzied reindeer and full elder frenzy stats not affected by Golden Switch
-    1.0.4:
-    	- Compatibility of beta 1.907
-    1.0.3:
-    	- Compatibility of beta 1.903
-    1.0.2:
-    	- Added remaining Price for a user-specified amount of buildings (via input number field)
-    	- Show time left to get remaining price
-    	- Focus of input textfields working correctly now
-    1.0.1:
-    	- Performance upgrade for calculating BCI
-    	- Dragon Harvest Stats only shown for Game.version>=1.9
-    0.9.13:
-    	- Appropriate Cookie Chain stats are colored if Cookie Chain is active
-    0.9.12:
-    	- Building price colors depend on efficiency
-    	- MSco Stats Menu is shown in a table
-    0.9.11:
-    	- Added number input for HCs you want to generate this run
-    	- Show Price for next Dragon Level
-    	- Show the time left to get bank for Lucky-Combos
-    0.9.10:
-    	- Removed HC stuff
-    	- Added Dragon Lucky Bank
-    	- Added Cookie Chain
-    0.9.9:
-    	- Compatibility of beta 1.9
-    0.9.8:
-    	- Compatibility of beta 1.0501
-    0.9.7:
-    	- interface titles have been split up
-    	- Cookies in bank includes wrinkler reward
-    0.9.6:
-    	- cps and multiplier statistic strings not affected by frenzy multipliers
-    	- Show reward for eldeers and elder frenzy with wrinklers
-    0.9.5:
-    	- BCI is gerenerated by a dynamic loop
-    	- Show Heavenly Chips earned all time
-    	- Also show max Chocolate egg reward
-    	- Max. cookies earned
-    	- Check for Chocolate Upgrade unlocked and not used
-    0.9.4:
-	- Ads have been removed by orteil in v1.0465, so the ad remove code is not needed anymore.
-    0.9.3:
-	- Remove ads from easter update
-    0.9.2:
-	- Overloaded sayTime 
-    0.9.1:
-	- Regarding 'Wrinklerspawn' from Easter Upgrade for 'Full withered Cookies per hour' and 'Cookies rewarded killing wrinklers'
-    0.9.0:
-	- New method to calculate income of buildings: Simulate buy and calculate cps.
-    0.8.2:
-	- Regard Cookies to be rewarded killing wrinklers for calculation of Heavenly Chips earned this game
-    0.8.1:
-	- Modified some description strings (e.g. Frenzy Lucky instead of Frenzy+Lucky)
-    0.8:
-	- Initial Version with first features:
-		- FL Bank, FL reward, spend cookies for FL bank
-		- wrinklers reward, wrinklers cph
-		- bci efficiency
-
-
+    
 ================================================ */
 
 var MS = {};

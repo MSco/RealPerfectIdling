@@ -4,7 +4,7 @@ MSco's RealPerfectIdling
 MSco's RealPerfectIdling is a browser plugin for [Cookie Clicker](http://orteil.dashnet.org/cookieclicker/).
 
 It simulates cookies earned and cookies sucked while the game is closed. It calculates the amount of time
-between now and the last time the game was saved. Each feature listed below is simulated exactly like in
+between now and the last time the game was saved. Each feature listed below is simulated exactly as in
 the original game.
 
 

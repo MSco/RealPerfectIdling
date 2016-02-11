@@ -1,7 +1,7 @@
 /* ================================================
     MSco Cookie Stats - A Cookie Clicker plugin
 
-    Version: 1.0.6.1
+    Version: 1.0.6.2
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  MSco
     Contact: https://www.reddit.com/user/_MSco_
@@ -342,7 +342,7 @@ MS.timeLeftForCookies = function(cookies)
 
 MS.bankLucky = function(frenzyMultiplier)
 {
-	return 1.0/0.15 * MS.maxLuckyReward(frenzyMultiplier);
+	return 1.0/0.15 * Game.cookiesPs / MS.frenzyMod() / MS.goldenSwitchMod(false) * 60 * 15 * frenzyMultiplier;
 }
 
 MS.maxLuckyReward = function(frenzyMultiplier)
@@ -354,7 +354,7 @@ MS.maxLuckyReward = function(frenzyMultiplier)
 		if (Game.hasAura('Ancestral Metamorphosis')) mult*=1.1;
 	}
 	
-	return Game.cookiesPs / MS.frenzyMod() / MS.goldenSwitchMod(false) * 60 * 15 * frenzyMultiplier * mult + 13;
+	return 0.15 * MS.bankLucky(frenzyMultiplier) * mult + 13;
 }
 
 MS.maxCookieChainReward = function(frenzyMultiplier)

@@ -3,8 +3,8 @@
 
     Version: 1.0.2.2
     GitHub:  https://github.com/MSco/RealPerfectIdling
-    Author:  Martin Schober
-    Email:   martin.schober@gmx.de
+    Author:  MSco
+    Contact: https://www.reddit.com/user/_MSco_
 
     This code was written to be used, abused, extended and improved upon. Feel free to do with it as you please, 
     with or without permission from, nor credit given to the original author (me). Please send an email to me if you

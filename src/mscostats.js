@@ -13,7 +13,7 @@
 
 var MS = {};
 
-MS.version = '1.0.6.2'
+MS.version = '1.0.7.0'
 
 // set MS.importSaveT after importing a save, this is exclusively for another MSco Addon: Real Perfect Idling
 MS.importSaveT = 0;
@@ -656,9 +656,7 @@ if(!statsdone)
 	eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace(new RegExp('l\\(\'menu\'\\).innerHTML=str;'), 'MS.storeActiveId(str)'));
 	
 	// add MSco Stats version to the version label
-	var oldVersionString = 'l(\'versionNumber\').innerHTML=\'v. \'+Game.version+(Game.beta?\' <span style="color:#ff0;">beta</span>\':\'\');';
-	var newVersionString = oldVersionString + '\'<span style="color:#00ffff;"> MSco Stats v. 1.0.6.2</span>\';';
-	l('versionNumber').innerHTML='v. '+Game.version+(Game.beta?' <span style="color:#ff0;">beta</span>':'')+ '<span style="color:#00ffff;">\t MSco Stats v. 1.0.6.2</span>';
+	l('versionNumber').innerHTML='v. '+Game.version+(Game.beta?' <span style="color:#ff0;">beta</span>':'')+'<br><span style="color:#00ffff; font-size:19px"> MSco Stats v. '+MS.version+'</span>';
 	
 	// Update the Menu after calling this addon:
 	Game.UpdateMenu();

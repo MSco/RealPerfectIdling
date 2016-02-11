@@ -1,7 +1,7 @@
 /* ================================================
     MSco Cookie Stats - A Cookie Clicker plugin
 
-    Version: 1.0.5.6
+    Version: 1.0.6.0
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  Martin Schober
     Email:   martin.schober@gmx.de
@@ -12,8 +12,10 @@
 
     Version History:
 
+    1.0.6:
+    	- Calculation for Time Left (with wrinklers) now also includes the Golden Switch, even if the Switch is off.
     1.0.5:
-    	- Compatibility of version 2
+    	- Compatibility of version 2.0
     	- Rewards of Lucky, Frenzy Lucky and Dragon Harvest Lucky are re-added to the stats
     	- Lucky, Cookie Chain, frenzied reindeer and full elder frenzy stats not affected by Golden Switch
     1.0.4:
@@ -358,11 +360,17 @@ MS.frenzyMod = function()
 	return ((Game.frenzy > 0) ? Game.frenzyPower : 1);
 }
 
-MS.goldenSwitchMod = function()
+MS.goldenSwitchMod = function(addMultiplier)
 {
 	var goldenSwitchMult=1.0;
 	
-	if (Game.Has('Golden switch [off]'))
+	var useSwitchMod;
+	if (addMultiplier)
+		useSwitchMod = Game.HasUnlocked('Golden switch') && Game.Has('Golden switch [on]');
+	else
+		useSwitchMod = Game.HasUnlocked('Golden switch') && Game.Has('Golden switch [off]')
+	
+	if (useSwitchMod)
 	{
 		goldenSwitchMult=1.5;
 		if (Game.Has('Residual luck'))
@@ -396,7 +404,7 @@ MS.timeLeftForBank = function(newbank)
 MS.timeLeftForCookies = function(cookies)
 {
 	var cookiesLeft = Math.max(0, cookies - Game.cookies - MS.wrinklersreward());
-	var secondsLeft = cookiesLeft/MS.wrinklersCPH();
+	var secondsLeft = cookiesLeft/MS.wrinklersCPH()/MS.goldenSwitchMod(true);
 	
 	return secondsLeft * 60 * 60 * Game.fps;
 }
@@ -415,7 +423,7 @@ MS.maxLuckyReward = function(frenzyMultiplier)
 		if (Game.hasAura('Ancestral Metamorphosis')) mult*=1.1;
 	}
 	
-	return Game.cookiesPs / MS.frenzyMod() / MS.goldenSwitchMod() * 60 * 15 * frenzyMultiplier * mult + 13;
+	return Game.cookiesPs / MS.frenzyMod() / MS.goldenSwitchMod(false) * 60 * 15 * frenzyMultiplier * mult + 13;
 }
 
 MS.maxCookieChainReward = function(frenzyMultiplier)
@@ -431,7 +439,7 @@ MS.maxCookieChainReward = function(frenzyMultiplier)
 	
 	var chain = 0;
 	var moni = 0;
-	while (moni < Game.cookiesPs*frenzyMultiplier/MS.frenzyMod()/MS.goldenSwitchMod()*60*60*6*mult)
+	while (moni < Game.cookiesPs*frenzyMultiplier/MS.frenzyMod()/MS.goldenSwitchMod(false)*60*60*6*mult)
 	{
 		chain++;
 		moni = Math.max(digit,Math.floor(1/9*Math.pow(10,chain)*digit*mult));
@@ -463,7 +471,7 @@ MS.reindeerReward = function(frenzyMultiplier)
 {
 	var moni=Math.max(25,Game.cookiesPs/MS.frenzyMod()*frenzyMultiplier*60*1);//1 minute of cookie production, or 25 cookies - whichever is highest
 	if (Game.Has('Ho ho ho-flavored frosting')) moni*=2;
-	if (frenzyMultiplier > 1) moni/=MS.goldenSwitchMod();
+	if (frenzyMultiplier > 1) moni/=MS.goldenSwitchMod(false);
 	
 	return moni;
 }
@@ -476,7 +484,7 @@ MS.maxElderFrenzy = function()
 	
 	var time=Math.ceil(6*Game.goldenCookie.getEffectDurMod());
 		
-	var moni = Game.cookiesPs / MS.frenzyMod() / MS.goldenSwitchMod() * wrinkFactor * 666 * time;
+	var moni = Game.cookiesPs / MS.frenzyMod() / MS.goldenSwitchMod(false) * wrinkFactor * 666 * time;
 	return moni;
 }
 

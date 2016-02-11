@@ -1,7 +1,6 @@
 /* ================================================
     MSco Cookie Stats - A Cookie Clicker plugin
 
-    Version: 1.0.6.2
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  MSco
     Contact: https://www.reddit.com/user/_MSco_
@@ -13,6 +12,8 @@
 ================================================ */
 
 var MS = {};
+
+MS.version = '1.0.7.0'
 
 // set MS.importSaveT after importing a save, this is exclusively for another MSco Addon: Real Perfect Idling
 MS.importSaveT = 0;
@@ -653,6 +654,9 @@ if(!statsdone)
 	//eval('Game.UpdateMenu='+Game.UpdateMenu.toString().slice(0, -1) + 'console.log(\'endUpdateMenu: \' + document.activeElement.id); }');
 
 	eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace(new RegExp('l\\(\'menu\'\\).innerHTML=str;'), 'MS.storeActiveId(str)'));
+	
+	// add MSco Stats version to the version label
+	l('versionNumber').innerHTML='v. '+Game.version+(Game.beta?' <span style="color:#ff0;">beta</span>':'')+'<br><span style="color:#00ffff; font-size:19px"> MSco Stats v. '+MS.version+'</span>';
 	
 	// Update the Menu after calling this addon:
 	Game.UpdateMenu();

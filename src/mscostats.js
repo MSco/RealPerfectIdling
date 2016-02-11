@@ -199,7 +199,7 @@ MS.wrinklersCPH = function()
 	var wrinkFactor = Game.getWrinklersMax()*0.5*MS.getSuckFactor();
 	wrinkFactor += 0.5
 
-	return Game.cookiesPs / MS.frenzyMod() * wrinkFactor * 3600;
+	return Game.cookiesPs / MS.frenzyMod() * MS.goldenSwitchMod(true) * wrinkFactor * 3600;
 }
 
 MS.simulateToggle = function(building, buyOrReverse)
@@ -335,7 +335,7 @@ MS.timeLeftForBank = function(newbank)
 MS.timeLeftForCookies = function(cookies)
 {
 	var cookiesLeft = Math.max(0, cookies - Game.cookies - MS.wrinklersreward());
-	var secondsLeft = cookiesLeft/MS.wrinklersCPH()/MS.goldenSwitchMod(true);
+	var secondsLeft = cookiesLeft/MS.wrinklersCPH();
 	
 	return secondsLeft * 60 * 60 * Game.fps;
 }

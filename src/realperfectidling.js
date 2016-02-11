@@ -14,54 +14,6 @@
     between now and the last time the game was saved. Each feature listed in the readme.md is simulated exactly like in
     the original game.
 
-    Version History:
-    1.0.2:
-    	- Compatibility of version 2
-    1.0.1:
-    	- Compatibility of beta 1.903
-    0.9.9:
-    	- Undo offline cookie calculations of Twin Gates of Transcendence
-    	- TotalCookies are added to each building
-    0.9.8:
-    	- Beta 1.9 support
-    0.9.7:
-    	- Beta 1.0501 support
-    0.9.6:
-    	- Century egg calculation averaged by a specific number of intervals
-    0.9.5:
-    	- Substract saveImportT from Game.T, saveImportT is messured by MScoStats
-    	- Increase variable Game.cookiesSucked
-    0.9.4:
-    	- Show message if Game.version is not supported
-    	- Subtract Game.T (time after last reload) from afk time
-    0.9.3:
-	- Implemented more methods to split up main code
-	- Own method to generate time string
-    0.9.2:
-	- New calculation of average Golden Cookie spawn time, used for missedGoldenCookies
-	- Output of 'Missed Golden Cookies while afk' in console.
-    0.9.1:
-	- New calculation of cps boost of 'Century egg' as in v1.0465
-    0.9.0:
-	- recalculate CPS regarding 'Century egg'
-    0.8.0:
-	- Recalculate pledge timer
-	- Activate elder wrath after pledge
-	- Earn cookies during pledge
-    0.7.2:
-	- Recalculate research timer
-    0.7.1:
-	- Add missed Golden Cookies
-    0.7.0:
-	- Initial Version with first features:
-		- wrinklers spawn
-		- wrinklers suck
-		- reduce cps
-		- increase elder wrath
-		- decrease season duration
-		- earn cookies
-
-
 /*** notes for century egg cps calculation ******/
 /*
 var lastDay=5*24*60*60;

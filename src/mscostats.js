@@ -14,7 +14,7 @@
 var MS = {};
 var MSTooltip = {};
 
-MS.version = '1.0.8.0'
+MS.version = '1.0.8.1'
 
 // set MS.importSaveT after importing a save, this is exclusively for another MSco Addon: Real Perfect Idling
 MS.importSaveT = 0;
@@ -75,39 +75,45 @@ Game.sayTime = function(time,detail)
 	var days = Math.floor(time/(Game.fps*60*60*24));
 	var years = Math.floor(time/(Game.fps*60*60*24*365));
 
+	var l_seconds, l_minutes, l_hours, l_days;
+
 	var numStrings = 0;
 
 	if (years > 0 && numStrings<2)
 	{
-		str += years + ' years';
+		str += years + ' year' + (years>1 ? 's' : '');
 		numStrings++;
 		if (numStrings<2)
 			str += ', ';
 	}
 	if (days > 0 && numStrings<2)
 	{
-		str += (days-years*365) + ' days';
+		var l_days=days-years*365;
+		str += l_days + ' day' + (l_days>1 ? 's' : '');
 		numStrings++;
 		if (numStrings<2)
 			str += ', ';
 	}
 	if (hours > 0 && numStrings<2)
 	{
-		str += (hours-days*24) + ' hours';
+		var l_hours=hours-days*24;
+		str += l_hours + ' hour' + (l_hours>1 ? 's' : '');
 		numStrings++;
 		if (numStrings<2)
 			str += ', ';
 	}
 	if (minutes > 0 && numStrings<2)
 	{
-		str += (minutes-hours*60) + ' minutes';
+		var l_minutes=minutes-hours*60;
+		str += l_minutes + ' minute' + (l_minutes>1 ? 's' : '');
 		numStrings++;
 		if (numStrings<2)
 			str += ', ';
 	}
 	if (seconds > 0 && numStrings<2)
 	{
-		str += Math.floor(time/Game.fps) - minutes*60 + ' seconds';
+		var l_seconds=Math.floor(time/Game.fps) - minutes*60;
+		str += l_seconds + ' second' + (l_seconds>1 ? 's' : '');
 		numStrings++;
 	}
 

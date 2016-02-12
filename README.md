@@ -55,8 +55,11 @@ have any suggestions.
 * Show Price for next Dragon Level
 
 ##### Changelog:
+* 1.0.8:
+	* Tooltips added
 * 1.0.7:
 	* Show version number of MSco Stats
+	* Game.sayTime also shows years
 * 1.0.6:
 	* Calculation for Time Left (with wrinklers) now also includes the Golden Switch, even if the Switch is off.
 	* Real cookies per hour now also includes the Golden Switch, even if the Switch is off.

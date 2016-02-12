@@ -65,13 +65,13 @@ have any suggestions.
 	* Real cookies per hour now also includes the Golden Switch, even if the Switch is off.
 	* Lucky Banks not affected by dragon aura multipliers for golden and wrath cookies
 * 1.0.5:
-	* Compatibility of version 2.0
+	* Compatibility with version 2.0
 	* Rewards of Lucky, Frenzy Lucky and Dragon Harvest Lucky are re-added to the stats
 	* Lucky, Cookie Chain, frenzied reindeer and full elder frenzy stats not affected by Golden Switch
 * 1.0.4:
-	* Compatibility of beta 1.907
+	* Compatibility with beta 1.907
 * 1.0.3:
-	* Compatibility of beta 1.903
+	* Compatibility with beta 1.903
 * 1.0.2:
 	* Added remaining Price for a user-specified amount of buildings (via input number field)
 	* Show time left to get remaining price
@@ -93,9 +93,9 @@ have any suggestions.
 	* Added Dragon Lucky Bank
 	* Added Cookie Chain
 * 0.9.9:
-	* Compatibility of beta 1.9
+	* Compatibility with beta 1.9
 * 0.9.8:
-	* Compatibility of beta 1.0501
+	* Compatibility with beta 1.0501
 * 0.9.7:
 	* interface titles have been split up
 	* Cookies in bank includes wrinkler reward
@@ -157,9 +157,9 @@ Following calculations are done "while game is closed":
 
 ##### Changelog:
 * 1.0.2:
-	* Compatibility of version 2
+	* Compatibility with version 2
 * 1.0.1:
-	* Compatibility of beta 1.903
+	* Compatibility with beta 1.903
 * 0.9.9:
 	* Undo offline cookie calculations of Twin Gates of Transcendence
 	* TotalCookies are added to each building

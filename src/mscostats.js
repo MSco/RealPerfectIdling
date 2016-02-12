@@ -647,9 +647,10 @@ if(!statsdone)
 	
 	/******************************************************************************************************************************/
 	
-	// Update Menu after cookie chain:
-	eval('Game.goldenCookie.click='+Game.goldenCookie.click.toString().replace('me.chain++;', 'me.chain++; Game.UpdateMenu();'));
-
+	// Update Menu after clicking a golden cookie or a reindeer
+	eval('Game.goldenCookie.click='+Game.goldenCookie.click.toString().replace(new RegExp(escapeRegExp('Game.Click=0;'),'g'),'Game.Click=0; Game.UpdateMenu();'));
+	eval('Game.seasonPopup.click='+Game.seasonPopup.click.toString().replace(new RegExp(escapeRegExp('Game.Click=0;'),'g'),'Game.Click=0; Game.UpdateMenu();'));
+	
 	// How to append a string to a function
 	//eval('Game.UpdateMenu='+Game.UpdateMenu.toString().slice(0, -1) + 'console.log(\'endUpdateMenu: \' + document.activeElement.id); }');
 

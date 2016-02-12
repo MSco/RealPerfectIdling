@@ -57,6 +57,7 @@ have any suggestions.
 ##### Changelog:
 * 1.0.8:
 	* Tooltips added
+	* Fixed plural 's' of Game.sayTime 
 * 1.0.7:
 	* Show version number of MSco Stats
 	* Game.sayTime also shows years if time >= 365 days.

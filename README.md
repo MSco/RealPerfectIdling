@@ -59,7 +59,7 @@ have any suggestions.
 	* Tooltips added
 * 1.0.7:
 	* Show version number of MSco Stats
-	* Game.sayTime also shows years
+	* Game.sayTime also shows years if time is higher than 365 days.
 * 1.0.6:
 	* Calculation for Time Left (with wrinklers) now also includes the Golden Switch, even if the Switch is off.
 	* Real cookies per hour now also includes the Golden Switch, even if the Switch is off.

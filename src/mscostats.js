@@ -13,7 +13,7 @@
 
 var MS = {};
 
-MS.version = '1.0.7.0'
+MS.version = '1.0.7.1'
 
 // set MS.importSaveT after importing a save, this is exclusively for another MSco Addon: Real Perfect Idling
 MS.importSaveT = 0;
@@ -72,12 +72,20 @@ Game.sayTime = function(time,detail)
 	var minutes = Math.floor(time/(Game.fps*60));
 	var hours = Math.floor(time/(Game.fps*60*60));
 	var days = Math.floor(time/(Game.fps*60*60*24));
+	var years = Math.floor(time/(Game.fps*60*60*24*365));
 
 	var numStrings = 0;
 
+	if (years > 0 && numStrings<2)
+	{
+		str += years + ' years';
+		numStrings++;
+		if (numStrings<2)
+			str += ', ';
+	}
 	if (days > 0 && numStrings<2)
 	{
-		str += days + ' days';
+		str += (days-years*365) + ' days';
 		numStrings++;
 		if (numStrings<2)
 			str += ', ';

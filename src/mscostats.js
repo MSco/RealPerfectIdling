@@ -14,7 +14,7 @@
 var MS = {};
 var MSTooltip = {};
 
-MS.version = '1.0.8.1'
+MS.version = '1.0.8.2'
 
 // set MS.importSaveT after importing a save, this is exclusively for another MSco Addon: Real Perfect Idling
 MS.importSaveT = 0;
@@ -562,7 +562,7 @@ if(!statsdone)
 	eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('Beautify(Math.round(Game.globalCpsMult*100),1)', 'Beautify(Math.round(Game.globalCpsMult*100/MS.frenzyMod()),1)'));
 
 	// cookies baked
-	var thisAscensionEarned = '<b>Cookies baked incl. wrinkl. and ch. egg (this ascension) :</b> <div class="price plain">\' + Game.tinyCookie() + Beautify(MS.maxEarnedThisAscension()) + \'</div></div>\'';
+	var thisAscensionEarned = '<b>Cookies baked incl. wrinkl. and ch. egg (this game) :</b> <div class="price plain">\' + Game.tinyCookie() + Beautify(MS.maxEarnedThisAscension()) + \'</div></div>\'';
 	eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('<b>Cookies baked (this ascension) :</b> <div class="price plain">\'+Game.tinyCookie()+Beautify(Game.cookiesEarned)+\'</div></div>\'', thisAscensionEarned));	
 	var allTimeEarned = '<b>Cookies baked incl. wrinkl. and ch. egg (all time):</b> <div class="price plain">\' + Game.tinyCookie() + Beautify(MS.maxEarnedAllTime()) + \'</div></div>\'';
 	var chEggForBuildings = ' + \'<div class="listing"><b>Chocolate egg reward for buildings:</b> <div class="price plain">\' + Game.tinyCookie() + Beautify(MS.chocolateEggSellReward()) + \'</div></div>\'';
@@ -607,7 +607,7 @@ if(!statsdone)
 	statsString += ' + \'<tr style="height: 20px;"><td colspan="4"></td></tr>\'';
 	
 	// start Heavenly Chips stats
-	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Heavenly Chips</td> <td>Earned (this ascension)</td> <td>Earned (all time)</td> <td>Wanted (this ascension)</td> <td>Cookies needed (all time)</td></tr>\'';
+	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Heavenly Chips</td> <td>Earned (this game)</td> <td>Earned (all time)</td> <td>Wanted (this game)</td> <td>Cookies needed (all time)</td></tr>\'';
 	statsString += ' + \'<tr><td class="listing"><b>Heavenly Chips:</b> </td><td style="font-weight:bold;" title=\'+MSTooltip.hcThisAscension+\'>\' + Beautify(MS.hcThisAscension()) + \' (\' + Beautify(MS.hcFactor()) + \'%) </td><td style="font-weight: bold;" title=\'+MSTooltip.hcAllTime+\'>\' + Beautify(MS.hcAllTime()) + \'</td><td> <input type="text" title=\'+MSTooltip.HCsWantedThisAscension+\' onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="tfHC" min=0 max=99999999 style="width:75%;" value=\' + (thisInput=(l("tfHC")==null ? \'0\' : l("tfHC").value)) + \'></input> </td><td class="price plain" title=\'+MSTooltip.neededCookiesForHC+\'>\' + Beautify(MS.neededCookiesForHC(thisInput)) + \'</td></tr>\'';
 	
 	// add blank row

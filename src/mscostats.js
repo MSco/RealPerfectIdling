@@ -319,7 +319,7 @@ MS.goldenSwitchMod = function(addMultiplier)
 	
 	var useSwitchMod;
 	if (addMultiplier)
-		useSwitchMod = Game.HasUnlocked('Golden switch') && Game.Has('Golden switch [on]');
+		useSwitchMod = Game.HasUnlocked('Golden switch') && !Game.Has('Golden switch [off]');
 	else
 		useSwitchMod = Game.HasUnlocked('Golden switch') && Game.Has('Golden switch [off]')
 	

@@ -14,7 +14,7 @@
 var MS = {};
 var MSTooltip = {};
 
-MS.version = '1.0.8.2'
+MS.version = '1.0.8.3'
 
 // set MS.importSaveT after importing a save, this is exclusively for another MSco Addon: Real Perfect Idling
 MS.importSaveT = 0;

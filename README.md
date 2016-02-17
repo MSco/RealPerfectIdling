@@ -58,6 +58,7 @@ have any suggestions.
 * 1.0.8:
 	* Tooltips added
 	* Fixed plural 's' of Game.sayTime 
+	* Fixed bug with calculation of golden switch that occured if golden switch had not been used during the current ascension
 * 1.0.7:
 	* Show version number of MSco Stats
 	* Game.sayTime also shows years if time >= 365 days.

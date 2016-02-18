@@ -55,6 +55,8 @@ have any suggestions.
 * Show Price for next Dragon Level
 
 ##### Changelog:
+* 1.0.9:
+	* Added estimated date
 * 1.0.8:
 	* Tooltips added
 	* Fixed plural 's' of Game.sayTime 

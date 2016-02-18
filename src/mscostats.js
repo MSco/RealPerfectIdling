@@ -492,10 +492,10 @@ MS.PriceForBuildingAmount = function(inputFieldValue, i)
 	if (!(inputFieldValue == null || isNaN(inputFieldValue) || inputFieldValue.length==0))
 		amount = parseInt(inputFieldValue);
 		
+	MS.buildingsWanted[i] = amount;
+	
 	if (amount <= building.amount)
 		return 0;
-	
-	MS.buildingsWanted[i] = amount;
 	
 	var lowAmount = Math.max(building.amount-building.free, 0);
 	var highAmount = Math.max(amount-building.free,0);

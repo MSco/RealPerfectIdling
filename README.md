@@ -55,6 +55,8 @@ have any suggestions.
 * Show Price for next Dragon Level
 
 ##### Changelog:
+* 1.0.10:
+	* Fixed wrinkler cookies per hour calculation for 12 wrinklers
 * 1.0.9:
 	* Added estimated date
 	* Removed initial amount of buildings and the required minimum value

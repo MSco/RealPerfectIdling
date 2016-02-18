@@ -58,6 +58,7 @@ have any suggestions.
 * 1.0.9:
 	* Added estimated date
 	* Removed initial amount of buildings and the required minimum value
+	* Fixed resetting of wanted amount of buildings after switching the menu
 * 1.0.8:
 	* Tooltips added
 	* Fixed plural 's' of Game.sayTime 

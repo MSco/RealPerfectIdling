@@ -12,7 +12,7 @@
 ================================================ */
 
 var MS = {};
-var MSTooltip = {};
+MS.Tooltip = {};
 
 MS.version = '1.0.9.1'
 
@@ -119,14 +119,14 @@ MS.maxEarnedAllTime = function()
 	return (MS.maxEarnedThisAscension() + Game.cookiesReset);
 }
 
-MSTooltip.hcAllTime = '"The amount of Heavenly Chips before this ascension + the amount of Heavenly Chips you would earn,\n'
+MS.Tooltip.hcAllTime = '"The amount of Heavenly Chips before this ascension + the amount of Heavenly Chips you would earn,\n'
 		    +'if you switch to the dragon Aura \'Fierce Hoarder\' (if avail.), sell all your buildings and use \'Chocolate egg\' (if avail.)."'
 MS.hcAllTime = function()
 {
 	return Game.HowMuchPrestige(MS.maxEarnedAllTime());	
 }
 
-MSTooltip.hcThisAscension = '"The amount of Heavenly Chips you would earn, if you switch to the dragon Aura \'Fierce Hoarder\' (if avail.),\n'
+MS.Tooltip.hcThisAscension = '"The amount of Heavenly Chips you would earn, if you switch to the dragon Aura \'Fierce Hoarder\' (if avail.),\n'
 			  + 'sell all your buildings and use \'Chocolate egg\' (if avail.). In brackets: The factor of HC earned this ascension and HC earned before this ascension."'
 MS.hcThisAscension = function()
 {
@@ -191,7 +191,7 @@ MS.getSuckFactor = function()
 	return suckFactor;
 }
 
-MSTooltip.wrinklersreward = '"The amount of cookies you will earn after killing all wrinklers."'
+MS.Tooltip.wrinklersreward = '"The amount of cookies you will earn after killing all wrinklers."'
 MS.wrinklersreward = function()
 {
 	var suckFactor = MS.getSuckFactor();
@@ -204,7 +204,7 @@ MS.wrinklersreward = function()
 		},0);	
 }
 
-MSTooltip.wrinklersCPH = '"The amount of cookies you will earn, if all wrinklers are active (max. available) and the Golden Switch is on (if avail.)"'
+MS.Tooltip.wrinklersCPH = '"The amount of cookies you will earn, if all wrinklers are active (max. available) and the Golden Switch is on (if avail.)"'
 MS.wrinklersCPH = function()
 {
 	var wrinkFactor = Game.getWrinklersMax()*0.5*MS.getSuckFactor();
@@ -335,7 +335,7 @@ MS.goldenMult = function()
 	return mult;
 }
 
-MSTooltip.timeLeftForBank = '"Time left to reach the required bank. Only your current CPS (no wrinklers etc.) is considered."'
+MS.Tooltip.timeLeftForBank = '"Time left to reach the required bank. Only your current CPS (no wrinklers etc.) is considered."'
 MS.timeLeftForBank = function(newbank)
 {
 	var cookiesLeft = Math.max(0, newbank - Game.cookies);
@@ -344,7 +344,7 @@ MS.timeLeftForBank = function(newbank)
 	return secondsLeft * Game.fps;
 }
 
-MSTooltip.timeLeftForCookies = '"Time left until you get the required amount of cookies in your bank (including wrinklers),\n'
+MS.Tooltip.timeLeftForCookies = '"Time left until you get the required amount of cookies in your bank (including wrinklers),\n'
 			     + 'if all wrinklers are active (max. available) and the Golden Switch is on (if avail.)"'
 MS.timeLeftForCookies = function(cookies)
 {
@@ -354,7 +354,7 @@ MS.timeLeftForCookies = function(cookies)
 	return hoursLeft * 60 * 60 * Game.fps;
 }
 
-MSTooltip.estimatedDate = '"The date you will get the required amount of cookies in your bank (including wrinklers),\n'
+MS.Tooltip.estimatedDate = '"The date you will get the required amount of cookies in your bank (including wrinklers),\n'
 			     + 'if all wrinklers are active (max. available) and the Golden Switch is on (if avail.)"'
 MS.estimatedDate = function(cookies)
 {
@@ -366,13 +366,13 @@ MS.estimatedDate = function(cookies)
 	return days[estDate.getDay()] + ", " + hours + ":" + minutes;
 }
 
-MSTooltip.bankLucky = '"The minimum bank required for the maximum reward of \'Lucky\'."';
+MS.Tooltip.bankLucky = '"The minimum bank required for the maximum reward of \'Lucky\'."';
 MS.bankLucky = function(frenzyMultiplier)
 {
 	return 1.0/0.15 * Game.cookiesPs / MS.frenzyMod() / MS.goldenSwitchMod(false) * 60 * 15 * frenzyMultiplier;
 }
 
-MSTooltip.maxLuckyReward = '"The reward of this \'Lucky\' combo if the required bank is available."';
+MS.Tooltip.maxLuckyReward = '"The reward of this \'Lucky\' combo if the required bank is available."';
 MS.maxLuckyReward = function(frenzyMultiplier)
 {
 	var mult = MS.goldenMult();
@@ -385,14 +385,14 @@ MS.maxLuckyReward = function(frenzyMultiplier)
 	return 0.15 * MS.bankLucky(frenzyMultiplier) * mult + 13;
 }
 
-MSTooltip.bankCookieChain = '"The minimum bank required for the maximum reward of a \'Cookie Chain\'."'
+MS.Tooltip.bankCookieChain = '"The minimum bank required for the maximum reward of a \'Cookie Chain\'."'
 MS.bankCookieChain = function(frenzyMultiplier)
 {
 	return (MS.maxCookieChainReward(frenzyMultiplier)[0])*4;
 }
 
-MSTooltip.maxCookieChainReward = '"The maximum reward of the last golden cookie of a  \'Cookie Chain\' if the required bank is available."';
-MSTooltip.nextCookieChainCPS = '"The base CPS you need to increase the possible max. reward of a \'Cookie Chain\."';
+MS.Tooltip.maxCookieChainReward = '"The maximum reward of the last golden cookie of a  \'Cookie Chain\' if the required bank is available."';
+MS.Tooltip.nextCookieChainCPS = '"The base CPS you need to increase the possible max. reward of a \'Cookie Chain\."';
 MS.maxCookieChainReward = function(frenzyMultiplier)
 {
 	if (frenzyMultiplier == 0.5)
@@ -424,13 +424,13 @@ MS.coloredCookieChainString = function(numberString, frenzyMultiplier)
 	return str;
 }
 
-MSTooltip.cookiesToSpend = '"The amount of cookies you can spend without falling below the required bank."'
+MS.Tooltip.cookiesToSpend = '"The amount of cookies you can spend without falling below the required bank."'
 MS.cookiesToSpend = function(bank)
 {
 	return Game.cookies - bank;
 }
 
-MSTooltip.reindeerReward = '"The reward for this reindeer combo."'
+MS.Tooltip.reindeerReward = '"The reward for this reindeer combo."'
 MS.reindeerReward = function(frenzyMultiplier)
 {
 	var moni=Math.max(25,Game.cookiesPs/MS.frenzyMod()*frenzyMultiplier*60*1);//1 minute of cookie production, or 25 cookies - whichever is highest
@@ -440,7 +440,7 @@ MS.reindeerReward = function(frenzyMultiplier)
 	return moni;
 }
 
-MSTooltip.maxElderFrenzy = '"The amount of cookies you will earn by killing all wrinklers, after you get an \'Elder Frenzy\' with the maximum amount of active wrinklers."'
+MS.Tooltip.maxElderFrenzy = '"The amount of cookies you will earn by killing all wrinklers, after you get an \'Elder Frenzy\' with the maximum amount of active wrinklers."'
 MS.maxElderFrenzy = function()
 {
 	var wrinklersMax = Game.getWrinklersMax();
@@ -453,8 +453,8 @@ MS.maxElderFrenzy = function()
 	return moni;
 }
 
-MSTooltip.HCsWantedThisAscension = '"Enter the amount of Heavenly Chips you want to earn this ascension."'
-MSTooltip.neededCookiesForHC = '"The cookies you will have to bake (all time) to earn the desired amount of Heavenly Chips."'
+MS.Tooltip.HCsWantedThisAscension = '"Enter the amount of Heavenly Chips you want to earn this ascension."'
+MS.Tooltip.neededCookiesForHC = '"The cookies you will have to bake (all time) to earn the desired amount of Heavenly Chips."'
 MS.neededCookiesForHC = function(HC)
 {
 	var hcsToAdd = 0;
@@ -480,8 +480,8 @@ MS.priceForSacrificeBuildings = function(building, amount)
 	return Math.ceil(price);
 }
 
-MSTooltip.buildingsWanted = '"Enter the amount of buildings you want to have."'
-MSTooltip.PriceForBuildingAmount = '"The amount of cookies you will have to spend for buying the remaining amount of buildings."'
+MS.Tooltip.buildingsWanted = '"Enter the amount of buildings you want to have."'
+MS.Tooltip.PriceForBuildingAmount = '"The amount of cookies you will have to spend for buying the remaining amount of buildings."'
 MS.PriceForBuildingAmount = function(inputFieldValue, i)
 {
 	var building = Game.ObjectsById[i];
@@ -586,33 +586,33 @@ if(!statsdone)
 	// Lucky (plain, frenzy, dragon) bank + max to spend
 	statsString += ' + \'<table style="width: 100%;border-collapse: separate;">\'';
 	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Lucky</td> <td>Bank</td> <td>Max. Reward</td> <td>Max. Cookies to spend</td> <td>Time Left (with CPS)</td></tr>\'';
-	statsString += ' + \'<tr><td class="listing"><b>Plain:</b></td> <td><div class="price plain" title=\'+MSTooltip.bankLucky+\'>\' + Beautify(MS.bankLucky(1)) + \'</div></td> <td><div class="price plain" title=\'+MSTooltip.maxLuckyReward+\'>\' + Beautify(MS.maxLuckyReward(1)) + \'</div></td> <td><div class="price plain" title=\'+MSTooltip.cookiesToSpend+\'> \' + Beautify(MS.cookiesToSpend(MS.bankLucky(1))) + \'</div></td> <td style="font-weight:bold;" title=\'+MSTooltip.timeLeftForBank+\'>\' + ((time=MS.timeLeftForBank(MS.bankLucky(1))) > 0 ? Game.sayTime(time) : "done") + \'</b></td></tr>\'';
-	statsString += ' + \'<tr><td class="listing"><b>Frenzy:</b></td> <td><div class="price plain" title=\'+MSTooltip.bankLucky+\'>\' + Beautify(MS.bankLucky(7)) + \'</div></td> <td><div class="price plain" title=\'+MSTooltip.maxLuckyReward+\'>\' + Beautify(MS.maxLuckyReward(7)) + \'</div></td> <td><div class="price plain" title=\'+MSTooltip.cookiesToSpend+\'> \' + Beautify(MS.cookiesToSpend(MS.bankLucky(7))) + \'</div></td> <td style="font-weight:bold;" title=\'+MSTooltip.timeLeftForBank+\'>\' + ((time=MS.timeLeftForBank(MS.bankLucky(7))) > 0 ? Game.sayTime(time) : "done") + \' </td></tr>\'';
-	statsString += ' + \'<tr><td class="listing"><b>Dragon Harvest:</b></td> <td><div class="price plain" title=\'+MSTooltip.bankLucky+\'>\' + Beautify(MS.bankLucky(15)) + \'</div></td> <td><div class="price plain" title=\'+MSTooltip.maxLuckyReward+\'>\' + Beautify(MS.maxLuckyReward(15)) + \'</div></td> <td><div class="price plain" title=\'+MSTooltip.cookiesToSpend+\'> \' + Beautify(MS.cookiesToSpend(MS.bankLucky(15))) + \'</div></td> <td style="font-weight:bold;" title=\'+MSTooltip.timeLeftForBank+\'>\' + ((time=MS.timeLeftForBank(MS.bankLucky(15))) > 0 ? Game.sayTime(time) : "done") + \' </td></tr>\'';
+	statsString += ' + \'<tr><td class="listing"><b>Plain:</b></td> <td><div class="price plain" title=\'+MS.Tooltip.bankLucky+\'>\' + Beautify(MS.bankLucky(1)) + \'</div></td> <td><div class="price plain" title=\'+MS.Tooltip.maxLuckyReward+\'>\' + Beautify(MS.maxLuckyReward(1)) + \'</div></td> <td><div class="price plain" title=\'+MS.Tooltip.cookiesToSpend+\'> \' + Beautify(MS.cookiesToSpend(MS.bankLucky(1))) + \'</div></td> <td style="font-weight:bold;" title=\'+MS.Tooltip.timeLeftForBank+\'>\' + ((time=MS.timeLeftForBank(MS.bankLucky(1))) > 0 ? Game.sayTime(time) : "done") + \'</b></td></tr>\'';
+	statsString += ' + \'<tr><td class="listing"><b>Frenzy:</b></td> <td><div class="price plain" title=\'+MS.Tooltip.bankLucky+\'>\' + Beautify(MS.bankLucky(7)) + \'</div></td> <td><div class="price plain" title=\'+MS.Tooltip.maxLuckyReward+\'>\' + Beautify(MS.maxLuckyReward(7)) + \'</div></td> <td><div class="price plain" title=\'+MS.Tooltip.cookiesToSpend+\'> \' + Beautify(MS.cookiesToSpend(MS.bankLucky(7))) + \'</div></td> <td style="font-weight:bold;" title=\'+MS.Tooltip.timeLeftForBank+\'>\' + ((time=MS.timeLeftForBank(MS.bankLucky(7))) > 0 ? Game.sayTime(time) : "done") + \' </td></tr>\'';
+	statsString += ' + \'<tr><td class="listing"><b>Dragon Harvest:</b></td> <td><div class="price plain" title=\'+MS.Tooltip.bankLucky+\'>\' + Beautify(MS.bankLucky(15)) + \'</div></td> <td><div class="price plain" title=\'+MS.Tooltip.maxLuckyReward+\'>\' + Beautify(MS.maxLuckyReward(15)) + \'</div></td> <td><div class="price plain" title=\'+MS.Tooltip.cookiesToSpend+\'> \' + Beautify(MS.cookiesToSpend(MS.bankLucky(15))) + \'</div></td> <td style="font-weight:bold;" title=\'+MS.Tooltip.timeLeftForBank+\'>\' + ((time=MS.timeLeftForBank(MS.bankLucky(15))) > 0 ? Game.sayTime(time) : "done") + \' </td></tr>\'';
 	
 	// add blank row
 	statsString += ' + \'<tr style="height: 20px;"><td colspan="4"></td></tr>\'';
 	
 	// Cookie Chain stats
 	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Cookie Chains</td> <td>Bank</td> <td>Max. Reward</td> <td>Max. Cookies to spend</td> <td>Next CPS</td></tr>\'';
-	statsString += ' + \'<tr><td class="listing"><b>Clot:</b></td> <td title=\'+MSTooltip.bankCookieChain+\'>'+MS.coloredCookieChainString('MS.bankCookieChain(0.5)', 0.5)+'</td> <td title=\'+MSTooltip.maxCookieChainReward+\'>'+MS.coloredCookieChainString('MS.maxCookieChainReward(0.5)[0]', 0.5)+'</td> <td><div class="price plain" title=\'+MSTooltip.cookiesToSpend+\'> \' + Beautify(MS.cookiesToSpend(MS.bankCookieChain(0.5))) + \'</div></td> <td><div class="price plain" title=\'+MSTooltip.nextCookieChainCPS+\'>\' + Beautify(MS.maxCookieChainReward(0.5)[1]) + \'</div></td></tr>\'';
-	statsString += ' + \'<tr><td class="listing"><b>Plain:</b></td> <td title=\'+MSTooltip.bankCookieChain+\'>'+MS.coloredCookieChainString('MS.bankCookieChain(1)', 1)+'</td> <td title=\'+MSTooltip.maxCookieChainReward+\'>'+MS.coloredCookieChainString('MS.maxCookieChainReward(1)[0]', 1)+'</td> <td><div class="price plain" title=\'+MSTooltip.cookiesToSpend+\'> \' + Beautify(MS.cookiesToSpend(MS.bankCookieChain(1))) + \'</div></td> <td><div class="price plain" title=\'+MSTooltip.nextCookieChainCPS+\'>\' + Beautify(MS.maxCookieChainReward(1)[1]) + \'</div></td></tr>\'';
-	statsString += ' + \'<tr><td class="listing"><b>Frenzy:</b></td> <td title=\'+MSTooltip.bankCookieChain+\'>'+MS.coloredCookieChainString('MS.bankCookieChain(7)', 7)+'</td> <td title=\'+MSTooltip.maxCookieChainReward+\'>'+MS.coloredCookieChainString('MS.maxCookieChainReward(7)[0]', 7)+'</td> <td><div class="price plain" title=\'+MSTooltip.cookiesToSpend+\'> \' + Beautify(MS.cookiesToSpend(MS.bankCookieChain(7))) + \'</div></td> <td><div class="price plain" title=\'+MSTooltip.nextCookieChainCPS+\'>\' + Beautify(MS.maxCookieChainReward(7)[1]) + \'</div></td></tr>\'';
-	statsString += ' + \'<tr><td class="listing"><b>Dragon Harvest:</b></td> <td title=\'+MSTooltip.bankCookieChain+\'>'+MS.coloredCookieChainString('MS.bankCookieChain(15)', 15)+'</td> <td title=\'+MSTooltip.maxCookieChainReward+\'>'+MS.coloredCookieChainString('MS.maxCookieChainReward(15)[0]',15)+'</td> <td><div class="price plain" title=\'+MSTooltip.cookiesToSpend+\'> \' + Beautify(MS.cookiesToSpend(MS.bankCookieChain(15))) + \'</div></td> <td><div class="price plain" title=\'+MSTooltip.nextCookieChainCPS+\'>\' + Beautify(MS.maxCookieChainReward(15)[1]) + \'</div></td></tr>\'';
+	statsString += ' + \'<tr><td class="listing"><b>Clot:</b></td> <td title=\'+MS.Tooltip.bankCookieChain+\'>'+MS.coloredCookieChainString('MS.bankCookieChain(0.5)', 0.5)+'</td> <td title=\'+MS.Tooltip.maxCookieChainReward+\'>'+MS.coloredCookieChainString('MS.maxCookieChainReward(0.5)[0]', 0.5)+'</td> <td><div class="price plain" title=\'+MS.Tooltip.cookiesToSpend+\'> \' + Beautify(MS.cookiesToSpend(MS.bankCookieChain(0.5))) + \'</div></td> <td><div class="price plain" title=\'+MS.Tooltip.nextCookieChainCPS+\'>\' + Beautify(MS.maxCookieChainReward(0.5)[1]) + \'</div></td></tr>\'';
+	statsString += ' + \'<tr><td class="listing"><b>Plain:</b></td> <td title=\'+MS.Tooltip.bankCookieChain+\'>'+MS.coloredCookieChainString('MS.bankCookieChain(1)', 1)+'</td> <td title=\'+MS.Tooltip.maxCookieChainReward+\'>'+MS.coloredCookieChainString('MS.maxCookieChainReward(1)[0]', 1)+'</td> <td><div class="price plain" title=\'+MS.Tooltip.cookiesToSpend+\'> \' + Beautify(MS.cookiesToSpend(MS.bankCookieChain(1))) + \'</div></td> <td><div class="price plain" title=\'+MS.Tooltip.nextCookieChainCPS+\'>\' + Beautify(MS.maxCookieChainReward(1)[1]) + \'</div></td></tr>\'';
+	statsString += ' + \'<tr><td class="listing"><b>Frenzy:</b></td> <td title=\'+MS.Tooltip.bankCookieChain+\'>'+MS.coloredCookieChainString('MS.bankCookieChain(7)', 7)+'</td> <td title=\'+MS.Tooltip.maxCookieChainReward+\'>'+MS.coloredCookieChainString('MS.maxCookieChainReward(7)[0]', 7)+'</td> <td><div class="price plain" title=\'+MS.Tooltip.cookiesToSpend+\'> \' + Beautify(MS.cookiesToSpend(MS.bankCookieChain(7))) + \'</div></td> <td><div class="price plain" title=\'+MS.Tooltip.nextCookieChainCPS+\'>\' + Beautify(MS.maxCookieChainReward(7)[1]) + \'</div></td></tr>\'';
+	statsString += ' + \'<tr><td class="listing"><b>Dragon Harvest:</b></td> <td title=\'+MS.Tooltip.bankCookieChain+\'>'+MS.coloredCookieChainString('MS.bankCookieChain(15)', 15)+'</td> <td title=\'+MS.Tooltip.maxCookieChainReward+\'>'+MS.coloredCookieChainString('MS.maxCookieChainReward(15)[0]',15)+'</td> <td><div class="price plain" title=\'+MS.Tooltip.cookiesToSpend+\'> \' + Beautify(MS.cookiesToSpend(MS.bankCookieChain(15))) + \'</div></td> <td><div class="price plain" title=\'+MS.Tooltip.nextCookieChainCPS+\'>\' + Beautify(MS.maxCookieChainReward(15)[1]) + \'</div></td></tr>\'';
 	
 	// add blank row
 	statsString += ' + \'<tr style="height: 20px;"><td colspan="4"></td></tr>\'';
 	
 	// Reindeer stats
 	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Reindeers</td> <td>Plain</td> <td>Frenzy</td><td>Dragon Harvest</td><td>Elder Frenzy</td></tr>\'';
-	statsString += ' + \'<tr><td class="listing"><b>Reindeer reward:</b> </td><td><div class="price plain" title=\'+MSTooltip.reindeerReward+\'>\' + Beautify(MS.reindeerReward(1)) + \'</div></td><td><div class="price plain" title=\'+MSTooltip.reindeerReward+\'>\' + Beautify(MS.reindeerReward(7)) + \'</div></td><td><div class="price plain" title=\'+MSTooltip.reindeerReward+\'>\' + Beautify(MS.reindeerReward(15)) + \'</div></td><td><div class="price plain" title=\'+MSTooltip.reindeerReward+\'>\' + Beautify(MS.reindeerReward(666)) + \'</div></td></tr>\'';
+	statsString += ' + \'<tr><td class="listing"><b>Reindeer reward:</b> </td><td><div class="price plain" title=\'+MS.Tooltip.reindeerReward+\'>\' + Beautify(MS.reindeerReward(1)) + \'</div></td><td><div class="price plain" title=\'+MS.Tooltip.reindeerReward+\'>\' + Beautify(MS.reindeerReward(7)) + \'</div></td><td><div class="price plain" title=\'+MS.Tooltip.reindeerReward+\'>\' + Beautify(MS.reindeerReward(15)) + \'</div></td><td><div class="price plain" title=\'+MS.Tooltip.reindeerReward+\'>\' + Beautify(MS.reindeerReward(666)) + \'</div></td></tr>\'';
 	
 	// add blank row
 	statsString += ' + \'<tr style="height: 20px;"><td colspan="4"></td></tr>\'';
 	
 	// start Heavenly Chips stats
 	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Heavenly Chips</td> <td>Earned (this game)</td> <td>Earned (all time)</td> <td>Wanted (this game)</td> <td>Cookies needed (all time)</td></tr>\'';
-	statsString += ' + \'<tr><td class="listing"><b>Heavenly Chips:</b> </td><td style="font-weight:bold;" title=\'+MSTooltip.hcThisAscension+\'>\' + Beautify(MS.hcThisAscension()) + \' (\' + Beautify(MS.hcFactor()) + \'%) </td><td style="font-weight: bold;" title=\'+MSTooltip.hcAllTime+\'>\' + Beautify(MS.hcAllTime()) + \'</td><td> <input type="text" title=\'+MSTooltip.HCsWantedThisAscension+\' onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="tfHC" min=0 max=99999999 style="width:75%;" value=\' + (thisInput=(l("tfHC")==null ? \'0\' : l("tfHC").value)) + \'></input> </td><td class="price plain" title=\'+MSTooltip.neededCookiesForHC+\'>\' + Beautify(MS.neededCookiesForHC(thisInput)) + \'</td></tr>\'';
+	statsString += ' + \'<tr><td class="listing"><b>Heavenly Chips:</b> </td><td style="font-weight:bold;" title=\'+MS.Tooltip.hcThisAscension+\'>\' + Beautify(MS.hcThisAscension()) + \' (\' + Beautify(MS.hcFactor()) + \'%) </td><td style="font-weight: bold;" title=\'+MS.Tooltip.hcAllTime+\'>\' + Beautify(MS.hcAllTime()) + \'</td><td> <input type="text" title=\'+MS.Tooltip.HCsWantedThisAscension+\' onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="tfHC" min=0 max=99999999 style="width:75%;" value=\' + (thisInput=(l("tfHC")==null ? \'0\' : l("tfHC").value)) + \'></input> </td><td class="price plain" title=\'+MS.Tooltip.neededCookiesForHC+\'>\' + Beautify(MS.neededCookiesForHC(thisInput)) + \'</td></tr>\'';
 	
 	// add blank row
 	statsString += ' + \'<tr style="height: 20px;"><td colspan="4"></td></tr>\'';
@@ -620,7 +620,7 @@ if(!statsdone)
 	
 	// Wrinkler stats
 	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Wrinklers</td> <td>Full Elder Frenzy</td> <td>Killing Wrinklers</td> <td>Real Cookies per Hour</td></tr>\'';
-	statsString += ' + \'<tr><td class="listing"><b>Wrinkler Rewards:</b></td> <td><div class="price plain" title=\'+MSTooltip.maxElderFrenzy+\'>\' + Beautify(MS.maxElderFrenzy()) + \'</div></td> <td><div class="price plain" title=\'+MSTooltip.wrinklersreward+\'>\' + Beautify(MS.wrinklersreward()) + \'</div></td> <td><div class="price plain" title=\'+MSTooltip.wrinklersCPH+\'>\' + Beautify(MS.wrinklersCPH()) + \'</div></td></tr>\'';
+	statsString += ' + \'<tr><td class="listing"><b>Wrinkler Rewards:</b></td> <td><div class="price plain" title=\'+MS.Tooltip.maxElderFrenzy+\'>\' + Beautify(MS.maxElderFrenzy()) + \'</div></td> <td><div class="price plain" title=\'+MS.Tooltip.wrinklersreward+\'>\' + Beautify(MS.wrinklersreward()) + \'</div></td> <td><div class="price plain" title=\'+MS.Tooltip.wrinklersCPH+\'>\' + Beautify(MS.wrinklersCPH()) + \'</div></td></tr>\'';
 	
 	// add blank row
 	statsString += ' + \'<tr style="height: 20px;"><td colspan="4"></td></tr>\'';
@@ -629,7 +629,7 @@ if(!statsdone)
 	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Buildings</td> <td>Amount wanted</td> <td>Remaining Price</td> <td>Time Left (with wrinklers)</td> <td>Estimated date</td></tr>\'';
 	for (var i in Game.ObjectsById)
 	{
-		statsString += ' + \'<tr><td class="listing"><b>'+Game.ObjectsById[i].name+':</b></td> <td><input type="text" title=\'+MSTooltip.buildingsWanted+\' onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="tfBuildingAmount'+i+'" min=0 style="width:20%;" value=\' + (thisInput=(l("tfBuildingAmount'+i+'")==null ? 0 : l("tfBuildingAmount'+i+'").value)) + \'></input></td> <td class="price plain" title=\'+MSTooltip.PriceForBuildingAmount+\'>\' + Beautify(price=MS.PriceForBuildingAmount(thisInput, '+i+')) + \'</td> <td style="font-weight:bold;" title=\'+MSTooltip.timeLeftForCookies+\'>\' + ((time=MS.timeLeftForCookies(price)) > 0 ? Game.sayTime(time) : "done") + \'</b></td> <td style="font-weight:bold;" title=\'+MSTooltip.estimatedDate+\'>\' + ((time > 0) ? MS.estimatedDate(price) : "done") + \'</b></td></tr>\'';
+		statsString += ' + \'<tr><td class="listing"><b>'+Game.ObjectsById[i].name+':</b></td> <td><input type="text" title=\'+MS.Tooltip.buildingsWanted+\' onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="tfBuildingAmount'+i+'" min=0 style="width:20%;" value=\' + (thisInput=(l("tfBuildingAmount'+i+'")==null ? 0 : l("tfBuildingAmount'+i+'").value)) + \'></input></td> <td class="price plain" title=\'+MS.Tooltip.PriceForBuildingAmount+\'>\' + Beautify(price=MS.PriceForBuildingAmount(thisInput, '+i+')) + \'</td> <td style="font-weight:bold;" title=\'+MS.Tooltip.timeLeftForCookies+\'>\' + ((time=MS.timeLeftForCookies(price)) > 0 ? Game.sayTime(time) : "done") + \'</b></td> <td style="font-weight:bold;" title=\'+MS.Tooltip.estimatedDate+\'>\' + ((time > 0) ? MS.estimatedDate(price) : "done") + \'</b></td></tr>\'';
 	}
 	
 	// end table

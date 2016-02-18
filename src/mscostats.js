@@ -14,7 +14,7 @@
 var MS = {};
 MS.Tooltip = {};
 
-MS.version = '1.0.9.3'
+MS.version = '1.0.10.0'
 
 // set MS.importSaveT after importing a save, this is exclusively for another MSco Addon: Real Perfect Idling
 MS.importSaveT = 0;
@@ -207,8 +207,9 @@ MS.wrinklersreward = function()
 MS.Tooltip.wrinklersCPH = '"The amount of cookies you will earn, if all wrinklers are active (max. available) and the Golden Switch is on (if avail.)"'
 MS.wrinklersCPH = function()
 {
-	var wrinkFactor = Game.getWrinklersMax()*0.5*MS.getSuckFactor();
-	wrinkFactor += 0.5
+	var max = Game.getWrinklersMax();
+	var wrinkFactor = max*max*0.05*MS.getSuckFactor();
+	wrinkFactor += (1-Game.getWrinklersMax()*0.05)
 
 	return Game.cookiesPs / MS.frenzyMod() * MS.goldenSwitchMod(true) * wrinkFactor * 3600;
 }

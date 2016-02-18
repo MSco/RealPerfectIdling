@@ -1,7 +1,7 @@
 /* ================================================
     MSco's Real Perfect Idling - A Cookie Clicker plugin
 
-    Version: 1.0.2.2
+    Version: 1.0.2.3
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  MSco
     Contact: https://www.reddit.com/user/_MSco_
@@ -73,7 +73,6 @@ RPI.addMissedGoldenCookies = function(durationFrames)
 	        if (Game.Has('Lucky day')) dur*=2;
 	        if (Game.Has('Serendipity')) dur*=2;
 		if (Game.Has('Decisive fate')) dur*=1.05;
-		if (Game.hasAura('Epoch Manipulator')) dur*=1.05;
 	        
 		var thisMissed = Math.round(durationFrames/(RPI.calcGCSpawnTime()+dur))
 		Game.missedGoldenClicks += thisMissed;

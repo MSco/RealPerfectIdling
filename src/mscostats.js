@@ -14,7 +14,7 @@
 var MS = {};
 var MSTooltip = {};
 
-MS.version = '1.0.8.3'
+MS.version = '1.0.9.0'
 
 // set MS.importSaveT after importing a save, this is exclusively for another MSco Addon: Real Perfect Idling
 MS.importSaveT = 0;
@@ -360,9 +360,21 @@ MSTooltip.timeLeftForCookies = '"Time left until you get the required amount of 
 MS.timeLeftForCookies = function(cookies)
 {
 	var cookiesLeft = Math.max(0, cookies - Game.cookies - MS.wrinklersreward());
-	var secondsLeft = cookiesLeft/MS.wrinklersCPH();
+	var hoursLeft = cookiesLeft/MS.wrinklersCPH();
 	
-	return secondsLeft * 60 * 60 * Game.fps;
+	return hoursLeft * 60 * 60 * Game.fps;
+}
+
+MSTooltip.estimatedDate = '"The date you will get the required amount of cookies in your bank (including wrinklers),\n'
+			     + 'if all wrinklers are active (max. available) and the Golden Switch is on (if avail.)"'
+MS.estimatedDate = function(cookies)
+{
+	var estDate = new Date(new Date().getTime()+MS.timeLeftForCookies(cookies)*1000/Game.fps);
+	var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+	var h,m;
+	var hours = ((h=estDate.getHours()) < 10) ? '0'+h : h;
+	var minutes = ((m=estDate.getMinutes()) < 10) ? '0'+m : m;
+	return days[estDate.getDay()] + ", " + hours + ":" + minutes;
 }
 
 MSTooltip.bankLucky = '"The minimum bank required for the maximum reward of \'Lucky\'."';
@@ -622,10 +634,10 @@ if(!statsdone)
 	statsString += ' + \'<tr style="height: 20px;"><td colspan="4"></td></tr>\'';
 	
 	// Building stats
-	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Buildings</td> <td>Amount wanted</td> <td>Remaining Price</td> <td>Time Left (with wrinklers)</td></tr>\'';
+	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Buildings</td> <td>Amount wanted</td> <td>Remaining Price</td> <td>Time Left (with wrinklers)</td> <td>Estimated date</td></tr>\'';
 	for (var i in Game.ObjectsById)
 	{
-		statsString += ' + \'<tr><td class="listing"><b>'+Game.ObjectsById[i].name+':</b></td> <td><input type="text" title=\'+MSTooltip.buildingsWanted+\' onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="tfBuildingAmount'+i+'" min=\'+(minAmount=(Game.ObjectsById['+i+'].amount+1))+\' style="width:20%;" value=\' + (thisInput=(l("tfBuildingAmount'+i+'")==null ? minAmount : Math.max(minAmount,l("tfBuildingAmount'+i+'").value))) + \'></input></td> <td class="price plain" title=\'+MSTooltip.PriceForBuildingAmount+\'>\' + Beautify(price=MS.PriceForBuildingAmount(thisInput, '+i+')) + \'</td> <td style="font-weight:bold;" title=\'+MSTooltip.timeLeftForCookies+\'>\' + ((time=MS.timeLeftForCookies(price)) > 0 ? Game.sayTime(time) : "done") + \'</b></td></tr>\'';
+		statsString += ' + \'<tr><td class="listing"><b>'+Game.ObjectsById[i].name+':</b></td> <td><input type="text" title=\'+MSTooltip.buildingsWanted+\' onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="tfBuildingAmount'+i+'" min=\'+(minAmount=(Game.ObjectsById['+i+'].amount+1))+\' style="width:20%;" value=\' + (thisInput=(l("tfBuildingAmount'+i+'")==null ? minAmount : Math.max(minAmount,l("tfBuildingAmount'+i+'").value))) + \'></input></td> <td class="price plain" title=\'+MSTooltip.PriceForBuildingAmount+\'>\' + Beautify(price=MS.PriceForBuildingAmount(thisInput, '+i+')) + \'</td> <td style="font-weight:bold;" title=\'+MSTooltip.timeLeftForCookies+\'>\' + ((time=MS.timeLeftForCookies(price)) > 0 ? Game.sayTime(time) : "done") + \'</b></td> <td style="font-weight:bold;" title=\'+MSTooltip.estimatedDate+\'>\' + ((time > 0) ? MS.estimatedDate(price) : "done") + \'</b></td></tr>\'';
 	}
 	
 	// end table

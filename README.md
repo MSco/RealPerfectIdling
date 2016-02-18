@@ -57,6 +57,7 @@ have any suggestions.
 ##### Changelog:
 * 1.0.9:
 	* Added estimated date
+	* Removed initial amount of buildings and the required minimum value
 * 1.0.8:
 	* Tooltips added
 	* Fixed plural 's' of Game.sayTime 

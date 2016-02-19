@@ -14,7 +14,7 @@
 var MS = {};
 MS.Tooltip = {};
 
-MS.version = '1.0.10.1'
+MS.version = '1.1.0.0'
 
 // set MS.importSaveT after importing a save, this is exclusively for another MSco Addon: Real Perfect Idling
 MS.importSaveT = 0;
@@ -345,7 +345,7 @@ MS.timeLeftForBank = function(newbank)
 	return secondsLeft * Game.fps;
 }
 
-MS.Tooltip.timeLeftForCookies = '"Time left until you get the required amount of cookies in your bank (including wrinklers),\n'
+MS.Tooltip.timeLeftForCookies = '"Time left until you get the required amount of cookies,\n'
 			     + 'if all wrinklers are active (max. available) and the Golden Switch is on (if avail.)"'
 MS.timeLeftForCookies = function(cookies)
 {
@@ -510,6 +510,47 @@ MS.PriceForBuildingAmount = function(inputFieldValue, i)
 	return Math.ceil(price);
 }
 
+MS.cookiesWanted = []
+MS.Tooltip.cookiesWanted = []
+MS.Tooltip.numberLegend = '1e3 = thousand\n' +
+			  '1e6 = million\n' +
+			  '1e9 = billion\n' +
+			  '1e12 = trillion\n' +
+			  '1e15 = quadrillion\n' +
+			  '1e18 = quintillion\n' +
+			  '1e21 = sextillion\n' +
+			  '1e24 = septillion\n' +
+			  '1e27 = octillion\n' +
+			  '1e30 = nonillion\n' +
+			  '1e33 = decillion\n' +
+			  '1e36 = undecillion\n' +
+			  '1e39 = duodecillion\n"';
+MS.Tooltip.cookiesWanted[0] = '"The amount of cookies you want to have in your bank incl. wrinklers.\n\n' + MS.Tooltip.numberLegend;
+MS.Tooltip.cookiesWanted[1] = '"The amount of cookies you want to have baked this game, incl. wrinklers and using\n'
+				+'chocolate egg after selling all buildings with dragon aura Earth Shatterer.\n\n' + MS.Tooltip.numberLegend;
+MS.Tooltip.cookiesWanted[2] = '"The amount of cookies you want to have baked all time, incl. wrinklers and using\n'
+				+'chocolate egg after selling all buildings with dragon aura Earth Shatterer.\n\n' + MS.Tooltip.numberLegend;
+MS.Tooltip.cookiesLeftToAmount = '"The remaining amount of cookies to get the wanted amount."'
+MS.cookiesLeftToAmount = function(inputFieldValue, i)
+{
+	var reference;
+	
+	if (i==0)
+		reference = Game.cookies+MS.wrinklersreward();
+	else if (i==1)
+		reference = MS.maxEarnedThisAscension();
+	else if (i==2)
+		reference = MS.maxEarnedAllTime();
+	
+	var target = 0;
+	if (!(inputFieldValue == null || isNaN(inputFieldValue) || inputFieldValue.length==0))
+		target = Number(inputFieldValue);
+		
+	MS.cookiesWanted[i] = target;
+	
+	return Math.max(target - reference, 0);
+}
+
 MS.storeActiveId = function(str)
 {
 	var activeid = document.activeElement.id; 
@@ -635,6 +676,18 @@ if(!statsdone)
 	{
 		MS.buildingsWanted[i]=0;
 		statsString += ' + \'<tr><td class="listing"><b>'+Game.ObjectsById[i].name+':</b></td> <td><input type="text" title=\'+MS.Tooltip.buildingsWanted+\' onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="tfBuildingAmount'+i+'" min=0 style="width:20%;" value=\' + (thisInput=(l("tfBuildingAmount'+i+'")==null ? MS.buildingsWanted['+i+'] : l("tfBuildingAmount'+i+'").value)) + \'></input></td> <td class="price plain" title=\'+MS.Tooltip.PriceForBuildingAmount+\'>\' + Beautify(price=MS.PriceForBuildingAmount(thisInput, '+i+')) + \'</td> <td style="font-weight:bold;" title=\'+MS.Tooltip.timeLeftForCookies+\'>\' + ((time=MS.timeLeftForCookies(price)) > 0 ? Game.sayTime(time) : "done") + \'</b></td> <td style="font-weight:bold;" title=\'+MS.Tooltip.estimatedDate+\'>\' + ((time > 0) ? MS.estimatedDate(time) : "done") + \'</b></td></tr>\'';
+	}
+	
+	// add blank row
+	statsString += ' + \'<tr style="height: 20px;"><td colspan="4"></td></tr>\'';
+	
+	// Cookies wanted
+	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Cookies</td> <td>Amount wanted</td> <td>Remaining</td> <td>Time Left (with wrinklers)</td> <td>Estimated date</td></tr>\'';
+	var cookieStrings = ['Bank (with wrinklers):', 'This Game:', 'All Time:'];
+	for (var i=0; i<=2; i++)
+	{
+		MS.cookiesWanted[i]=0;
+		statsString += ' + \'<tr><td class="listing"><b>'+cookieStrings[i]+'</b></td> <td><input type="text" title=\'+MS.Tooltip.cookiesWanted['+i+']+\' onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 101" id="tfCookieAmount'+i+'" min=0 style="width:50%;" value=\' + (thisInput=(l("tfCookieAmount'+i+'")==null ? MS.cookiesWanted['+i+'] : l("tfCookieAmount'+i+'").value)) + \'></input></td> <td class="price plain" title=\'+MS.Tooltip.cookiesLeftToAmount+\'>\' + Beautify(price=MS.cookiesLeftToAmount(thisInput, '+i+')) + \'</td> <td style="font-weight:bold;" title=\'+MS.Tooltip.timeLeftForCookies+\'>\' + ((time=MS.timeLeftForCookies(price)) > 0 ? Game.sayTime(time) : "done") + \'</b></td> <td style="font-weight:bold;" title=\'+MS.Tooltip.estimatedDate+\'>\' + ((time > 0) ? MS.estimatedDate(time) : "done") + \'</b></td></tr>\'';
 	}
 	
 	// end table

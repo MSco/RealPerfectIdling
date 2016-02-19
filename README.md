@@ -42,6 +42,7 @@ have any suggestions.
 	* multiplier not affected by frenzy multipliers
 	* Cookies in bank includes wrinkler reward
 	* Cookies baked (this game and all time) include wrinkler reward and chocolate egg reward
+* You can specify a wanted amount of cookies (bank, baked this game or baked all time) and see how long it will take to get it.
 * Show Cookies in bank needed to get the maximum reward of Lucky, a Frenzy-Lucky-Combo or a Dragon-Lucky-Combo (incl. time left to get it)
 * Show Cookies in bank needed to get the maximum reward of a Cookie Chain in Clot, Plain, Frenzy or Dragon Harvest mode. During an active cookie chain, the corresponding cookie chain stats are colored green in the menu.
 * Show maximum of cookies you can spend without getting under the Frenz-Lucky optimized bank
@@ -55,6 +56,8 @@ have any suggestions.
 * Show Price for next Dragon Level
 
 ##### Changelog:
+* 1.1.0:
+	* New feature added: You can specify a wanted amount of cookies (bank, baked this game or baked all time) and see how long it will take to get it.
 * 1.0.10:
 	* Fixed wrinkler cookies per hour calculation for 12 wrinklers
 * 1.0.9:

@@ -14,7 +14,7 @@
 var MS = {};
 MS.Tooltip = {};
 
-MS.version = '1.1.0.1'
+MS.version = '1.1.0.2'
 
 // set MS.importSaveT after importing a save, this is exclusively for another MSco Addon: Real Perfect Idling
 MS.importSaveT = 0;
@@ -547,8 +547,11 @@ MS.cookiesLeftToAmount = function(inputFieldValue, i)
 		target = Number(inputFieldValue);
 		
 	MS.cookiesWanted[i] = target;
+	var cookiesLeft = Math.max(target - reference, 0);
+	var hoursLeft = cookiesLeft/MS.wrinklersCPH();
+	var framesLeft = hoursLeft * 60 * 60 * Game.fps;
 	
-	return Math.max(target - reference, 0);
+	return [cookiesLeft, framesLeft];
 }
 
 MS.storeActiveId = function(str)
@@ -675,7 +678,7 @@ if(!statsdone)
 	for (var i in Game.ObjectsById)
 	{
 		MS.buildingsWanted[i]=0;
-		statsString += ' + \'<tr><td class="listing"><b>'+Game.ObjectsById[i].name+':</b></td> <td><input type="text" title=\'+MS.Tooltip.buildingsWanted+\' onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="tfBuildingAmount'+i+'" min=0 style="width:20%;" value=\' + (thisInput=(l("tfBuildingAmount'+i+'")==null ? MS.buildingsWanted['+i+'] : l("tfBuildingAmount'+i+'").value)) + \'></input></td> <td class="price plain" title=\'+MS.Tooltip.PriceForBuildingAmount+\'>\' + Beautify(price=MS.PriceForBuildingAmount(thisInput, '+i+')) + \'</td> <td style="font-weight:bold;" title=\'+MS.Tooltip.timeLeftForCookies+\'>\' + ((time=MS.timeLeftForCookies(price)) > 0 ? Game.sayTime(time) : "done") + \'</b></td> <td style="font-weight:bold;" title=\'+MS.Tooltip.estimatedDate+\'>\' + ((time > 0) ? MS.estimatedDate(time) : "done") + \'</b></td></tr>\'';
+		statsString += ' + \'<tr><td class="listing"><b>'+Game.ObjectsById[i].name+':</b></td> <td><input type="text" title=\'+MS.Tooltip.buildingsWanted+\' onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="tfBuildingAmount'+i+'" min=0 style="width:20%;" value=\' + (thisInput=(l("tfBuildingAmount'+i+'")==null ? MS.buildingsWanted['+i+'] : l("tfBuildingAmount'+i+'").value)) + \'></input></td> <td class="price plain" title=\'+MS.Tooltip.PriceForBuildingAmount+\'>\' + Beautify(price=MS.PriceForBuildingAmount(thisInput, '+i+')) + \'</td> <td style="font-weight:bold;" title=\'+MS.Tooltip.timeLeftForCookies+\'>\' + ((time=MS.cookiesLeftToAmount(price, 0)[1]) > 0 ? Game.sayTime(time) : "done") + \'</b></td> <td style="font-weight:bold;" title=\'+MS.Tooltip.estimatedDate+\'>\' + ((time > 0) ? MS.estimatedDate(time) : "done") + \'</b></td></tr>\'';
 	}
 	
 	// add blank row
@@ -687,7 +690,7 @@ if(!statsdone)
 	for (var i=0; i<=2; i++)
 	{
 		MS.cookiesWanted[i]=0;
-		statsString += ' + \'<tr><td class="listing"><b>'+cookieStrings[i]+'</b></td> <td><input type="text" title=\'+MS.Tooltip.cookiesWanted['+i+']+\' onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 101 || event.charCode == 69 || event.charCode == 46" id="tfCookieAmount'+i+'" min=0 style="width:50%;" value=\' + (thisInput=(l("tfCookieAmount'+i+'")==null ? MS.cookiesWanted['+i+'] : l("tfCookieAmount'+i+'").value)) + \'></input></td> <td class="price plain" title=\'+MS.Tooltip.cookiesLeftToAmount+\'>\' + Beautify(price=MS.cookiesLeftToAmount(thisInput, '+i+')) + \'</td> <td style="font-weight:bold;" title=\'+MS.Tooltip.timeLeftForCookies+\'>\' + ((time=MS.timeLeftForCookies(price)) > 0 ? Game.sayTime(time) : "done") + \'</b></td> <td style="font-weight:bold;" title=\'+MS.Tooltip.estimatedDate+\'>\' + ((time > 0) ? MS.estimatedDate(time) : "done") + \'</b></td></tr>\'';
+		statsString += ' + \'<tr><td class="listing"><b>'+cookieStrings[i]+'</b></td> <td><input type="text" title=\'+MS.Tooltip.cookiesWanted['+i+']+\' onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 101 || event.charCode == 69 || event.charCode == 46" id="tfCookieAmount'+i+'" min=0 style="width:50%;" value=\' + (thisInput=(l("tfCookieAmount'+i+'")==null ? MS.cookiesWanted['+i+'] : l("tfCookieAmount'+i+'").value)) + \'></input></td> <td class="price plain" title=\'+MS.Tooltip.cookiesLeftToAmount+\'>\' + Beautify(price=MS.cookiesLeftToAmount(thisInput, '+i+')[0]) + \'</td> <td style="font-weight:bold;" title=\'+MS.Tooltip.timeLeftForCookies+\'>\' + ((time=MS.cookiesLeftToAmount(thisInput, '+i+')[1]) > 0 ? Game.sayTime(time) : "done") + \'</b></td> <td style="font-weight:bold;" title=\'+MS.Tooltip.estimatedDate+\'>\' + ((time > 0) ? MS.estimatedDate(time) : "done") + \'</b></td></tr>\'';
 	}
 	
 	// end table

@@ -14,7 +14,7 @@
 var MS = {};
 MS.Tooltip = {};
 
-MS.version = '1.1.0.3'
+MS.version = '1.1.0.4'
 
 // set MS.importSaveT after importing a save, this is exclusively for another MSco Addon: Real Perfect Idling
 MS.importSaveT = 0;
@@ -139,7 +139,7 @@ MS.buildingSellReward = function(building)
 	if (building.id == Game.ObjectsN-1 && Game.dragonLevel>=9 && !Game.hasAura('Earth Shatterer'))
 		buildingamount--;
 	
-	var price = Math.ceil(building.basePrice * (Math.pow(Game.priceIncrease, Math.max(0,building.amount-building.free)) - Game.priceIncrease) / 0.15);
+	var price = Math.ceil(building.basePrice * (Math.pow(Game.priceIncrease, Math.max(0,buildingamount-building.free)) - Game.priceIncrease) / 0.15);
 	
 	var giveBack = (Game.dragonLevel>=9) ? 0.85 : 0.5;
 	

@@ -456,12 +456,15 @@ MS.maxElderFrenzy = function()
 
 MS.Tooltip.HCsWantedThisAscension = '"Enter the amount of Heavenly Chips you want to earn this ascension."'
 MS.Tooltip.neededCookiesForHC = '"The cookies you will have to bake (all time) to earn the desired amount of Heavenly Chips."'
+MS.HCsWantedThisAscension = 0;
 MS.neededCookiesForHC = function(HC)
 {
 	var hcsToAdd = 0;
 	
 	if (!(HC == null || isNaN(HC) || HC.length==0))
-		var hcsToAdd = parseInt(HC);
+		var hcsToAdd = Number(HC);
+	
+	MS.HCsWantedThisAscension = HC;
 	
 	var hcsOverallNeeded = Game.HowMuchPrestige(Game.cookiesReset) + hcsToAdd;
 	return Game.HowManyCookiesReset(hcsOverallNeeded);
@@ -661,7 +664,7 @@ if(!statsdone)
 	
 	// start Heavenly Chips stats
 	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Heavenly Chips</td> <td>Earned (this game)</td> <td>Earned (all time)</td> <td>Wanted (this game)</td> <td>Cookies needed (all time)</td></tr>\'';
-	statsString += ' + \'<tr><td class="listing"><b>Heavenly Chips:</b> </td><td style="font-weight:bold;" title=\'+MS.Tooltip.hcThisAscension+\'>\' + Beautify(MS.hcThisAscension()) + \' (\' + Beautify(MS.hcFactor()) + \'%) </td><td style="font-weight: bold;" title=\'+MS.Tooltip.hcAllTime+\'>\' + Beautify(MS.hcAllTime()) + \'</td><td> <input type="text" title=\'+MS.Tooltip.HCsWantedThisAscension+\' onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="tfHC" min=0 max=99999999 style="width:75%;" value=\' + (thisInput=(l("tfHC")==null ? \'0\' : l("tfHC").value)) + \'></input> </td><td class="price plain" title=\'+MS.Tooltip.neededCookiesForHC+\'>\' + Beautify(MS.neededCookiesForHC(thisInput)) + \'</td></tr>\'';
+	statsString += ' + \'<tr><td class="listing"><b>Heavenly Chips:</b> </td><td style="font-weight:bold;" title=\'+MS.Tooltip.hcThisAscension+\'>\' + Beautify(MS.hcThisAscension()) + \' (\' + Beautify(MS.hcFactor()) + \'%) </td><td style="font-weight: bold;" title=\'+MS.Tooltip.hcAllTime+\'>\' + Beautify(MS.hcAllTime()) + \'</td><td> <input type="text" title=\'+MS.Tooltip.HCsWantedThisAscension+\' onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 101 || event.charCode == 69 || event.charCode == 46" id="tfHC" min=0 max=99999999 style="width:75%;" value=\' + (thisInput=(l("tfHC")==null ? MS.HCsWantedThisAscension : l("tfHC").value)) + \'></input> </td><td class="price plain" title=\'+MS.Tooltip.neededCookiesForHC+\'>\' + Beautify(MS.neededCookiesForHC(thisInput)) + \'</td></tr>\'';
 	
 	// add blank row
 	statsString += ' + \'<tr style="height: 20px;"><td colspan="4"></td></tr>\'';

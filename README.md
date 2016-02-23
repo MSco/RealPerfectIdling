@@ -56,9 +56,13 @@ have any suggestions.
 * Show Price for next Dragon Level
 
 ##### Changelog:
+* 1.1.1:
+	* Fixed Chocolate Egg Reward. Sell reward was not calculated correctly. 
+	* Fixed issue that caused writing the remaining cookies for buildings into the input field for cookies wanted in bank
+	* Numbers in input fields are not converted anymore, e.g. 108e30 was converted to 1.08E+32
 * 1.1.0:
 	* New feature added: You can specify a wanted amount of cookies (bank, baked this game or baked all time) and see how long it will take to get it.
-	* Fixed Chocolate Egg Reward. Sell reward was not calculated correctly.
+	
 * 1.0.10:
 	* Fixed wrinkler cookies per hour calculation for 12 wrinklers
 * 1.0.9:

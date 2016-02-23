@@ -58,6 +58,7 @@ have any suggestions.
 ##### Changelog:
 * 1.1.0:
 	* New feature added: You can specify a wanted amount of cookies (bank, baked this game or baked all time) and see how long it will take to get it.
+	* Fixed Chocolate Egg Reward. Sell reward was not calculated correctly.
 * 1.0.10:
 	* Fixed wrinkler cookies per hour calculation for 12 wrinklers
 * 1.0.9:

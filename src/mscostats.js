@@ -14,7 +14,7 @@
 var MS = {};
 MS.Tooltip = {};
 
-MS.version = '1.1.0.6'
+MS.version = '1.1.1.0'
 
 // set MS.importSaveT after importing a save, this is exclusively for another MSco Addon: Real Perfect Idling
 MS.importSaveT = 0;
@@ -545,8 +545,9 @@ MS.cookiesLeftToAmount = function(inputFieldValue, i)
 	var target = 0;
 	if (!(inputFieldValue == null || isNaN(inputFieldValue) || inputFieldValue.length==0))
 		target = Number(inputFieldValue);
-		
-	MS.cookiesWanted[i] = target;
+	
+	if (typeof inputFieldValue == "string")
+		MS.cookiesWanted[i] = inputFieldValue;
 	var cookiesLeft = Math.max(target - reference, 0);
 	var hoursLeft = cookiesLeft/MS.wrinklersCPH();
 	var framesLeft = hoursLeft * 60 * 60 * Game.fps;

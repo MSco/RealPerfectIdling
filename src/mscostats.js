@@ -139,7 +139,7 @@ MS.buildingSellReward = function(building)
 	if (building.id == Game.ObjectsN-1 && Game.dragonLevel>=9 && !Game.hasAura('Earth Shatterer'))
 		buildingamount--;
 	
-	var price = Math.ceil(building.basePrice * (Math.pow(Game.priceIncrease, Math.max(0,buildingamount-building.free)) - Game.priceIncrease) / 0.15);
+	var price = Math.ceil(building.basePrice * (Math.pow(Game.priceIncrease, Math.max(0,buildingamount-building.free)+1) - Game.priceIncrease) / 0.15);
 	
 	var giveBack = (Game.dragonLevel>=9) ? 0.85 : 0.5;
 	

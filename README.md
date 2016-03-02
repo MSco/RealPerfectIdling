@@ -62,6 +62,7 @@ have any suggestions.
 	* Numbers in input fields are not converted anymore, e.g. 108e30 was converted to 1.08E+32.
 	* Remember input value of input field for HCs wanted.
 	* Scientific notation allowed for HCs wanted.
+	* Fixed typo in description of next cps for cookie chain
 * 1.1.0:
 	* New feature added: You can specify a wanted amount of cookies (bank, baked this game or baked all time) and see how long it will take to get it.
 	

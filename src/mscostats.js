@@ -14,7 +14,7 @@
 var MS = {};
 MS.Tooltip = {};
 
-MS.version = '1.1.1.1'
+MS.version = '1.1.1.2'
 
 // set MS.importSaveT after importing a save, this is exclusively for another MSco Addon: Real Perfect Idling
 MS.importSaveT = 0;
@@ -393,7 +393,7 @@ MS.bankCookieChain = function(frenzyMultiplier)
 }
 
 MS.Tooltip.maxCookieChainReward = '"The maximum reward of the last golden cookie of a  \'Cookie Chain\' if the required bank is available."';
-MS.Tooltip.nextCookieChainCPS = '"The base CPS you need to increase the possible max. reward of a \'Cookie Chain\."';
+MS.Tooltip.nextCookieChainCPS = '"The base CPS you need to increase the possible max. reward of a \'Cookie Chain\'."';
 MS.maxCookieChainReward = function(frenzyMultiplier)
 {
 	if (frenzyMultiplier == 0.5)

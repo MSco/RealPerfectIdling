@@ -56,6 +56,8 @@ have any suggestions.
 * Show Price for next Dragon Level
 
 ##### Changelog:
+* 1.1.2:
+	* Estimated date now also shows day and month
 * 1.1.1:
 	* Fixed Chocolate Egg Reward. Sell reward was not calculated correctly. 
 	* Fixed issue that caused writing the remaining cookies for buildings into the input field for cookies wanted in bank.

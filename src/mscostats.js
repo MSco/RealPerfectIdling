@@ -14,7 +14,7 @@
 var MS = {};
 MS.Tooltip = {};
 
-MS.version = '1.1.1.2'
+MS.version = '1.1.2.0'
 
 // set MS.importSaveT after importing a save, this is exclusively for another MSco Addon: Real Perfect Idling
 MS.importSaveT = 0;
@@ -360,11 +360,12 @@ MS.Tooltip.estimatedDate = '"The date you will get the required amount of cookie
 MS.estimatedDate = function(frames)
 {
 	var estDate = new Date(new Date().getTime()+frames*1000/Game.fps);
-	var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+	var wdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+	var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 	var h,m;
 	var hours = ((h=estDate.getHours()) < 10) ? '0'+h : h;
 	var minutes = ((m=estDate.getMinutes()) < 10) ? '0'+m : m;
-	return days[estDate.getDay()] + ", " + hours + ":" + minutes;
+	return wdays[estDate.getDay()]+", "+estDate.getDate()+"/"+months[estDate.getMonth()] + ", " + hours + ":" + minutes;
 }
 
 MS.Tooltip.bankLucky = '"The minimum bank required for the maximum reward of \'Lucky\'."';

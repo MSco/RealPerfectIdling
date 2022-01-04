@@ -1,7 +1,7 @@
 /* ================================================
     MSco's Real Perfect Idling - A Cookie Clicker plugin
 
-    Version: 1.0.2.4
+    Version: 1.0.2.5
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  MSco
     Contact: https://www.reddit.com/user/_MSco_
@@ -70,9 +70,16 @@ RPI.addMissedGoldenCookies = function(durationFrames)
 	if (!Game.Has('Golden switch [off]'))
 	{
 		var dur=13*Game.fps;	// how long will it stay on-screen?
-	        if (Game.Has('Lucky day')) dur*=2;
-	        if (Game.Has('Serendipity')) dur*=2;
+        if (Game.Has('Lucky day')) dur*=2;
+        if (Game.Has('Serendipity')) dur*=2;
 		if (Game.Has('Decisive fate')) dur*=1.05;
+        if (Game.Has('Lucky digit')) dur*=1.01;
+        if (Game.Has('Lucky number')) dur*=1.01;
+        if (Game.Has('Lucky payout')) dur*=1.01;
+        if (!me.wrath) dur*=Game.eff('goldenCookieDur');
+        else dur*=Game.eff('wrathCookieDur');
+        dur*=Math.pow(0.95,Game.shimmerTypes['golden'].n-1);//5% shorter for every other golden cookie on the screen
+        if (this.chain>0) dur=Math.max(2,10/this.chain);//this is hilarious
 	        
 		var thisMissed = Math.round(durationFrames/(RPI.calcGCSpawnTime()+dur))
 		Game.missedGoldenClicks += thisMissed;
@@ -289,6 +296,13 @@ RPI.runWrath = function(cps, durationSeconds)
 				{
 					var chance = 0.00001*Game.elderWrath;
 					if (Game.Has('Unholy bait')) chance*=5;
+                    if (Game.hasGod)
+                    {
+                        var godLvl=Game.hasGod('scorn');
+                        if (godLvl==1) chance*=2.5;
+                        else if (godLvl==2) chance*=2;
+                        else if (godLvl==3) chance*=1.5;
+                    }
 					if (Game.Has('Wrinkler doormat')) chance=0.1;
 					if (Math.random()<chance) 
 					{
@@ -388,6 +402,10 @@ RPI.undoOfflineEarned = function()
 			if (Game.Has('God')) percent+=10;
 			
 			if (Game.Has('Chimera')) {maxTime+=60*60*24*2;percent+=5;}
+			
+            if (Game.Has('Fern tea')) percent+=3;
+            if (Game.Has('Ichor syrup')) percent+=7;
+            if (Game.Has('Fortune #102')) percent+=1;
 		}
 		
 		//var timeOffline=(new Date().getTime()-Game.lastDate)/1000;

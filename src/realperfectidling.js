@@ -44,16 +44,16 @@ halfday/60/60/24;
 
 var RPI = {};
 
-RPI.supportedVersion = 2
+RPI.supportedVersion = 2.031
 if (RPI.supportedVersion < Game.version)
 {
-	Game.Notify('Unsupported version','MSco\'s Real Perfect Idling has not been tested on this version of Cookie Clicker. Continue on your own peril!',[3,5],6);
+	Game.Notify('Unsupported version','MSco\'s Real Perfect Idling has not been tested on this version of Cookie Clicker. Continue on your own risk!',[3,5],6);
 }
 
 RPI.calcGCSpawnTime = function()
 {
-	var min=Game.goldenCookie.getMinTime();
-	var max=Game.goldenCookie.getMaxTime();
+	var min=Game.shimmerTypes.golden.minTime;
+	var max=Game.shimmerTypes.golden.maxTime;
 	var probabilityNoGC=1;
 	for (t=min; t<=max; t++)
 	{

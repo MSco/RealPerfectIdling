@@ -14,7 +14,7 @@
 var MS = {};
 MS.Tooltip = {};
 
-MS.version = '1.1.2.0'
+MS.version = '1.1.2.1'
 
 // set MS.importSaveT after importing a save, this is exclusively for another MSco Addon: Real Perfect Idling
 MS.importSaveT = 0;
@@ -51,6 +51,23 @@ MS.readPledgeFromStr=function(str)
     	var spl=str[4].split(';');
     	MS.pledgeT=spl[11]?parseInt(spl[11]):0;
     	MS.saveImported = true;
+}
+
+MS.getEffectDurModInWrath=function()
+{
+    var effectDurMod=1;
+    if (Game.Has('Get lucky')) effectDurMod*=2;
+    if (Game.Has('Lasting fortune')) effectDurMod*=1.1;
+    if (Game.Has('Lucky digit')) effectDurMod*=1.01;
+    if (Game.Has('Lucky number')) effectDurMod*=1.01;
+    if (Game.Has('Green yeast digestives')) effectDurMod*=1.01;
+    if (Game.Has('Lucky payout')) effectDurMod*=1.01;
+    //if (Game.hasAura('Epoch Manipulator')) effectDurMod*=1.05;
+    effectDurMod*=1+Game.auraMult('Epoch Manipulator')*0.05;
+    //if (!me.wrath) effectDurMod*=Game.eff('goldenCookieEffDur');
+    /*else*/ 
+    effectDurMod*=Game.eff('wrathCookieEffDur');
+    return effectDurMod;
 }
 
 Game.sayTime = function(time,detail)
@@ -422,7 +439,7 @@ MS.maxCookieChainReward = function(frenzyMultiplier)
 
 MS.coloredCookieChainString = function(numberString, frenzyMultiplier)
 {
-	var str = '<div class="price\'+(Game.goldenCookie.chain>0 && MS.frenzyMod()=='+frenzyMultiplier+'?\'">\':\' plain">\') + Beautify(' + numberString + ') + \'</div>';
+	var str = '<div class="price\'+(Game.shimmerTypes.golden.chain>0 && MS.frenzyMod()=='+frenzyMultiplier+'?\'">\':\' plain">\') + Beautify(' + numberString + ') + \'</div>';
 	return str;
 }
 
@@ -449,7 +466,7 @@ MS.maxElderFrenzy = function()
 	var wrinkFactor = wrinklersMax*wrinklersMax*0.05*MS.getSuckFactor();
 	wrinkFactor += (1-wrinklersMax*0.05);
 	
-	var time=Math.ceil(6*Game.goldenCookie.getEffectDurMod());
+	var time=Math.ceil(6*MS.getEffectDurModInWrath());
 		
 	var moni = Game.cookiesPs / MS.frenzyMod() / MS.goldenSwitchMod(false) * wrinkFactor * 666 * time;
 	return moni;
@@ -754,7 +771,7 @@ if(!statsdone)
 	/******************************************************************************************************************************/
 	
 	// Update Menu after cookie chain:
-	eval('Game.goldenCookie.click='+Game.goldenCookie.click.toString().replace('me.chain++;', 'me.chain++; Game.UpdateMenu();'));
+	eval('Game.shimmerTypes.golden.popFunc='+Game.shimmerTypes.golden.popFunc.toString().replace('this.chain++;', 'this.chain++; Game.UpdateMenu();'));
 
 	// How to append a string to a function
 	//eval('Game.UpdateMenu='+Game.UpdateMenu.toString().slice(0, -1) + 'console.log(\'endUpdateMenu: \' + document.activeElement.id); }');

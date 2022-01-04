@@ -76,10 +76,9 @@ RPI.addMissedGoldenCookies = function(durationFrames)
         if (Game.Has('Lucky digit')) dur*=1.01;
         if (Game.Has('Lucky number')) dur*=1.01;
         if (Game.Has('Lucky payout')) dur*=1.01;
-        if (!me.wrath) dur*=Game.eff('goldenCookieDur');
+        if (Game.elderWrath==0) dur*=Game.eff('goldenCookieDur');
         else dur*=Game.eff('wrathCookieDur');
         dur*=Math.pow(0.95,Game.shimmerTypes['golden'].n-1);//5% shorter for every other golden cookie on the screen
-        if (this.chain>0) dur=Math.max(2,10/this.chain);//this is hilarious
 	        
 		var thisMissed = Math.round(durationFrames/(RPI.calcGCSpawnTime()+dur))
 		Game.missedGoldenClicks += thisMissed;

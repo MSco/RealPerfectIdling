@@ -1,7 +1,7 @@
 /* ================================================
     MSco's Real Perfect Idling - A Cookie Clicker plugin
 
-    Version: 1.0.2.5
+    Version: 1.0.3.0
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  MSco
     Contact: https://www.reddit.com/user/_MSco_
@@ -86,8 +86,51 @@ RPI.addMissedGoldenCookies = function(durationFrames)
 	}
 }
 
-RPI.calcCpsCenturyEgg = function()
+RPI.calcCpsAverageCEandLump = function()
 {
+    var baseCps = Game.cookiesPs
+    var averageLumpMult = 1
+    var averageEggMult = 1
+    
+    if (Game.Has('Sugar baking'))
+    {
+        var currentLumpMult = (1+Math.min(100,Game.lumps)*0.01);
+        baseCps /= currentLumpMult;
+        
+        //TODO implement sugar lumps
+        //Game.sayTime((Date.now()-Game.lumpT)/1000*30)
+        var currentSeconds=Math.floor(new Date().getTime()/1000);
+        var lastDateSeconds=Math.floor(Game.lastDate/1000);
+        var secondsSinceLastSave = currentSeconds-lastDateSeconds
+        
+        var secondsFromLastLumpToNow = (Date.now()-Game.lumpT)/1000
+            
+        var currentLumps = Game.lumps
+        var newLumpsSinceLastSave = Math.floor((secondsSinceLastSave - secondsFromLastLumpToNow)/60/60/24) + 1
+        var lastSaveLumps = currentLumps - newLumpsSinceLastSave
+        var secondsFromLastSaveToFirstLump =  (secondsSinceLastSave - secondsFromLastLumpToNow) % (60*60*24)
+        
+        var lumpIndex;
+        
+        var bonusFirst = secondsFromLastSaveToFirstLump * (1+Math.min(100,lastSaveLumps)*0.01)
+        var bonusLast = secondsFromLastLumpToNow * (1+Math.min(100,currentLumps)*0.01) 
+        var bonusSum = bonusFirst + bonusLast
+        var bonusTime = 0
+        for (lumpIndex=lastSaveLumps+1; lumpIndex<currentLumps; lumpIndex++)
+        {
+            bonusTime += 60*60*24
+            bonusSum += 60*60*24*(1+Math.min(100,lumpIndex)*0.01)
+        }
+        averageLumpMult = bonusSum / (secondsFromLastSaveToFirstLump + secondsFromLastLumpToNow + bonusTime)
+               
+        
+        // TODO needed:
+        // - Zeit von LastSave bis 1. Lump -> (secondsFromLastSaveToFirstLump)
+        // - Zeit vom letzten Lump bis jetzt -> (secondsFromLastLumpToNow)
+        // - Anzahl der Lumps beim LastSave -> (lastSaveLumps)
+        // - Anzahl der neu gewonnenen Lumps vom LastSave bis jetzt -> (lastSaveLumps)
+        
+    }
 	if (Game.Has('Century egg'))
 	{
 		var currentEggMult=0;
@@ -104,7 +147,7 @@ RPI.calcCpsCenturyEgg = function()
 		if (Game.Has('Turtle egg')) currentEggMult++;
 		if (Game.Has('Ant larva')) currentEggMult++;
 		var oldEggMult = currentEggMult;
-		var averageEggMult = currentEggMult;
+		var averageEggMultFactor = currentEggMult;
 
 		//the boost increases a little every day, with diminishing returns up to +10% on the 100th day
 		var todayDays=Math.floor((new Date().getTime()/*-(Game.T-MS.importSaveT)/Game.fps*1000*/-Game.startDate)/1000/10)*10/60/60/24;
@@ -117,7 +160,7 @@ RPI.calcCpsCenturyEgg = function()
 		var oldCenturyBonus = (1-Math.pow(1-lastDateDays/100,3))*10
 		oldEggMult += oldCenturyBonus;
 
-		var baseCps = Game.cookiesPs / (1+0.01*currentEggMult);
+		baseCps /= (1+0.01*currentEggMult);
 		var oldCps = baseCps * (1+0.01*oldEggMult);
 		//var averageCps = (Game.cookiesPs + oldCps)/2;
 		
@@ -133,8 +176,8 @@ RPI.calcCpsCenturyEgg = function()
 			averageCenturyBonus += itCenturyBonus;
 		}
 		averageCenturyBonus /= (numIntervals+1);
-		averageEggMult += averageCenturyBonus;
-		var averageCps = baseCps * (1+0.01*averageEggMult);
+		averageEggMultFactor += averageCenturyBonus;
+		averageEggMult = (1+0.01*averageEggMultFactor)
 		/*******************/
 		
 		
@@ -174,13 +217,15 @@ RPI.calcCpsCenturyEgg = function()
 		console.log('Average CPS over ' + numIntervals + ' intervals: ' + Beautify(averageCps));
 		//console.log('CPS with half integral century bonus: ' + Beautify(averageCpsNew))
 		console.log('Current CPS: ' + Beautify(Game.cookiesPs))
-		return averageCps;
-		//return averageCpsNew;
 	}
-	else
-	{
-		return Game.cookiesPs;
-	}
+	
+	var averageCps = baseCps * averageLumpMult * averageEggMult
+	
+    console.log('Average lump multiplicator: ' + averageLumpMult)
+    console.log('Average egg multiplicator: ' + averageEggMult)
+    console.log('Average CPS: '+ Beautify(averageCps))
+    
+	return averageCps
 }
 
 RPI.addTotalCookies = function(cps, durationSeconds)
@@ -440,7 +485,7 @@ if (!idleDone)
 	var cookiesSucked = 0;
 
 	// calculate cps regarding century egg
-	var averageCps = RPI.calcCpsCenturyEgg();
+	var averageCps = RPI.calcCpsAverageCEandLump();
 
 	// calculate cookies earned during pledge
 	var cookiesAndTime = RPI.runElderPledge(averageCps, secondsAfk);

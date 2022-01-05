@@ -56,6 +56,8 @@ have any suggestions.
 * Show Price for next Dragon Level
 
 ##### Changelog:
+* 1.1.2.2:
+    * Compatibility with version 2.031
 * 1.1.2:
 	* Estimated date now also shows day and month
 * 1.1.1:
@@ -177,6 +179,9 @@ Following calculations are done "while game is closed":
 * TotalCookies are added to each building (for Achievements like: Make x cookies just from y)
 
 ##### Changelog:
+* 1.0.3:
+    * Compatibility with version 2.031
+    * Implementation of variable sugar lump cps bonus for 'Sugar baking' 
 * 1.0.2:
 	* Compatibility with version 2
 * 1.0.1:

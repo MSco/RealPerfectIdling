@@ -620,7 +620,7 @@ MS.priceForNextDragonLevel = function()
 	else return 0;
 }
 
-if(!statsdone && typeof CookieMonsterData == 'undefined')
+if(!statsdone && !('CookieMonster' in Game.mods))
 {
 	// How to add a button
 	//eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('when out of focus)</label><br>\'+', 'when out of focus)</label><br>\'+\'<div class="listing"><a class="option" \'+Game.clickStr+\'="myfunc();">Real Perfect Idling</a><label>Simulate the game untilt the last Save)</label></div>\' + '))

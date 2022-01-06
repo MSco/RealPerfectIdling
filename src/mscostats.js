@@ -14,13 +14,14 @@
 var MS = {};
 MS.Tooltip = {};
 
-MS.version = '1.1.2.3'
+MS.version = '1.1.2.4'
 
 // set MS.importSaveT after importing a save, this is exclusively for another MSco Addon: Real Perfect Idling
 MS.importSaveT = 0;
 MS.importSaveDate = new Date().getTime() - Game.T*1000/Game.fps;
 MS.saveImported = false;
 MS.pledgeT = 0;
+MS.heralds = 0;
 MS.importSaveCodeOrignal = Game.ImportSaveCode;
 Game.ImportSaveCode = function(save)
 {
@@ -32,6 +33,7 @@ Game.ImportSaveCode = function(save)
     {
     	var str=unescape(save);
     	MS.readPledgeFromStr(str);
+    	MS.readHeraldsFromStr(str);
     }
     
     console.log('MS.importSaveT: ' + MS.importSaveT);
@@ -40,17 +42,34 @@ Game.ImportSaveCode = function(save)
 
 MS.readPledgeFromStr=function(str)
 {
-	var oldstr=str.split('|');
-	if (oldstr[0]<1) {}
+	var splitstr=str.split('|');
+	var newstr=str
+	if (splitstr[0]<1) {}
 	else
 	{
-		str=str.split('!END!')[0];
-		str=b64_to_utf8(str);
+		newstr=newstr.split('!END!')[0];
+		newstr=b64_to_utf8(newstr);
 	}
-	str=str.split('|');
-    	var spl=str[4].split(';');
-    	MS.pledgeT=spl[11]?parseInt(spl[11]):0;
-    	MS.saveImported = true;
+	newstr=newstr.split('|');
+	var spl=newstr[4].split(';');
+	MS.pledgeT=spl[11]?parseInt(spl[11]):0;
+	MS.saveImported = true;
+}
+
+MS.readHeraldsFromStr=function(str)
+{
+    var splitstr=str.split('|');
+    var newstr=str
+    if (splitstr[0]<1) {}
+    else
+    {
+        newstr=newstr.split('!END!')[0];
+        newstr=b64_to_utf8(newstr);
+    }
+    newstr=newstr.split('|');
+    var spl=newstr[4].split(';');
+    MS.heralds=spl[48]?parseInt(spl[48]):Game.heralds;
+    MS.saveImported = true;
 }
 
 MS.getEffectDurModInWrath=function()

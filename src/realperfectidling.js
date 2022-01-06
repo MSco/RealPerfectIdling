@@ -43,7 +43,7 @@ halfday/60/60/24;
 
 var RPI = {};
 
-RPI.version = 1.031
+RPI.version = 1.032
 RPI.supportedVersion = 2.031
 if (RPI.supportedVersion < Game.version)
 {
@@ -86,11 +86,19 @@ RPI.addMissedGoldenCookies = function(durationFrames)
 	}
 }
 
-RPI.calcCpsAverageCEandLump = function()
+// 
+RPI.calcAdjustedCps = function()
 {
     var baseCps = Game.cookiesPs
     var averageLumpMult = 1
     var averageEggMult = 1
+    var savedHeraldMult = 1
+    
+    if (Game.Has('Heralds'))
+    {
+        baseCps /= 1+0.01*Game.heralds
+        savedHeraldMult = 1+0.01*MS.heralds
+    }
     
     if (Game.Has('Sugar baking'))
     {
@@ -219,7 +227,7 @@ RPI.calcCpsAverageCEandLump = function()
 		console.log('Current CPS: ' + Beautify(Game.cookiesPs))
 	}
 	
-	var averageCps = baseCps * averageLumpMult * averageEggMult
+	var averageCps = baseCps * averageLumpMult * averageEggMult * savedHeraldMult
 	
     console.log('Average lump multiplicator: ' + averageLumpMult)
     console.log('Average egg multiplicator: ' + averageEggMult)
@@ -238,38 +246,41 @@ RPI.addTotalCookies = function(cps, durationSeconds)
 	}
 }
 
+RPI.readVariablesFromSave = function()
+{
+    if (!MS.saveImported)
+    {
+        var str='';
+        if (Game.useLocalStorage)
+        {
+            var local=window.localStorage.getItem(Game.SaveTo);
+            if (!local)//no localstorage save found? let's get the cookie one last time
+            {
+                if (document.cookie.indexOf(Game.SaveTo)>=0)
+                {
+                    str=unescape(document.cookie.split(Game.SaveTo+'=')[1]);
+                    document.cookie=Game.SaveTo+'=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+                }
+                else return false;
+            }
+            else
+            {
+                str=unescape(local);
+            }
+        }
+        else//legacy system
+        {
+            if (document.cookie.indexOf(Game.SaveTo)>=0) 
+                str=unescape(document.cookie.split(Game.SaveTo+'=')[1]);//get cookie here
+        }
+        
+        MS.readPledgeFromStr(str);
+        MS.readHeraldsFromStr(str);
+    }
+}
+
 RPI.runElderPledge = function(cps, durationSeconds)
 {
-	if (!MS.saveImported)
-	{
-		var str='';
-		if (Game.useLocalStorage)
-		{
-			var local=window.localStorage.getItem(Game.SaveTo);
-			if (!local)//no localstorage save found? let's get the cookie one last time
-			{
-				if (document.cookie.indexOf(Game.SaveTo)>=0)
-				{
-					str=unescape(document.cookie.split(Game.SaveTo+'=')[1]);
-					document.cookie=Game.SaveTo+'=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-				}
-				else return false;
-			}
-			else
-			{
-				str=unescape(local);
-			}
-		}
-		else//legacy system
-		{
-			if (document.cookie.indexOf(Game.SaveTo)>=0) 
-				str=unescape(document.cookie.split(Game.SaveTo+'=')[1]);//get cookie here
-		}
-		
-		MS.readPledgeFromStr(str);
-	
-	}
-	
 	Game.pledgeT = MS.pledgeT;
 	Game.pledgeT = Math.max(0, Game.pledgeT-(Game.T-MS.importSaveT));
 	
@@ -485,8 +496,11 @@ if (!idleDone)
 	var cookiesEarned = 0;
 	var cookiesSucked = 0;
 
-	// calculate cps regarding century egg
-	var averageCps = RPI.calcCpsAverageCEandLump();
+    // read some variables from save (pledgeT and heralds)
+    RPI.readVariablesFromSave();
+
+	// calculate cps regarding heralds, sugar lumps and century egg
+	var averageCps = RPI.calcAdjustedCps();
 
 	// calculate cookies earned during pledge
 	var cookiesAndTime = RPI.runElderPledge(averageCps, secondsAfk);

@@ -1,7 +1,6 @@
 /* ================================================
     MSco's Real Perfect Idling - A Cookie Clicker plugin
 
-    Version: 1.0.3.0
     GitHub:  https://github.com/MSco/RealPerfectIdling
     Author:  MSco
     Contact: https://www.reddit.com/user/_MSco_
@@ -44,6 +43,7 @@ halfday/60/60/24;
 
 var RPI = {};
 
+RPI.version = 1.031
 RPI.supportedVersion = 2.031
 if (RPI.supportedVersion < Game.version)
 {
@@ -478,6 +478,7 @@ if (!idleDone)
 	var secondsAfk = (new Date().getTime()-Game.lastDate)/1000 - (Game.T-MS.importSaveT)/Game.fps;
 	//var secondsAfk = 50*60; 					// for debug
 	var framesAfk = (new Date().getTime()-Game.lastDate)/1000*Game.fps - (Game.T-MS.importSaveT);
+	console.log('RPI.version: ' + RPI.version)
 	console.log('AFK: ' + Game.sayTime(framesAfk));
 
 	// initialize global values

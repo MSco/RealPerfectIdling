@@ -14,7 +14,7 @@
 var MS = {};
 MS.Tooltip = {};
 
-MS.version = '1.1.2.2'
+MS.version = '1.1.2.3'
 
 // set MS.importSaveT after importing a save, this is exclusively for another MSco Addon: Real Perfect Idling
 MS.importSaveT = 0;
@@ -620,7 +620,7 @@ MS.priceForNextDragonLevel = function()
 	else return 0;
 }
 
-if(!statsdone && !('CookieMonster' in Game.mods))
+if(!statsdone && Game.sortedMods.length==0)
 {
 	// How to add a button
 	//eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('when out of focus)</label><br>\'+', 'when out of focus)</label><br>\'+\'<div class="listing"><a class="option" \'+Game.clickStr+\'="myfunc();">Real Perfect Idling</a><label>Simulate the game untilt the last Save)</label></div>\' + '))

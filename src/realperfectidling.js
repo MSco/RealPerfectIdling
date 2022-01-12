@@ -43,7 +43,7 @@ halfday/60/60/24;
 
 var RPI = {};
 
-RPI.version = 1.032
+RPI.version = '1.0.3.2'
 RPI.supportedVersion = 2.031
 if (RPI.supportedVersion < Game.version)
 {
@@ -105,7 +105,6 @@ RPI.calcAdjustedCps = function()
         var currentLumpMult = (1+Math.min(100,Game.lumps)*0.01);
         baseCps /= currentLumpMult;
         
-        //TODO implement sugar lumps
         //Game.sayTime((Date.now()-Game.lumpT)/1000*30)
         var currentSeconds=Math.floor(new Date().getTime()/1000);
         var lastDateSeconds=Math.floor(Game.lastDate/1000);
@@ -114,9 +113,9 @@ RPI.calcAdjustedCps = function()
         var secondsFromLastLumpToNow = (Date.now()-Game.lumpT)/1000
             
         var currentLumps = Game.lumps
-        var newLumpsSinceLastSave = Math.floor((secondsSinceLastSave - secondsFromLastLumpToNow)/60/60/24) + 1
+        var newLumpsSinceLastSave = Math.floor((secondsSinceLastSave - secondsFromLastLumpToNow)/60/60/22) + 1
         var lastSaveLumps = currentLumps - newLumpsSinceLastSave
-        var secondsFromLastSaveToFirstLump =  (secondsSinceLastSave - secondsFromLastLumpToNow) % (60*60*24)
+        var secondsFromLastSaveToFirstLump =  (secondsSinceLastSave - secondsFromLastLumpToNow) % (60*60*22)
         
         var lumpIndex;
         
@@ -126,8 +125,8 @@ RPI.calcAdjustedCps = function()
         var bonusTime = 0
         for (lumpIndex=lastSaveLumps+1; lumpIndex<currentLumps; lumpIndex++)
         {
-            bonusTime += 60*60*24
-            bonusSum += 60*60*24*(1+Math.min(100,lumpIndex)*0.01)
+            bonusTime += 60*60*22
+            bonusSum += 60*60*22*(1+Math.min(100,lumpIndex)*0.01)
         }
         averageLumpMult = bonusSum / (secondsFromLastSaveToFirstLump + secondsFromLastLumpToNow + bonusTime)
                
@@ -350,6 +349,7 @@ RPI.runWrath = function(cps, durationSeconds)
 				if (Game.wrinklers[i].phase==0 && Game.elderWrath>0 && numWrinklers<max && Game.wrinklers[i].id<max)
 				{
 					var chance = 0.00001*Game.elderWrath;
+                    chance*=Game.eff('wrinklerSpawn');
 					if (Game.Has('Unholy bait')) chance*=5;
                     if (Game.hasGod)
                     {

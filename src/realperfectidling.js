@@ -43,7 +43,7 @@ halfday/60/60/24;
 
 var RPI = {};
 
-RPI.version = '1.0.3.2'
+RPI.version = '1.0.3.3'
 RPI.supportedVersion = 2.031
 if (RPI.supportedVersion < Game.version)
 {

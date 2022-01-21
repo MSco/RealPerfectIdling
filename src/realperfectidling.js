@@ -489,8 +489,8 @@ RPI.computeGarden = function(durationSeconds)
     M=Game.Objects.Farm.minigame
     
     stepDifference = M.nextStep - Date.now()
-    steps = Math.floor((durationSeconds+M.stepT-stepDifferrence*1000)/M.stepT)
-    secondsLeft = (durationSeconds+M.stepT-stepDifferrence*1000)%M.stepT
+    steps = Math.floor((durationSeconds+M.stepT-stepDifference*1000)/M.stepT)
+    secondsLeft = (durationSeconds+M.stepT-stepDifference*1000)%M.stepT
 
     for (var i=0; i<steps; i++) 
     {

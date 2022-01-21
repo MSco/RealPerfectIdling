@@ -43,7 +43,7 @@ halfday/60/60/24;
 
 var RPI = {};
 
-RPI.version = '1.0.3.3'
+RPI.version = '1.0.3.4'
 RPI.supportedVersion = 2.031
 if (RPI.supportedVersion < Game.version)
 {
@@ -130,6 +130,8 @@ RPI.calcAdjustedCps = function()
         }
         averageLumpMult = bonusSum / (secondsFromLastSaveToFirstLump + secondsFromLastLumpToNow + bonusTime)
                
+        console.log("Sugar lumps last save: " + lastSaveLumps)
+        console.log("Sugar lumps added: " + newLumpsSinceLastSave)
         
         // TODO needed:
         // - Zeit von LastSave bis 1. Lump -> (secondsFromLastSaveToFirstLump)
@@ -219,6 +221,9 @@ RPI.calcAdjustedCps = function()
 		*/
 		/*******************/
 
+        console.log(baseCps)
+        console.log(currentEggMult)
+        console.log(currentCenturyBonus)
 		console.log('CPS without century egg: ' + Beautify(baseCps * (1+0.01*(currentEggMult-currentCenturyBonus))));
 		console.log('CPS when game was saved: ' + Beautify(oldCps));
 		console.log('Average CPS over ' + numIntervals + ' intervals: ' + Beautify(averageCps));
@@ -479,6 +484,22 @@ RPI.undoOfflineEarned = function()
 	}
 }
 
+RPI.computeGarden = function(secondsAfk)
+{
+    M=Game.Objects.Farm.minigame
+    
+    steps = Math.floor(secondsAfk/M.stepT)
+    secondsLeft = secondsAfk%M.stepT
+    
+    for (var i=0; i<steps; i++) 
+    {
+        M.nextStep = Date.now()
+        M.logic()
+    }
+    
+    M.nextStep -= secondsLeft*1000
+}
+
 if (!idleDone)
 {
 	// how to add button:
@@ -516,6 +537,7 @@ if (!idleDone)
 	
 	RPI.addTotalCookies(averageCps, secondsAfk);
 	
+	
 	/*
 	// recalculate timers of the current season and current research
 	if (Game.version < 1.9)
@@ -526,6 +548,8 @@ if (!idleDone)
 			Game.researchT = Math.max(Game.researchT -secondsAfk*Game.fps, 0);
 	}
 	*/
+	
+	RPI.computeGarden(secondsAfk);
 
 	// add missed golden cookies
 	RPI.addMissedGoldenCookies(framesAfk);

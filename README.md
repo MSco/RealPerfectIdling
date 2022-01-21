@@ -177,8 +177,11 @@ Following calculations are done "while game is closed":
 * Add missed Golden Cookies
 * Recalculate CPS regarding 'Century egg' from easter update. An approximation to the original algorithm of 100 intervals between CPS of last save and current CPS is calculated for this.
 * TotalCookies are added to each building (for Achievements like: Make x cookies just from y)
+* Garden Minigame
 
 ##### Changelog:
+* 1.0.3.4:
+    * Added support for Garden Minigame
 * 1.0.3.2:
     * Use saved heralds for cps calculation instead of current heralds
 * 1.0.3:

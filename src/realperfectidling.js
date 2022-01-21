@@ -497,7 +497,7 @@ RPI.computeGarden = function(durationSeconds)
         M.logic()
     }
     
-    //M.nextStep -= secondsLeft*1000
+    M.nextStep -= secondsLeft*1000
 }
 
 if (!idleDone)

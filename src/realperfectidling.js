@@ -490,7 +490,8 @@ RPI.computeGarden = function(durationSeconds)
     
     steps = Math.floor(durationSeconds/M.stepT)
     secondsLeft = durationSeconds%M.stepT
-    
+    stepDifference = M.nextStep - Date.now()
+
     for (var i=0; i<steps; i++) 
     {
         M.nextStep = Date.now()
@@ -498,6 +499,7 @@ RPI.computeGarden = function(durationSeconds)
     }
     
     M.nextStep -= secondsLeft*1000
+    M.nextStep += stepDifference
 }
 
 if (!idleDone)

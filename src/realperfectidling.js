@@ -484,12 +484,12 @@ RPI.undoOfflineEarned = function()
 	}
 }
 
-RPI.computeGarden = function(secondsAfk)
+RPI.computeGarden = function(durationSeconds)
 {
     M=Game.Objects.Farm.minigame
     
-    steps = Math.floor(secondsAfk/M.stepT)
-    secondsLeft = secondsAfk%M.stepT
+    steps = Math.floor(durationSeconds/M.stepT)
+    secondsLeft = durationSeconds%M.stepT
     
     for (var i=0; i<steps; i++) 
     {

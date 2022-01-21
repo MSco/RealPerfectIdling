@@ -43,7 +43,7 @@ halfday/60/60/24;
 
 var RPI = {};
 
-RPI.version = '1.0.3.8'
+RPI.version = '1.0.3.9'
 RPI.supportedVersion = 2.031
 if (RPI.supportedVersion < Game.version)
 {
@@ -497,8 +497,8 @@ RPI.computeGarden = function(durationSeconds)
         M.nextStep = Date.now()
         M.logic()
     }
-    
-    M.nextStep -= secondsLeft*1000
+
+    M.nextStep = Date.now()+M.stepT*1000 - secondsLeft*1000
 }
 
 if (!idleDone)

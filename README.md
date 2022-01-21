@@ -179,6 +179,8 @@ Following calculations are done "while game is closed":
 * TotalCookies are added to each building (for Achievements like: Make x cookies just from y)
 
 ##### Changelog:
+* 1.0.3.2:
+    * Use saved heralds for cps calculation instead of current heralds
 * 1.0.3:
     * Compatibility with version 2.031
     * Implementation of variable sugar lump cps bonus for 'Sugar baking' 

@@ -180,8 +180,11 @@ Following calculations are done "while game is closed":
 * Garden Minigame
 
 ##### Changelog:
-* 1.0.3.4:
+* 1.0.4.0:
     * Added support for Garden Minigame
+    * Added support for Grimore Minigame
+    * Added support for Stock Market Minigame
+    * Added support for Pantheon Minigame
 * 1.0.3.2:
     * Use saved heralds for cps calculation instead of current heralds
 * 1.0.3:

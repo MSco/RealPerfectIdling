@@ -43,7 +43,7 @@ halfday/60/60/24;
 
 var RPI = {};
 
-RPI.version = '1.0.3.7'
+RPI.version = '1.0.3.9'
 RPI.supportedVersion = 2.031
 if (RPI.supportedVersion < Game.version)
 {
@@ -488,16 +488,17 @@ RPI.computeGarden = function(durationSeconds)
 {
     M=Game.Objects.Farm.minigame
     
-    steps = Math.floor(durationSeconds/M.stepT)
-    secondsLeft = durationSeconds%M.stepT
-    
+    stepDifference = M.nextStep - Date.now()
+    steps = Math.floor((durationSeconds+M.stepT-Math.floor(stepDifference/1000))/M.stepT)
+    secondsLeft = (durationSeconds+M.stepT-Math.floor(stepDifference/1000))%M.stepT
+
     for (var i=0; i<steps; i++) 
     {
         M.nextStep = Date.now()
         M.logic()
     }
-    
-    M.nextStep -= secondsLeft*1000
+
+    M.nextStep = Date.now()+M.stepT*1000 - secondsLeft*1000
 }
 
 RPI.computeMinigameByFrames = function(M, durationFrames)

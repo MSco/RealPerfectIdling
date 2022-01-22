@@ -43,7 +43,7 @@ halfday/60/60/24;
 
 var RPI = {};
 
-RPI.version = '1.0.3.6'
+RPI.version = '1.0.3.7'
 RPI.supportedVersion = 2.031
 if (RPI.supportedVersion < Game.version)
 {
@@ -500,6 +500,14 @@ RPI.computeGarden = function(durationSeconds)
     M.nextStep -= secondsLeft*1000
 }
 
+RPI.computeMinigameByFrames = function(M, durationFrames)
+{
+    for (var i=0; i<durationFrames; i++) 
+    {
+        M.logic()
+    }
+}
+
 if (!idleDone)
 {
 	// how to add button:
@@ -549,7 +557,11 @@ if (!idleDone)
 	}
 	*/
 	
+	// Minigames
 	RPI.computeGarden(secondsAfk);
+	RPI.computeMinigameByFrames(Game.ObjectsById[7].minigame, framesAFK) // Grimore
+	RPI.computeMinigameByFrames(Game.Objects.Bank, framesAfk) // Stock Market
+	//TODO Pantheon
 
 	// add missed golden cookies
 	RPI.addMissedGoldenCookies(framesAfk);

@@ -484,6 +484,34 @@ RPI.undoOfflineEarned = function()
 	}
 }
 
+RPI.computeMinigames = function(durationFrames)
+{
+    Garden = Game.Objects.Farm.minigame
+    Grimore = Game.ObjectsById[7].minigame
+    StockMarket = Game.Objects.Bank.minigame
+    Pantheon = Game.Objects.Temple.minigame
+    
+    // Garden
+    garden_stepDifference = Garden.nextStep - Date.now()
+    garden_steps = Math.floor((durationSeconds+Garden.stepT-Math.floor(garden_stepDifference/1000))/Garden.stepT)
+    garden_secondsLeft = (durationSeconds+Garden.stepT-Math.floor(garden_stepDifference/1000))%Garden.stepT
+    
+    for (var f=1; f<=durationFrames; f++)
+    {
+        if (f%garden_steps == 0) // Wann ist der Garden-Tick dran?
+        {
+            Garden.nextStep = Date.now()
+            Garden.logic()
+        }
+        
+        Grimore.logic()
+        StockMarket.logic()
+        Pantheon.logic()
+        
+        Game.CalculateGains()
+    }
+}
+
 RPI.computeGarden = function(durationSeconds)
 {
     M=Game.Objects.Farm.minigame
@@ -496,6 +524,7 @@ RPI.computeGarden = function(durationSeconds)
     {
         M.nextStep = Date.now()
         M.logic()
+        Game.CalculateGains()
     }
 
     M.nextStep = Date.now()+M.stepT*1000 - secondsLeft*1000

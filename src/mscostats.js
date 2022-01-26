@@ -14,18 +14,20 @@
 var MS = {};
 MS.Tooltip = {};
 
-MS.version = '1.1.2.8'
+MS.version = '1.1.2.9'
 
 // set MS.importSaveDate after importing a save, this is exclusively for another MSco Addon: Real Perfect Idling
 MS.importSaveDate = new Date().getTime() - Game.T*1000/Game.fps;
 MS.saveImported = false;
 MS.pledgeT = 0;
 MS.heralds = 0;
+MS.RPI_idledone = 0
 MS.importSaveCodeOrignal = Game.ImportSaveCode;
 Game.ImportSaveCode = function(save)
 {
     MS.importSaveCodeOrignal(save);
     MS.importSaveDate = new Date().getTime();
+    MS.RPI_idledone = 0
     
     if (save && save!='')
     {

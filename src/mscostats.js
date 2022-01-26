@@ -21,7 +21,8 @@ MS.importSaveDate = new Date().getTime() - Game.T*1000/Game.fps;
 MS.saveImported = false;
 MS.pledgeT = 0;
 MS.heralds = 0;
-MS.RPI_idledone = 0
+MS.offlineEarned = 0;
+MS.RPI_idledone = 0;
 MS.importSaveCodeOrignal = Game.ImportSaveCode;
 Game.ImportSaveCode = function(save)
 {
@@ -34,6 +35,7 @@ Game.ImportSaveCode = function(save)
     	var str=unescape(save);
     	MS.readPledgeFromStr(str);
     	MS.readHeraldsFromStr(str);
+		MS.offlineEarned = MS.calcOfflineEarned();
     }
     
     console.log('MS.importSaveDate: ' + MS.importSaveDate);
@@ -69,6 +71,52 @@ MS.readHeraldsFromStr=function(str)
     var spl=newstr[4].split(';');
     MS.heralds=spl[48]?parseInt(spl[48]):Game.heralds;
     MS.saveImported = true;
+}
+
+MS.calcOfflineEarned = function()
+{
+	if (Game.mobile || Game.Has('Perfect idling') || Game.Has('Twin Gates of Transcendence'))
+	{
+		if (Game.Has('Perfect idling'))
+		{
+			var maxTime=60*60*24*1000000000;
+			var percent=100;
+		}
+		else
+		{
+			var maxTime=60*60;
+			if (Game.Has('Belphegor')) maxTime*=2;
+			if (Game.Has('Mammon')) maxTime*=2;
+			if (Game.Has('Abaddon')) maxTime*=2;
+			if (Game.Has('Satan')) maxTime*=2;
+			if (Game.Has('Asmodeus')) maxTime*=2;
+			if (Game.Has('Beelzebub')) maxTime*=2;
+			if (Game.Has('Lucifer')) maxTime*=2;
+			
+			var percent=5;
+			if (Game.Has('Angels')) percent+=10;
+			if (Game.Has('Archangels')) percent+=10;
+			if (Game.Has('Virtues')) percent+=10;
+			if (Game.Has('Dominions')) percent+=10;
+			if (Game.Has('Cherubim')) percent+=10;
+			if (Game.Has('Seraphim')) percent+=10;
+			if (Game.Has('God')) percent+=10;
+			
+			if (Game.Has('Chimera')) {maxTime+=60*60*24*2;percent+=5;}
+			
+            if (Game.Has('Fern tea')) percent+=3;
+            if (Game.Has('Ichor syrup')) percent+=7;
+            if (Game.Has('Fortune #102')) percent+=1;
+		}
+		
+		//var timeOffline=(new Date().getTime()-Game.lastDate)/1000;
+		var timeOffline=(MS.importSaveDate-Game.lastDate)/1000;
+		var timeOfflineOptimal=Math.min(timeOffline,maxTime);
+		var timeOfflineReduced=Math.max(0,timeOffline-timeOfflineOptimal);
+		var amount=(timeOfflineOptimal+timeOfflineReduced*0.1)*Game.cookiesPs*(percent/100);
+		
+		return amount
+	}
 }
 
 MS.getEffectDurModInWrath=function()

@@ -14,10 +14,9 @@
 var MS = {};
 MS.Tooltip = {};
 
-MS.version = '1.1.2.7'
+MS.version = '1.1.2.8'
 
-// set MS.importSaveT after importing a save, this is exclusively for another MSco Addon: Real Perfect Idling
-MS.importSaveT = 0;
+// set MS.importSaveDate after importing a save, this is exclusively for another MSco Addon: Real Perfect Idling
 MS.importSaveDate = new Date().getTime() - Game.T*1000/Game.fps;
 MS.saveImported = false;
 MS.pledgeT = 0;
@@ -26,7 +25,6 @@ MS.importSaveCodeOrignal = Game.ImportSaveCode;
 Game.ImportSaveCode = function(save)
 {
     MS.importSaveCodeOrignal(save);
-    MS.importSaveT = Game.T;
     MS.importSaveDate = new Date().getTime();
     
     if (save && save!='')
@@ -36,7 +34,6 @@ Game.ImportSaveCode = function(save)
     	MS.readHeraldsFromStr(str);
     }
     
-    console.log('MS.importSaveT: ' + MS.importSaveT);
     console.log('MS.importSaveDate: ' + MS.importSaveDate);
 }
 

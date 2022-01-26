@@ -43,7 +43,7 @@ halfday/60/60/24;
 
 var RPI = {};
 
-RPI.version = '1.0.3.9'
+RPI.version = '1.0.3.10'
 RPI.supportedVersion = 2.031
 if (RPI.supportedVersion < Game.version)
 {
@@ -286,7 +286,7 @@ RPI.readVariablesFromSave = function()
 RPI.runElderPledge = function(cps, durationSeconds)
 {
 	Game.pledgeT = MS.pledgeT;
-	Game.pledgeT = Math.max(0, Game.pledgeT-(Game.T-MS.importSaveT));
+	Game.pledgeT = Math.max(0, Game.pledgeT);
 	
 	if(Game.pledgeT > 0)
 	{
@@ -516,9 +516,9 @@ if (!idleDone)
 	// in beta 1.9 (ein zusätzliches Leerzeichen erscheint fälschlicherweise vor dem Button)
 	// eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('when out of focus)</label><br>\'+', 'when out of focus)</label><br>\'+\'<div class="listing"><a class="option" \'+Game.clickStr+\'="myfunc();">Real Perfect Idling</a><label>Simulate the game untilt the last Save)</label></div>\' + '))
 	
-	var secondsAfk = (new Date().getTime()-Game.lastDate)/1000 - (Game.T-MS.importSaveT)/Game.fps;
+	var secondsAfk = (new Date().getTime()-Game.lastDate)/1000;
 	//var secondsAfk = 50*60; 					// for debug
-	var framesAfk = (new Date().getTime()-Game.lastDate)/1000*Game.fps - (Game.T-MS.importSaveT);
+	var framesAfk = secondsAfk*Game.fps;
 	console.log('RPI.version: ' + RPI.version)
 	console.log('AFK: ' + Game.sayTime(framesAfk));
 

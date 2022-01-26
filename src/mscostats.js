@@ -14,7 +14,7 @@
 var MS = {};
 MS.Tooltip = {};
 
-MS.version = '1.1.2.4'
+MS.version = '1.1.2.5'
 
 // set MS.importSaveT after importing a save, this is exclusively for another MSco Addon: Real Perfect Idling
 MS.importSaveT = 0;
@@ -786,6 +786,10 @@ if(!statsdone && Game.sortedMods.length==0)
 		eval('Game.UpgradesById['+i+'].buy='+Game.UpgradesById[i].buy.toString().replace(oldActivateUpgrade, newActivateUpgrade));
 	}
 	
+	
+	// Show Current Lump Type
+	lumpTypeList = ['Normal', 'Bifurcated', 'Golden', 'Meaty', 'Caramelized']
+	eval('Game.doLumps='+Game.doLumps.toString().replace("l('lumpsAmount').textContent=Beautify(Game.lumps);", "l('lumpsAmount').textContent=Beautify(Game.lumps) + \" \"+ lumpTypeList[Game.lumpCurrentType];")) 
 	
 	/******************************************************************************************************************************/
 	

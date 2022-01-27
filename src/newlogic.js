@@ -50,6 +50,19 @@ RPI.now = function()
 	return Math.round(Game.lastDate + Game.T/Game.fps*1000)
 }
 
+RPI.undoOfflineEarned = function()
+{
+	var amount = 0
+	if (MS.offlineEarned > 0)
+	{
+		amount = MS.offlineEarned
+		if (Game.prefs.popups) Game.Popup('Eliminated '+Beautify(amount)+' cookie'+(Math.floor(amount)==1?'':'s'));
+		else Game.Notify('Welcome back!','Eliminated <b>'+Beautify(amount)+'</b> cookie'+(Math.floor(amount)==1?'':'s'));
+		Game.Earn(-amount);
+		console.log('Cookies eliminated: ' + Beautify(amount));
+	}
+}
+
 if (!MS.RPI_idledone)
 {
 	// how to add button:
@@ -84,6 +97,8 @@ if (!MS.RPI_idledone)
 	
 	//eval('RPI.Logic='+RPI.Logic.toString().replace(/Game\.UpdateSpecial\(\);[a-zA-Z0-9\s\{\}\(\)\[\]\.\=\+\-\*\/\%;\,\'\"\!\|\&\>\<\?\:\\]*Game\.UpdateTicker\(\);/, ""))
 	//eval('RPI.Logic='+RPI.Logic.toString().replace("me.minigame.logic();", "{}"))
+	
+	RPI.undoOfflineEarned()
 	
 	// first calculation
 	start_calc_time = RPI.original_date_now()

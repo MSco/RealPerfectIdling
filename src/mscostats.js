@@ -14,7 +14,7 @@
 var MS = {};
 MS.Tooltip = {};
 
-MS.version = '1.1.2.11'
+MS.version = '1.1.2.12'
 
 // set MS.importSaveDate after importing a save, this is exclusively for another MSco Addon: Real Perfect Idling
 MS.importSaveDate = new Date().getTime() - Game.T*1000/Game.fps;
@@ -639,10 +639,24 @@ MS.priceForNextDragonLevel = function()
 	else return 0;
 }
 
+function my_onkeydown_handler( event ) {
+    switch (event.keyCode) {
+        case 116 : // 'F5'
+            event.preventDefault();
+            event.keyCode = 0;
+            window.status = "F5 disabled";
+            break;
+    }
+}
+
 if(!statsdone && Game.sortedMods.length==0)
 {
 	// Store offline earned amount into a variable (for RPI: to be able to undo offline earned)
 	eval('Game.LoadSave='+Game.LoadSave.toString().replace("var amount=(timeOfflineOptimal+timeOfflineReduced*0.1)*Game.cookiesPs*(percent/100);", "var amount=(timeOfflineOptimal+timeOfflineReduced*0.1)*Game.cookiesPs*(percent/100); MS.offlineEarned=amount; "))
+	
+	// disable F5 if lump type == golden
+	eval('Game.computeLumpType='+Game.computeLumpType.toString().replace("Math.seedrandom();", "Math.seedrandom(); if (Game.lumpCurrentType==2) { document.addEventListener(\"keydown\", my_onkeydown_handler);}"));
+	
 	// How to add a button
 	//eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('when out of focus)</label><br>\'+', 'when out of focus)</label><br>\'+\'<div class="listing"><a class="option" \'+Game.clickStr+\'="myfunc();">Real Perfect Idling</a><label>Simulate the game untilt the last Save)</label></div>\' + '))
 	

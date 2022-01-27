@@ -14,7 +14,7 @@
 var MS = {};
 MS.Tooltip = {};
 
-MS.version = '1.1.2.14'
+MS.version = '1.1.3.0'
 
 // set MS.importSaveDate after importing a save, this is exclusively for another MSco Addon: Real Perfect Idling
 MS.importSaveDate = new Date().getTime() - Game.T*1000/Game.fps;
@@ -639,6 +639,81 @@ MS.priceForNextDragonLevel = function()
 	else return 0;
 }
 
+MS.grimore_choices = {}
+MS.check_grimore = function()
+{
+	if (Object.keys(MS.grimore_choices).length>0)
+		return MS.grimore_choices
+		
+	M=Game.ObjectsById[7].minigame
+	cg_spellCastTotal = M.spellsCastTotal
+	
+	MS.grimore_choices = { // 'name of golden cookie buff' : [], max_choices_to_find
+		'click frenzy' : [[], 10],
+		'building special' : [[], 10],
+		'free sugar lump' : [[], 2]
+	}
+	
+	found_all = 0
+	num_choices = Object.keys(MS.grimore_choices).length
+	
+	while (!(found_all == num_choices))
+	{
+		spell=M.spells["hand of fate"]
+	    var failChance=M.getFailChance(spell);
+	    Math.seedrandom(Game.seed+'/'+cg_spellCastTotal);
+	    if (!spell.fail || Math.random()<(1-failChance)) 
+		{
+			var choices=[];
+	        choices.push('frenzy','multiply cookies');
+	        if (!Game.hasBuff('Dragonflight')) choices.push('click frenzy');
+	        if (Math.random()<0.1) choices.push('cookie storm','cookie storm','blab');
+	        if (Game.BuildingsOwned>=10 && Math.random()<0.25) choices.push('building special');
+	        //if (Math.random()<0.2) choices.push('clot','cursed finger','ruin cookies');
+	        if (Math.random()<0.15) choices=['cookie storm drop'];
+	        if (Math.random()<0.0001) choices.push('free sugar lump');
+	        choice = choose(choices)
+	        for (var c in MS.grimore_choices)
+	        {
+				found = MS.grimore_choices[c][0].length
+				max = MS.grimore_choices[c][1]
+				
+				if (found<max && choice==c)
+				{
+	        		MS.grimore_choices[c][0].push(cg_spellCastTotal)
+	        		if (found+1 == max)
+	        			found_all += 1
+        		}
+			}
+		} 
+		else 
+		{
+			var choices=[];
+	        choices.push('clot','ruin cookies');
+	        if (Math.random()<0.1) choices.push('cursed finger','blood frenzy');
+	        if (Math.random()<0.003) choices.push('free sugar lump');
+	        if (Math.random()<0.1) choices=['blab'];
+	        choice = choose(choices)
+	        for (var c in MS.grimore_choices)
+	        {
+				found = MS.grimore_choices[c][0].length
+				max = MS.grimore_choices[c][1]
+				
+				if (found<max && choice==c)
+				{
+		        	MS.grimore_choices[c][0].push(cg_spellCastTotal)
+	        		if (found+1 == max)
+	        			found_all += 1
+	        	}
+			}
+		}
+	    Math.seedrandom();
+	    cg_spellCastTotal++;
+	}
+	
+	return MS.grimore_choices
+}
+
 function my_onkeydown_handler( event ) {
     switch (event.keyCode) {
         case 116 : // 'F5'
@@ -648,6 +723,8 @@ function my_onkeydown_handler( event ) {
             break;
     }
 }
+
+
 
 if(!statsdone && Game.sortedMods.length==0)
 {
@@ -722,10 +799,18 @@ if(!statsdone && Game.sortedMods.length==0)
 	// add blank row
 	statsString += ' + \'<tr style="height: 20px;"><td colspan="4"></td></tr>\'';
 	
-	
 	// Wrinkler stats
 	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Wrinklers</td> <td>Full Elder Frenzy</td> <td>Killing Wrinklers</td> <td>Real Cookies per Hour</td></tr>\'';
 	statsString += ' + \'<tr><td class="listing"><b>Wrinkler Rewards:</b></td> <td><div class="price plain" title=\'+MS.Tooltip.maxElderFrenzy+\'>\' + Beautify(MS.maxElderFrenzy()) + \'</div></td> <td><div class="price plain" title=\'+MS.Tooltip.wrinklersreward+\'>\' + Beautify(MS.wrinklersreward()) + \'</div></td> <td><div class="price plain" title=\'+MS.Tooltip.wrinklersCPH+\'>\' + Beautify(MS.wrinklersCPH()) + \'</div></td></tr>\'';
+	
+	// add blank row
+	statsString += ' + \'<tr style="height: 20px;"><td colspan="4"></td></tr>\'';
+	
+	// Grimore stats
+	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Grimore</td></tr>\'';
+	statsString += ' + \'<tr><td class="listing"><b>Next Click Frenzy:</b> </td><td style="font-weight:bold;">\' + MS.check_grimore()[\'click frenzy\'][0][0] + \' \' + MS.check_grimore()[\'click frenzy\'][0][1] + \' \' + MS.check_grimore()[\'click frenzy\'][0][2] + \' \' + MS.check_grimore()[\'click frenzy\'][0][3] + \' \' + MS.check_grimore()[\'click frenzy\'][0][4] + \'</td><td style="font-weight:bold;">\' + MS.check_grimore()[\'click frenzy\'][0][5] + \' \' + MS.check_grimore()[\'click frenzy\'][0][6] + \' \' + MS.check_grimore()[\'click frenzy\'][0][7] + \' \' + MS.check_grimore()[\'click frenzy\'][0][8] + \' \' + MS.check_grimore()[\'click frenzy\'][0][9] + \'</td></tr>\'';
+	statsString += ' + \'<tr><td class="listing"><b>Next Building Special:</b> </td><td style="font-weight:bold;">\' + MS.check_grimore()[\'building special\'][0][0] + \' \' + MS.check_grimore()[\'building special\'][0][1] + \' \' + MS.check_grimore()[\'building special\'][0][2] + \' \' + MS.check_grimore()[\'building special\'][0][3] + \' \' + MS.check_grimore()[\'building special\'][0][4] + \'</td><td style="font-weight:bold;">\' + MS.check_grimore()[\'building special\'][0][5] + \' \' + MS.check_grimore()[\'building special\'][0][6] + \' \' + MS.check_grimore()[\'building special\'][0][7] + \' \' + MS.check_grimore()[\'building special\'][0][8] + \' \' + MS.check_grimore()[\'building special\'][0][9] + \'</td></tr>\'';
+	statsString += ' + \'<tr><td class="listing"><b>Next Free Sugar Lump:</b> </td><td style="font-weight:bold;">\' + MS.check_grimore()[\'free sugar lump\'][0][0] + \' \' + MS.check_grimore()[\'free sugar lump\'][0][1]+ \'</td></tr>\'';
 	
 	// add blank row
 	statsString += ' + \'<tr style="height: 20px;"><td colspan="4"></td></tr>\'';

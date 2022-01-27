@@ -43,7 +43,7 @@ halfday/60/60/24;
 
 var RPI = {};
 
-RPI.version = '1.0.3.10'
+RPI.version = '1.0.3.12'
 RPI.supportedVersion = 2.031
 if (RPI.supportedVersion < Game.version)
 {
@@ -226,7 +226,6 @@ RPI.calcAdjustedCps = function()
         console.log(currentCenturyBonus)
 		console.log('CPS without century egg: ' + Beautify(baseCps * (1+0.01*(currentEggMult-currentCenturyBonus))));
 		console.log('CPS when game was saved: ' + Beautify(oldCps));
-		console.log('Average CPS over ' + numIntervals + ' intervals: ' + Beautify(averageCps));
 		//console.log('CPS with half integral century bonus: ' + Beautify(averageCpsNew))
 		console.log('Current CPS: ' + Beautify(Game.cookiesPs))
 	}
@@ -434,7 +433,12 @@ RPI.runWrath = function(cps, durationSeconds)
 
 RPI.undoOfflineEarned = function()
 {
-	if (Game.mobile || Game.Has('Perfect idling') || Game.Has('Twin Gates of Transcendence'))
+	var amount = 0
+	if (MS.offlineEarned > 0)
+	{
+		amount = MS.offlineEarned
+	}
+	else if (Game.mobile || Game.Has('Perfect idling') || Game.Has('Twin Gates of Transcendence'))
 	{
 		if (Game.Has('Perfect idling'))
 		{
@@ -472,15 +476,16 @@ RPI.undoOfflineEarned = function()
 		var timeOffline=(MS.importSaveDate-Game.lastDate)/1000;
 		var timeOfflineOptimal=Math.min(timeOffline,maxTime);
 		var timeOfflineReduced=Math.max(0,timeOffline-timeOfflineOptimal);
-		var amount=(timeOfflineOptimal+timeOfflineReduced*0.1)*Game.cookiesPs*(percent/100);
+		amount=(timeOfflineOptimal+timeOfflineReduced*0.1)*Game.cookiesPs*(percent/100);
 		
-		if (amount>0)
-		{
-			if (Game.prefs.popups) Game.Popup('Eliminated '+Beautify(amount)+' cookie'+(Math.floor(amount)==1?'':'s') + ', in ' + Game.sayTime(timeOfflineOptimal*Game.fps));
-			else Game.Notify('Welcome back!','Eliminated <b>'+Beautify(amount)+'</b> cookie'+(Math.floor(amount)==1?'':'s') + ', in ' + Game.sayTime(timeOfflineOptimal*Game.fps));
-			Game.Earn(-amount);
-			console.log('Cookies eliminated: ' + Beautify(amount));
-		}
+	}
+	
+	if (amount>0)
+	{
+		if (Game.prefs.popups) Game.Popup('Eliminated '+Beautify(amount)+' cookie'+(Math.floor(amount)==1?'':'s'));
+		else Game.Notify('Welcome back!','Eliminated <b>'+Beautify(amount)+'</b> cookie'+(Math.floor(amount)==1?'':'s'));
+		Game.Earn(-amount);
+		console.log('Cookies eliminated: ' + Beautify(amount));
 	}
 }
 

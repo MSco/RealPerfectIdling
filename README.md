@@ -54,8 +54,12 @@ have any suggestions.
 * Calculate Base Cost per Income (BCI) for each building and show their efficiencies corresponding to the best BCI
 * Show how much cookies you have to generate (all time) to add a specified number of HCs (specified via number input)
 * Show Price for next Dragon Level
+* Show next Lump Type
 
 ##### Changelog:
+* 1.1.2.11:
+    * Show next Lump Type#
+    * Store offline earned amount during importsave in a variable for RealPerfectIdling
 * 1.1.2.2:
     * Compatibility with version 2.031
 * 1.1.2:
@@ -161,25 +165,16 @@ This code was written to be used, abused, extended and improved upon. Feel free 
 with or without permission from, nor credit given to the original author (me). Please send an email to me if you
 have any suggestions.
 This add-on simulates cookies earned and cookies sucked while the game is closed. It calculates the amount of time
-between now and the last time the game was saved. Each feature listed below is simulated exactly like in
-the original game.
-
+between now and the last time the game was saved. The game loops a modified version of Game.Logic() to simulate the
+game running from 'lastDate' to now.
 
 Following calculations are done "while game is closed":
+* Simulate the game using a modified version of Game.Logic() (without graphic stuff, etc)
 * Undo offline cookie calculations of Twin Gates of Transcendence
-* Wrinklers spawn if elder wrath is active as in the original game with all Math.random() stuff etc. ...
-* Wrinklers suck cookies (also increasing Game.cookiesSucked)
-* CPS is reduced while wrinklers suck the big cookie
-* Elder wrath increases
-* Season timer decreases (Removed for 1.9, because its done ingame)
-* Research timer decreases (Removed for 1.9, because its done ingame)
-* Cookies are earned from global cps (concerning the reduced cps because of wrinklers)
-* Add missed Golden Cookies
-* Recalculate CPS regarding 'Century egg' from easter update. An approximation to the original algorithm of 100 intervals between CPS of last save and current CPS is calculated for this.
-* TotalCookies are added to each building (for Achievements like: Make x cookies just from y)
-* Garden Minigame
 
 ##### Changelog:
+* 2.0.0.0:
+    * Full Reimplementation of the plugin. It now simulates the game using a modified version of Game.Logic() (without graphic stuff, etc)
 * 1.0.4.0:
     * Added support for Garden Minigame
     * Added support for Grimore Minigame

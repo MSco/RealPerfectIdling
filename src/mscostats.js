@@ -14,7 +14,7 @@
 var MS = {};
 MS.Tooltip = {};
 
-MS.version = '1.1.3.0'
+MS.version = '1.1.3.1'
 
 // set MS.importSaveDate after importing a save, this is exclusively for another MSco Addon: Real Perfect Idling
 MS.importSaveDate = new Date().getTime() - Game.T*1000/Game.fps;
@@ -733,6 +733,10 @@ if(!statsdone && Game.sortedMods.length==0)
 	
 	// disable F5 if lump type == golden
 	eval('Game.computeLumpType='+Game.computeLumpType.toString().replace("Math.seedrandom();", "Math.seedrandom(); if (Game.lumpCurrentType==2||Game.lumpCurrentType==4) { document.addEventListener(\"keydown\", my_onkeydown_handler);}"));
+	
+	// reset grimore stats after cast spell
+	castSpellOrig = Game.ObjectsById[7].minigame.castSpell;
+	Game.ObjectsById[7].minigame.castSpell = function(spell,obj) { retval = castSpellOrig(spell, obj); MS.grimore_choices = {}; return retval; }
 	
 	// How to add a button
 	//eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('when out of focus)</label><br>\'+', 'when out of focus)</label><br>\'+\'<div class="listing"><a class="option" \'+Game.clickStr+\'="myfunc();">Real Perfect Idling</a><label>Simulate the game untilt the last Save)</label></div>\' + '))

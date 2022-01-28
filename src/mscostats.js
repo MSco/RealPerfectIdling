@@ -14,7 +14,7 @@
 var MS = {};
 MS.Tooltip = {};
 
-MS.version = '1.1.3.1'
+MS.version = '1.1.3.2'
 
 // set MS.importSaveDate after importing a save, this is exclusively for another MSco Addon: Real Perfect Idling
 MS.importSaveDate = new Date().getTime() - Game.T*1000/Game.fps;
@@ -660,7 +660,9 @@ MS.check_grimore = function()
 	while (!(found_all == num_choices))
 	{
 		spell=M.spells["hand of fate"]
-	    var failChance=M.getFailChance(spell);
+	    var failChance=0.15;
+        if (Game.hasBuff('Magic adept')) failChance*=0.1;
+        if (Game.hasBuff('Magic inept')) failChance*=5;
 	    Math.seedrandom(Game.seed+'/'+cg_spellCastTotal);
 	    if (!spell.fail || Math.random()<(1-failChance)) 
 		{

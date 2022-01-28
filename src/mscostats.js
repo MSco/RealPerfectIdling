@@ -14,7 +14,7 @@
 var MS = {};
 MS.Tooltip = {};
 
-MS.version = '1.1.3.5'
+MS.version = '1.1.3.6'
 
 // set MS.importSaveDate after importing a save, this is exclusively for another MSco Addon: Real Perfect Idling
 MS.importSaveDate = new Date().getTime() - Game.T*1000/Game.fps;
@@ -745,6 +745,8 @@ if(!statsdone && Game.sortedMods.length==0)
 	// reset grimoire stats after cast spell
 	castSpellOrig = Game.ObjectsById[7].minigame.castSpell;
 	Game.ObjectsById[7].minigame.castSpell = function(spell,obj) { retval = castSpellOrig(spell, obj); MS.grimoire_choices = {}; return retval; }
+	updateAscendIntroOrig = Game.UpdateAscendIntro;
+	Game.UpdateAscendIntro = function() { updateAscendIntroOrig(); MS.grimoire_choices = {}}
 	
 	// How to add a button
 	//eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('when out of focus)</label><br>\'+', 'when out of focus)</label><br>\'+\'<div class="listing"><a class="option" \'+Game.clickStr+\'="myfunc();">Real Perfect Idling</a><label>Simulate the game untilt the last Save)</label></div>\' + '))

@@ -57,6 +57,8 @@ have any suggestions.
 * Show next Lump Type
 
 ##### Changelog:
+* 1.1.2.14:
+    * Disable F5 if lump type is golden or caramelized
 * 1.1.2.12:
     * Disable F5 if lump type is golden
 * 1.1.2.11:

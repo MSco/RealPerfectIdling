@@ -14,7 +14,7 @@
 var MS = {};
 MS.Tooltip = {};
 
-MS.version = '1.1.3.6'
+MS.version = '1.1.3.7'
 
 // set MS.importSaveDate after importing a save, this is exclusively for another MSco Addon: Real Perfect Idling
 MS.importSaveDate = new Date().getTime() - Game.T*1000/Game.fps;
@@ -743,8 +743,8 @@ if(!statsdone && Game.sortedMods.length==0)
 	eval('Game.computeLumpType='+Game.computeLumpType.toString().replace("Math.seedrandom();", "Math.seedrandom(); if ((MS.lastLumpsGained==7 && Game.lumpCurrentType==1)||Game.lumpCurrentType==2||Game.lumpCurrentType==4) { document.addEventListener(\"keydown\", my_onkeydown_handler);}"));
 	
 	// reset grimoire stats after cast spell
-	castSpellOrig = Game.ObjectsById[7].minigame.castSpell;
-	Game.ObjectsById[7].minigame.castSpell = function(spell,obj) { retval = castSpellOrig(spell, obj); MS.grimoire_choices = {}; return retval; }
+	//castSpellOrig = Game.ObjectsById[7].minigame.castSpell;
+	//Game.ObjectsById[7].minigame.castSpell = function(spell,obj) { retval = castSpellOrig(spell, obj); MS.grimoire_choices = {}; return retval; }
 	updateAscendIntroOrig = Game.UpdateAscendIntro;
 	Game.UpdateAscendIntro = function() { updateAscendIntroOrig(); MS.grimoire_choices = {}}
 	

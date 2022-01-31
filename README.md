@@ -57,6 +57,8 @@ have any suggestions.
 * Show next Lump Type
 
 ##### Changelog:
+* 1.1.3.3:
+    * Disable F5 if lump type is golden, caramelized or if you got 7 lumps and next lump type is bifurcated
 * 1.1.3.0:
     * Added next grimore occurrences for click frenzy, building special and free sugar lump
 * 1.1.2.14:

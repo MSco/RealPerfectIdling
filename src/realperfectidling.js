@@ -85,7 +85,7 @@ if (!MS.RPI_idledone)
 	// in beta 1.9 (ein zusätzliches Leerzeichen erscheint fälschlicherweise vor dem Button)
 	// eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('when out of focus)</label><br>\'+', 'when out of focus)</label><br>\'+\'<div class="listing"><a class="option" \'+Game.clickStr+\'="myfunc();">Real Perfect Idling</a><label>Simulate the game untilt the last Save)</label></div>\' + '))
 	
-//	var framesAfk = Game.fps*60*60*1; 					// for debug
+//	var framesAfk = Game.fps*60*60*10; 					// for debug
 	var framesAfk = (Date.now()-Game.lastDate)/1000*Game.fps;
 	console.log('RPI.version: ' + RPI.version)
 	console.log('AFK: ' + Game.sayTime(framesAfk));

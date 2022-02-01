@@ -14,7 +14,7 @@
 var MS = {};
 MS.Tooltip = {};
 
-MS.version = '1.1.3.8'
+MS.version = '1.1.3.9'
 
 // set MS.importSaveDate after importing a save, this is exclusively for another MSco Addon: Real Perfect Idling
 MS.importSaveDate = new Date().getTime() - Game.T*1000/Game.fps;
@@ -921,7 +921,13 @@ if(!statsdone && Game.sortedMods.length==0)
 	updatemenuorig = Game.UpdateMenu;
 	Game.UpdateMenu = function() {
 		updatemenuorig(); 
-		eval("Game.ObjectsById[7].minigame.castSpell="+Game.ObjectsById[7].minigame.castSpell.toString().replace("M.spellsCastTotal++;", "M.spellsCastTotal++; MS.grimoire_choices = {};")); 
+		castSpellOrig = Game.ObjectsById[7].minigame.castSpell;
+		Game.ObjectsById[7].minigame.castSpell = function(spell,obj)
+		{
+			retval = castSpellOrig(spell,obj);
+		 	MS.grimoire_choices = {};
+		 	return retval;
+		} 
 		Game.UpdateMenu = updatemenuorig; 
 	}
 	

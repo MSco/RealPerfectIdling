@@ -14,7 +14,7 @@
 var MS = {};
 MS.Tooltip = {};
 
-MS.version = '1.1.3.0'
+MS.version = '1.1.3.10'
 
 // set MS.importSaveDate after importing a save, this is exclusively for another MSco Addon: Real Perfect Idling
 MS.importSaveDate = new Date().getTime() - Game.T*1000/Game.fps;
@@ -23,6 +23,7 @@ MS.pledgeT = 0;
 MS.heralds = 0;
 MS.offlineEarned = 0;
 MS.RPI_idledone = 0;
+//MS.lastLumpsGained = 0
 MS.importSaveCodeOrignal = Game.ImportSaveCode;
 Game.ImportSaveCode = function(save)
 {
@@ -639,31 +640,37 @@ MS.priceForNextDragonLevel = function()
 	else return 0;
 }
 
-MS.grimore_choices = {}
-MS.check_grimore = function()
+MS.grimoire_choices = {}
+MS.check_grimoire = function()
 {
-	if (Object.keys(MS.grimore_choices).length>0)
-		return MS.grimore_choices
+	if (Object.keys(MS.grimoire_choices).length>0)
+		return MS.grimoire_choices
 		
 	M=Game.ObjectsById[7].minigame
 	cg_spellCastTotal = M.spellsCastTotal
 	
-	MS.grimore_choices = { // 'name of golden cookie buff' : [], max_choices_to_find
+	MS.grimoire_choices = { // 'name of golden cookie buff' : [], max_choices_to_find
 		'click frenzy' : [[], 10],
 		'building special' : [[], 10],
 		'free sugar lump' : [[], 2]
 	}
 	
 	found_all = 0
-	num_choices = Object.keys(MS.grimore_choices).length
+	num_choices = Object.keys(MS.grimoire_choices).length
 	
 	while (!(found_all == num_choices))
 	{
 		spell=M.spells["hand of fate"]
-	    var failChance=M.getFailChance(spell);
+	    var failChance=0.15;
+        if (Game.hasBuff('Magic adept')) failChance*=0.1;
+        if (Game.hasBuff('Magic inept')) failChance*=5;
 	    Math.seedrandom(Game.seed+'/'+cg_spellCastTotal);
 	    if (!spell.fail || Math.random()<(1-failChance)) 
 		{
+			// for math.random: var newShimmer=new Game.shimmer('golden',{noWrath:true});
+			x=Math.floor(Math.random()*Math.max(0,(Game.bounds.right-300)-Game.bounds.left-128)+Game.bounds.left+64)-64;
+			y=Math.floor(Math.random()*Math.max(0,Game.bounds.bottom-Game.bounds.top-128)+Game.bounds.top+64)-64;
+			
 			var choices=[];
 	        choices.push('frenzy','multiply cookies');
 	        if (!Game.hasBuff('Dragonflight')) choices.push('click frenzy');
@@ -673,14 +680,14 @@ MS.check_grimore = function()
 	        if (Math.random()<0.15) choices=['cookie storm drop'];
 	        if (Math.random()<0.0001) choices.push('free sugar lump');
 	        choice = choose(choices)
-	        for (var c in MS.grimore_choices)
+	        for (var c in MS.grimoire_choices)
 	        {
-				found = MS.grimore_choices[c][0].length
-				max = MS.grimore_choices[c][1]
+				found = MS.grimoire_choices[c][0].length
+				max = MS.grimoire_choices[c][1]
 				
 				if (found<max && choice==c)
 				{
-	        		MS.grimore_choices[c][0].push(cg_spellCastTotal)
+	        		MS.grimoire_choices[c][0].push(cg_spellCastTotal)
 	        		if (found+1 == max)
 	        			found_all += 1
         		}
@@ -694,14 +701,14 @@ MS.check_grimore = function()
 	        if (Math.random()<0.003) choices.push('free sugar lump');
 	        if (Math.random()<0.1) choices=['blab'];
 	        choice = choose(choices)
-	        for (var c in MS.grimore_choices)
+	        for (var c in MS.grimoire_choices)
 	        {
-				found = MS.grimore_choices[c][0].length
-				max = MS.grimore_choices[c][1]
+				found = MS.grimoire_choices[c][0].length
+				max = MS.grimoire_choices[c][1]
 				
 				if (found<max && choice==c)
 				{
-		        	MS.grimore_choices[c][0].push(cg_spellCastTotal)
+		        	MS.grimoire_choices[c][0].push(cg_spellCastTotal)
 	        		if (found+1 == max)
 	        			found_all += 1
 	        	}
@@ -711,7 +718,7 @@ MS.check_grimore = function()
 	    cg_spellCastTotal++;
 	}
 	
-	return MS.grimore_choices
+	return MS.grimoire_choices
 }
 
 function my_onkeydown_handler( event ) {
@@ -732,7 +739,8 @@ if(!statsdone && Game.sortedMods.length==0)
 	eval('Game.LoadSave='+Game.LoadSave.toString().replace("var amount=(timeOfflineOptimal+timeOfflineReduced*0.1)*Game.cookiesPs*(percent/100);", "var amount=(timeOfflineOptimal+timeOfflineReduced*0.1)*Game.cookiesPs*(percent/100); MS.offlineEarned=amount; "))
 	
 	// disable F5 if lump type == golden
-	eval('Game.computeLumpType='+Game.computeLumpType.toString().replace("Math.seedrandom();", "Math.seedrandom(); if (Game.lumpCurrentType==2||Game.lumpCurrentType==4) { document.addEventListener(\"keydown\", my_onkeydown_handler);}"));
+//	eval('Game.gainLumps='+Game.gainLumps.toString().replace("if (Game.lumpsTotal==-1)","MS.lastLumpsGained=total; if (Game.lumpsTotal==-1)"))
+//	eval('Game.computeLumpType='+Game.computeLumpType.toString().replace("Math.seedrandom();", "Math.seedrandom(); if ((MS.lastLumpsGained==7 && Game.lumpCurrentType==1)||Game.lumpCurrentType==2||Game.lumpCurrentType==4) { document.addEventListener(\"keydown\", my_onkeydown_handler);}"));
 	
 	// How to add a button
 	//eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('when out of focus)</label><br>\'+', 'when out of focus)</label><br>\'+\'<div class="listing"><a class="option" \'+Game.clickStr+\'="myfunc();">Real Perfect Idling</a><label>Simulate the game untilt the last Save)</label></div>\' + '))
@@ -806,11 +814,11 @@ if(!statsdone && Game.sortedMods.length==0)
 	// add blank row
 	statsString += ' + \'<tr style="height: 20px;"><td colspan="4"></td></tr>\'';
 	
-	// Grimore stats
-	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Grimore</td></tr>\'';
-	statsString += ' + \'<tr><td class="listing"><b>Next Click Frenzy:</b> </td><td style="font-weight:bold;">\' + MS.check_grimore()[\'click frenzy\'][0][0] + \' \' + MS.check_grimore()[\'click frenzy\'][0][1] + \' \' + MS.check_grimore()[\'click frenzy\'][0][2] + \' \' + MS.check_grimore()[\'click frenzy\'][0][3] + \' \' + MS.check_grimore()[\'click frenzy\'][0][4] + \'</td><td style="font-weight:bold;">\' + MS.check_grimore()[\'click frenzy\'][0][5] + \' \' + MS.check_grimore()[\'click frenzy\'][0][6] + \' \' + MS.check_grimore()[\'click frenzy\'][0][7] + \' \' + MS.check_grimore()[\'click frenzy\'][0][8] + \' \' + MS.check_grimore()[\'click frenzy\'][0][9] + \'</td></tr>\'';
-	statsString += ' + \'<tr><td class="listing"><b>Next Building Special:</b> </td><td style="font-weight:bold;">\' + MS.check_grimore()[\'building special\'][0][0] + \' \' + MS.check_grimore()[\'building special\'][0][1] + \' \' + MS.check_grimore()[\'building special\'][0][2] + \' \' + MS.check_grimore()[\'building special\'][0][3] + \' \' + MS.check_grimore()[\'building special\'][0][4] + \'</td><td style="font-weight:bold;">\' + MS.check_grimore()[\'building special\'][0][5] + \' \' + MS.check_grimore()[\'building special\'][0][6] + \' \' + MS.check_grimore()[\'building special\'][0][7] + \' \' + MS.check_grimore()[\'building special\'][0][8] + \' \' + MS.check_grimore()[\'building special\'][0][9] + \'</td></tr>\'';
-	statsString += ' + \'<tr><td class="listing"><b>Next Free Sugar Lump:</b> </td><td style="font-weight:bold;">\' + MS.check_grimore()[\'free sugar lump\'][0][0] + \' \' + MS.check_grimore()[\'free sugar lump\'][0][1]+ \'</td></tr>\'';
+	// Grimoire stats
+	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Grimoire</td></tr>\'';
+	statsString += ' + \'<tr><td class="listing"><b>Next Click Frenzy:</b> </td><td style="font-weight:bold;">\' + MS.check_grimoire()[\'click frenzy\'][0][0] + \' \' + MS.check_grimoire()[\'click frenzy\'][0][1] + \' \' + MS.check_grimoire()[\'click frenzy\'][0][2] + \' \' + MS.check_grimoire()[\'click frenzy\'][0][3] + \' \' + MS.check_grimoire()[\'click frenzy\'][0][4] + \'</td><td style="font-weight:bold;">\' + MS.check_grimoire()[\'click frenzy\'][0][5] + \' \' + MS.check_grimoire()[\'click frenzy\'][0][6] + \' \' + MS.check_grimoire()[\'click frenzy\'][0][7] + \' \' + MS.check_grimoire()[\'click frenzy\'][0][8] + \' \' + MS.check_grimoire()[\'click frenzy\'][0][9] + \'</td></tr>\'';
+	statsString += ' + \'<tr><td class="listing"><b>Next Building Special:</b> </td><td style="font-weight:bold;">\' + MS.check_grimoire()[\'building special\'][0][0] + \' \' + MS.check_grimoire()[\'building special\'][0][1] + \' \' + MS.check_grimoire()[\'building special\'][0][2] + \' \' + MS.check_grimoire()[\'building special\'][0][3] + \' \' + MS.check_grimoire()[\'building special\'][0][4] + \'</td><td style="font-weight:bold;">\' + MS.check_grimoire()[\'building special\'][0][5] + \' \' + MS.check_grimoire()[\'building special\'][0][6] + \' \' + MS.check_grimoire()[\'building special\'][0][7] + \' \' + MS.check_grimoire()[\'building special\'][0][8] + \' \' + MS.check_grimoire()[\'building special\'][0][9] + \'</td></tr>\'';
+	statsString += ' + \'<tr><td class="listing"><b>Next Free Sugar Lump:</b> </td><td style="font-weight:bold;">\' + MS.check_grimoire()[\'free sugar lump\'][0][0] + \' \' + MS.check_grimoire()[\'free sugar lump\'][0][1]+ \'</td></tr>\'';
 	
 	// add blank row
 	statsString += ' + \'<tr style="height: 20px;"><td colspan="4"></td></tr>\'';
@@ -888,10 +896,10 @@ if(!statsdone && Game.sortedMods.length==0)
 	}
 	
 	
-	// Show Current Lump Type
-	lumpTypeList = ['Normal', 'Bifurcated', 'Golden', 'Meaty', 'Caramelized']
-	lumpTypeColorList = ['#ffffff', '#60ff50', '#ffcc2f', '#FF7F00', '#FF00FF']
-	eval('Game.doLumps='+Game.doLumps.toString().replace("l('lumpsAmount').textContent=Beautify(Game.lumps);", "l('lumpsAmount').textContent=Beautify(Game.lumps) + \" \"+ lumpTypeList[Game.lumpCurrentType]; l('lumpsAmount').style.color=lumpTypeColorList[Game.lumpCurrentType]")) 
+//	// Show Current Lump Type
+//	lumpTypeList = ['Normal', 'Bifurcated', 'Golden', 'Meaty', 'Caramelized']
+//	lumpTypeColorList = ['#ffffff', '#60ff50', '#ffcc2f', '#FF7F00', '#FF00FF']
+//	eval('Game.doLumps='+Game.doLumps.toString().replace("l('lumpsAmount').textContent=Beautify(Game.lumps);", "l('lumpsAmount').textContent=Beautify(Game.lumps) + \" \"+ lumpTypeList[Game.lumpCurrentType]; l('lumpsAmount').style.color=lumpTypeColorList[Game.lumpCurrentType]")) 
 	
 	/******************************************************************************************************************************/
 	
@@ -908,6 +916,24 @@ if(!statsdone && Game.sortedMods.length==0)
 	
 	// Update the Menu after calling this addon:
 	Game.UpdateMenu();
+	
+	// reset grimoire stats after cast spell
+	updatemenuorig = Game.UpdateMenu;
+	Game.UpdateMenu = function() {
+		updatemenuorig(); 
+		castSpellOrig = Game.ObjectsById[7].minigame.castSpell;
+		Game.ObjectsById[7].minigame.castSpell = function(spell,obj)
+		{
+			retval = castSpellOrig(spell,obj);
+		 	MS.grimoire_choices = {};
+		 	return retval;
+		} 
+		Game.UpdateMenu = updatemenuorig; 
+	}
+	
+	// reset grimoire stats after ascend intro
+	updateAscendIntroOrig = Game.UpdateAscendIntro;
+	Game.UpdateAscendIntro = function() { updateAscendIntroOrig(); MS.grimoire_choices = {}}
 	
 	// set statsdone, since the addon may not be called more than once!
 	var statsdone = 1;

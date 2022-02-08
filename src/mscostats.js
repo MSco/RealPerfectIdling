@@ -14,7 +14,7 @@
 var MS = {};
 MS.Tooltip = {};
 
-MS.version = '1.1.3.10'
+MS.version = '1.1.3.11'
 
 // set MS.importSaveDate after importing a save, this is exclusively for another MSco Addon: Real Perfect Idling
 MS.importSaveDate = new Date().getTime() - Game.T*1000/Game.fps;
@@ -650,8 +650,8 @@ MS.check_grimoire = function()
 	cg_spellCastTotal = M.spellsCastTotal
 	
 	MS.grimoire_choices = { // 'name of golden cookie buff' : [], max_choices_to_find
-		'click frenzy' : [[], 10],
-		'building special' : [[], 10],
+		'click frenzy' : [[], 8],
+		'building special' : [[], 8],
 		'free sugar lump' : [[], 2]
 	}
 	
@@ -816,8 +816,8 @@ if(!statsdone && Game.sortedMods.length==0)
 	
 	// Grimoire stats
 	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Grimoire</td></tr>\'';
-	statsString += ' + \'<tr><td class="listing"><b>Next Click Frenzy:</b> </td><td style="font-weight:bold;">\' + MS.check_grimoire()[\'click frenzy\'][0][0] + \' \' + MS.check_grimoire()[\'click frenzy\'][0][1] + \' \' + MS.check_grimoire()[\'click frenzy\'][0][2] + \' \' + MS.check_grimoire()[\'click frenzy\'][0][3] + \' \' + MS.check_grimoire()[\'click frenzy\'][0][4] + \'</td><td style="font-weight:bold;">\' + MS.check_grimoire()[\'click frenzy\'][0][5] + \' \' + MS.check_grimoire()[\'click frenzy\'][0][6] + \' \' + MS.check_grimoire()[\'click frenzy\'][0][7] + \' \' + MS.check_grimoire()[\'click frenzy\'][0][8] + \' \' + MS.check_grimoire()[\'click frenzy\'][0][9] + \'</td></tr>\'';
-	statsString += ' + \'<tr><td class="listing"><b>Next Building Special:</b> </td><td style="font-weight:bold;">\' + MS.check_grimoire()[\'building special\'][0][0] + \' \' + MS.check_grimoire()[\'building special\'][0][1] + \' \' + MS.check_grimoire()[\'building special\'][0][2] + \' \' + MS.check_grimoire()[\'building special\'][0][3] + \' \' + MS.check_grimoire()[\'building special\'][0][4] + \'</td><td style="font-weight:bold;">\' + MS.check_grimoire()[\'building special\'][0][5] + \' \' + MS.check_grimoire()[\'building special\'][0][6] + \' \' + MS.check_grimoire()[\'building special\'][0][7] + \' \' + MS.check_grimoire()[\'building special\'][0][8] + \' \' + MS.check_grimoire()[\'building special\'][0][9] + \'</td></tr>\'';
+	statsString += ' + \'<tr><td class="listing"><b>Next Click Frenzy:</b> </td><td style="font-weight:bold;">\' + MS.check_grimoire()[\'click frenzy\'][0][0] + \' \' + MS.check_grimoire()[\'click frenzy\'][0][1] + \' \' + MS.check_grimoire()[\'click frenzy\'][0][2] + \' \' + MS.check_grimoire()[\'click frenzy\'][0][3] + \'</td><td style="font-weight:bold;">\' + MS.check_grimoire()[\'click frenzy\'][0][4] + \' \' + MS.check_grimoire()[\'click frenzy\'][0][5] + \' \' + MS.check_grimoire()[\'click frenzy\'][0][6] + \' \' + MS.check_grimoire()[\'click frenzy\'][0][7] + \'</td></tr>\'';
+	statsString += ' + \'<tr><td class="listing"><b>Next Building Special:</b> </td><td style="font-weight:bold;">\' + MS.check_grimoire()[\'building special\'][0][0] + \' \' + MS.check_grimoire()[\'building special\'][0][1] + \' \' + MS.check_grimoire()[\'building special\'][0][2] + \' \' + MS.check_grimoire()[\'building special\'][0][3] + \'</td><td style="font-weight:bold;">\' + MS.check_grimoire()[\'building special\'][0][4] + \' \' + MS.check_grimoire()[\'building special\'][0][5] + \' \' + MS.check_grimoire()[\'building special\'][0][6] + \' \' + MS.check_grimoire()[\'building special\'][0][7] + \'</td></tr>\'';
 	statsString += ' + \'<tr><td class="listing"><b>Next Free Sugar Lump:</b> </td><td style="font-weight:bold;">\' + MS.check_grimoire()[\'free sugar lump\'][0][0] + \' \' + MS.check_grimoire()[\'free sugar lump\'][0][1]+ \'</td></tr>\'';
 	
 	// add blank row

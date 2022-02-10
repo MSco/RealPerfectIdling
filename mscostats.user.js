@@ -1,6 +1,7 @@
 // ==UserScript==
 // @name MSco Stats
 // @namespace MSco
+// @downloadURL https://github.com/MSco/RealPerfectIdling/raw/master/mscostats.user.js
 // @include http://orteil.dashnet.org/cookieclicker/
 // @include https://orteil.dashnet.org/cookieclicker/
 // @version 1.0.1

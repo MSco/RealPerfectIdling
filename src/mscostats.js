@@ -14,7 +14,7 @@
 var MS = {};
 MS.Tooltip = {};
 
-MS.version = '1.1.3.11'
+MS.version = '1.1.3.12'
 
 // set MS.importSaveDate after importing a save, this is exclusively for another MSco Addon: Real Perfect Idling
 MS.importSaveDate = new Date().getTime() - Game.T*1000/Game.fps;
@@ -744,6 +744,22 @@ if(!statsdone && Game.sortedMods.length==0)
 	
 	// How to add a button
 	//eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('when out of focus)</label><br>\'+', 'when out of focus)</label><br>\'+\'<div class="listing"><a class="option" \'+Game.clickStr+\'="myfunc();">Real Perfect Idling</a><label>Simulate the game untilt the last Save)</label></div>\' + '))
+	
+	// Grimoire: Show time left to MagicM
+	M_grimoire = Game.Objects['Wizard tower'].minigame
+	grimoire_draw_orig = M_grimoire.draw
+	M_grimoire.draw = function() {
+	    grimoire_draw_orig();
+	    magic = M_grimoire.magic
+	    frames = 0
+	    while(magic<M_grimoire.magicM) {
+	        mps=Math.max(0.002,Math.pow(magic/Math.max(M_grimoire.magicM,100),0.5))*0.002
+	        magic += mps
+	        frames += 1
+	    }
+	    frames += Game.fps
+	    M_grimoire.magicBarTextL.innerHTML=Math.min(Math.floor(M_grimoire.magicM),Beautify(M_grimoire.magic))+'/'+Beautify(Math.floor(M_grimoire.magicM))+(M_grimoire.magic<M_grimoire.magicM?(' (+'+Beautify((M_grimoire.magicPS||0)*Game.fps,2)+'/s) ('+Math.floor(frames/Game.fps/60)+'m ' + Math.floor(frames/Game.fps)%60+'s)' ):'');
+	}
 	
 	// Replace strings in original Statistics menu
 	

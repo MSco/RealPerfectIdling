@@ -57,6 +57,8 @@ have any suggestions.
 * Show next Lump Type
 
 ##### Changelog:
+* 1.1.3.12:
+	* Grimoire: Show time left to max magic
 * 1.1.3.10:
 	* Removed lump type features (disabling F5 and showing current lump type)
 * 1.1.3.3:

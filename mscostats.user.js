@@ -6,6 +6,7 @@
 // @include https://orteil.dashnet.org/cookieclicker/
 // @version 1.0.1
 // @grant none
+// @author MSco
 // ==/UserScript==
 
 (function() {

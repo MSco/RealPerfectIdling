@@ -15,7 +15,7 @@
 /*================================================ */
 var RPI={}
 
-RPI.version = '2.0.0.1'
+RPI.version = '2.0.1.0'
 RPI.supportedVersion = 2.031
 if (RPI.supportedVersion < Game.version)
 {
@@ -65,7 +65,7 @@ RPI.now = function()
 	return Math.round(Game.lastDate + Game.T/Game.fps*1000)
 }
 
-RPI.undoOfflineEarned = function()
+RPI.undoOffline = function(framesAfk)
 {
 	var amount = 0
 	if (MS.offlineEarned > 0)
@@ -76,6 +76,15 @@ RPI.undoOfflineEarned = function()
 		Game.Earn(-amount);
 		console.log('Cookies eliminated: ' + Beautify(amount));
 	}
+	
+	// undo adjustment of pledge, season and research timers 
+	if (Game.pledgeT > 0)
+		Game.pledgeT += framesAfk
+	if (Game.seasonT > 0)
+		Game.seasonT += framesAfk
+	if (Game.researchT > 0)
+		Game.researchT += framesAfk
+	
 }
 
 if (!MS.RPI_idledone)
@@ -113,7 +122,7 @@ if (!MS.RPI_idledone)
 	//eval('RPI.Logic='+RPI.Logic.toString().replace(/Game\.UpdateSpecial\(\);[a-zA-Z0-9\s\{\}\(\)\[\]\.\=\+\-\*\/\%;\,\'\"\!\|\&\>\<\?\:\\]*Game\.UpdateTicker\(\);/, ""))
 	//eval('RPI.Logic='+RPI.Logic.toString().replace("me.minigame.logic();", "{}"))
 	
-	RPI.undoOfflineEarned()
+	RPI.undoOffline(framesAfk)
 	
 	// first calculation
 	start_calc_time = RPI.original_date_now()

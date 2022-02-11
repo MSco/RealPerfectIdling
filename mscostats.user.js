@@ -4,7 +4,7 @@
 // @downloadURL https://github.com/MSco/RealPerfectIdling/raw/master/mscostats.user.js
 // @include http://orteil.dashnet.org/cookieclicker/
 // @include https://orteil.dashnet.org/cookieclicker/
-// @version 1.0.2
+// @version 1.0.3
 // @grant none
 // @author MSco
 // ==/UserScript==
@@ -15,5 +15,5 @@
             Game.LoadMod('https://rawgit.com/MSco/RealPerfectIdling/master/src/mscostats.js');
             clearInterval(checkReady);
         }
-    }, 500);
+    }, 800);
 })();

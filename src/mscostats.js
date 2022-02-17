@@ -14,7 +14,7 @@
 var MS = {};
 MS.Tooltip = {};
 
-MS.version = '1.1.3.15'
+MS.version = '1.1.3.16'
 
 // set MS.importSaveDate after importing a save, this is exclusively for another MSco Addon: Real Perfect Idling
 MS.importSaveDate = new Date().getTime() - Game.T*1000/Game.fps;
@@ -643,7 +643,8 @@ MS.priceForNextDragonLevel = function()
 MS.grimoire_choices_init = { // 'name of golden cookie buff' : [], max_choices_to_find
 		'click frenzy' : [[], 16],
 		'building special' : [[], 16],
-		'free sugar lump' : [[], 1]
+//		'cookie storm' : [[], 16],
+		'free sugar lump' : [[], 2]
 	}
 MS.grimoire_choices = {}
 MS.check_grimoire = function()

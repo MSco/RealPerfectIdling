@@ -14,7 +14,7 @@
 var MS = {};
 MS.Tooltip = {};
 
-MS.version = '1.1.3.13'
+MS.version = '1.1.3.14'
 
 // set MS.importSaveDate after importing a save, this is exclusively for another MSco Addon: Real Perfect Idling
 MS.importSaveDate = new Date().getTime() - Game.T*1000/Game.fps;
@@ -640,6 +640,11 @@ MS.priceForNextDragonLevel = function()
 	else return 0;
 }
 
+MS.grimoire_choices_init = { // 'name of golden cookie buff' : [], max_choices_to_find
+		'click frenzy' : [[], 16],
+		'building special' : [[], 16],
+		'free sugar lump' : [[], 1]
+	}
 MS.grimoire_choices = {}
 MS.check_grimoire = function()
 {
@@ -649,11 +654,7 @@ MS.check_grimoire = function()
 	M=Game.ObjectsById[7].minigame
 	cg_spellCastTotal = M.spellsCastTotal
 	
-	MS.grimoire_choices = { // 'name of golden cookie buff' : [], max_choices_to_find
-		'click frenzy' : [[], 8],
-		'building special' : [[], 8],
-		'free sugar lump' : [[], 2]
-	}
+	MS.grimoire_choices = MS.grimoire_choices_init
 	
 	found_all = 0
 	num_choices = Object.keys(MS.grimoire_choices).length
@@ -719,6 +720,27 @@ MS.check_grimoire = function()
 	}
 	
 	return MS.grimoire_choices
+}
+
+MS.buildGrimoireString = function(choice)
+{
+	statsString = ' + \'<tr><td class="listing"><b>Next '+choice+':</b> </td>\''
+	col_width = 4
+	choice_lower = choice.toLowerCase()
+	for (var i=0; i<MS.grimoire_choices_init[choice_lower][1]; i++)
+	{
+		// beginning of a column
+		if (i%col_width==0)
+			statsString += ' + \'<td style="font-weight:bold;">\''
+			
+		statsString += ' + MS.check_grimoire()[\''+choice_lower+'\'][0]['+i+'] + \' \''
+		
+		// end of a column
+		if ((i+1)%col_width==0 || i==MS.grimoire_choices_init[choice_lower][1]-1)
+			statsString +='+\'</td>\''
+	}
+	statsString += '+\'</tr>\''
+	return statsString;
 }
 
 function my_onkeydown_handler( event ) {
@@ -838,9 +860,12 @@ if(!statsdone && Game.sortedMods.length==0)
 	
 	// Grimoire stats
 	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Grimoire</td></tr>\'';
-	statsString += ' + \'<tr><td class="listing"><b>Next Click Frenzy:</b> </td><td style="font-weight:bold;">\' + MS.check_grimoire()[\'click frenzy\'][0][0] + \' \' + MS.check_grimoire()[\'click frenzy\'][0][1] + \' \' + MS.check_grimoire()[\'click frenzy\'][0][2] + \' \' + MS.check_grimoire()[\'click frenzy\'][0][3] + \'</td><td style="font-weight:bold;">\' + MS.check_grimoire()[\'click frenzy\'][0][4] + \' \' + MS.check_grimoire()[\'click frenzy\'][0][5] + \' \' + MS.check_grimoire()[\'click frenzy\'][0][6] + \' \' + MS.check_grimoire()[\'click frenzy\'][0][7] + \'</td></tr>\'';
-	statsString += ' + \'<tr><td class="listing"><b>Next Building Special:</b> </td><td style="font-weight:bold;">\' + MS.check_grimoire()[\'building special\'][0][0] + \' \' + MS.check_grimoire()[\'building special\'][0][1] + \' \' + MS.check_grimoire()[\'building special\'][0][2] + \' \' + MS.check_grimoire()[\'building special\'][0][3] + \'</td><td style="font-weight:bold;">\' + MS.check_grimoire()[\'building special\'][0][4] + \' \' + MS.check_grimoire()[\'building special\'][0][5] + \' \' + MS.check_grimoire()[\'building special\'][0][6] + \' \' + MS.check_grimoire()[\'building special\'][0][7] + \'</td></tr>\'';
-	statsString += ' + \'<tr><td class="listing"><b>Next Free Sugar Lump:</b> </td><td style="font-weight:bold;">\' + MS.check_grimoire()[\'free sugar lump\'][0][0] + \' \' + MS.check_grimoire()[\'free sugar lump\'][0][1]+ \'</td></tr>\'';
+	statsString += MS.buildGrimoireString('Click Frenzy')
+	statsString += MS.buildGrimoireString('Building Special')
+	statsString += MS.buildGrimoireString('Free Sugar Lump')
+//	"<td style="font-weight:bold;">\' + MS.check_grimoire()[\'click frenzy\'][0][0] + \' \' + MS.check_grimoire()[\'click frenzy\'][0][1] + \' \' + MS.check_grimoire()[\'click frenzy\'][0][2] + \' \' + MS.check_grimoire()[\'click frenzy\'][0][3] + \'</td><td style="font-weight:bold;">\' + MS.check_grimoire()[\'click frenzy\'][0][4] + \' \' + MS.check_grimoire()[\'click frenzy\'][0][5] + \' \' + MS.check_grimoire()[\'click frenzy\'][0][6] + \' \' + MS.check_grimoire()[\'click frenzy\'][0][7] + \'</td></tr>\'';
+//	statsString += ' + \'<tr><td class="listing"><b>Next Building Special:</b> </td><td style="font-weight:bold;">\' + MS.check_grimoire()[\'building special\'][0][0] + \' \' + MS.check_grimoire()[\'building special\'][0][1] + \' \' + MS.check_grimoire()[\'building special\'][0][2] + \' \' + MS.check_grimoire()[\'building special\'][0][3] + \'</td><td style="font-weight:bold;">\' + MS.check_grimoire()[\'building special\'][0][4] + \' \' + MS.check_grimoire()[\'building special\'][0][5] + \' \' + MS.check_grimoire()[\'building special\'][0][6] + \' \' + MS.check_grimoire()[\'building special\'][0][7] + \'</td></tr>\'';
+//	statsString += ' + \'<tr><td class="listing"><b>Next Free Sugar Lump:</b> </td><td style="font-weight:bold;">\' + MS.check_grimoire()[\'free sugar lump\'][0][0] + \' \' + MS.check_grimoire()[\'free sugar lump\'][0][1]+ \'</td></tr>\'';
 	
 	// add blank row
 	statsString += ' + \'<tr style="height: 20px;"><td colspan="4"></td></tr>\'';

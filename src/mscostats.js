@@ -14,7 +14,7 @@
 var MS = {};
 MS.Tooltip = {};
 
-MS.version = '1.1.3.14'
+MS.version = '1.1.3.15'
 
 // set MS.importSaveDate after importing a save, this is exclusively for another MSco Addon: Real Perfect Idling
 MS.importSaveDate = new Date().getTime() - Game.T*1000/Game.fps;
@@ -696,6 +696,10 @@ MS.check_grimoire = function()
 		} 
 		else 
 		{
+			// for math.random: var newShimmer=new Game.shimmer('golden',{wrath:true});
+			x=Math.floor(Math.random()*Math.max(0,(Game.bounds.right-300)-Game.bounds.left-128)+Game.bounds.left+64)-64;
+			y=Math.floor(Math.random()*Math.max(0,Game.bounds.bottom-Game.bounds.top-128)+Game.bounds.top+64)-64;
+			
 			var choices=[];
 	        choices.push('clot','ruin cookies');
 	        if (Math.random()<0.1) choices.push('cursed finger','blood frenzy');
@@ -722,24 +726,34 @@ MS.check_grimoire = function()
 	return MS.grimoire_choices
 }
 
-MS.buildGrimoireString = function(choice)
+MS.buildGrimoireStrings = function()
 {
-	statsString = ' + \'<tr><td class="listing"><b>Next '+choice+':</b> </td>\''
-	col_width = 4
-	choice_lower = choice.toLowerCase()
-	for (var i=0; i<MS.grimoire_choices_init[choice_lower][1]; i++)
-	{
-		// beginning of a column
-		if (i%col_width==0)
-			statsString += ' + \'<td style="font-weight:bold;">\''
-			
-		statsString += ' + MS.check_grimoire()[\''+choice_lower+'\'][0]['+i+'] + \' \''
-		
-		// end of a column
-		if ((i+1)%col_width==0 || i==MS.grimoire_choices_init[choice_lower][1]-1)
-			statsString +='+\'</td>\''
+	function camelize(str) {
+	  return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function(word) {
+	    return word.toUpperCase();
+	  });
 	}
-	statsString += '+\'</tr>\''
+	
+	statsString = ''
+	for (var choice in MS.grimoire_choices_init)
+	{
+		statsString += ' + \'<tr><td class="listing"><b>Next '+camelize(choice)+':</b> </td>\''
+		col_width = 4
+		for (var i=0; i<MS.grimoire_choices_init[choice][1]; i++)
+		{
+			// beginning of a column
+			if (i%col_width==0)
+				statsString += ' + \'<td style="font-weight:bold;">\''
+				
+			statsString += ' + MS.check_grimoire()[\''+choice+'\'][0]['+i+'] + \' \''
+			
+			// end of a column
+			if ((i+1)%col_width==0 || i==MS.grimoire_choices_init[choice][1]-1)
+				statsString +='+\'</td>\''
+		}
+		statsString += '+\'</tr>\''
+	}
+	
 	return statsString;
 }
 
@@ -860,9 +874,7 @@ if(!statsdone && Game.sortedMods.length==0)
 	
 	// Grimoire stats
 	statsString += ' + \'<tr class="title" style="font-size:15px;"><td class="listing" style="font-size:20px;">Grimoire</td></tr>\'';
-	statsString += MS.buildGrimoireString('Click Frenzy')
-	statsString += MS.buildGrimoireString('Building Special')
-	statsString += MS.buildGrimoireString('Free Sugar Lump')
+	statsString += MS.buildGrimoireStrings()
 //	"<td style="font-weight:bold;">\' + MS.check_grimoire()[\'click frenzy\'][0][0] + \' \' + MS.check_grimoire()[\'click frenzy\'][0][1] + \' \' + MS.check_grimoire()[\'click frenzy\'][0][2] + \' \' + MS.check_grimoire()[\'click frenzy\'][0][3] + \'</td><td style="font-weight:bold;">\' + MS.check_grimoire()[\'click frenzy\'][0][4] + \' \' + MS.check_grimoire()[\'click frenzy\'][0][5] + \' \' + MS.check_grimoire()[\'click frenzy\'][0][6] + \' \' + MS.check_grimoire()[\'click frenzy\'][0][7] + \'</td></tr>\'';
 //	statsString += ' + \'<tr><td class="listing"><b>Next Building Special:</b> </td><td style="font-weight:bold;">\' + MS.check_grimoire()[\'building special\'][0][0] + \' \' + MS.check_grimoire()[\'building special\'][0][1] + \' \' + MS.check_grimoire()[\'building special\'][0][2] + \' \' + MS.check_grimoire()[\'building special\'][0][3] + \'</td><td style="font-weight:bold;">\' + MS.check_grimoire()[\'building special\'][0][4] + \' \' + MS.check_grimoire()[\'building special\'][0][5] + \' \' + MS.check_grimoire()[\'building special\'][0][6] + \' \' + MS.check_grimoire()[\'building special\'][0][7] + \'</td></tr>\'';
 //	statsString += ' + \'<tr><td class="listing"><b>Next Free Sugar Lump:</b> </td><td style="font-weight:bold;">\' + MS.check_grimoire()[\'free sugar lump\'][0][0] + \' \' + MS.check_grimoire()[\'free sugar lump\'][0][1]+ \'</td></tr>\'';

@@ -15,7 +15,7 @@
 /*================================================ */
 var RPI={}
 
-RPI.version = '2.0.2.0'
+RPI.version = '2.0.2.1'
 RPI.supportedVersion = 2.031
 if (RPI.supportedVersion < Game.version)
 {
@@ -131,10 +131,6 @@ if (!MS.RPI_idledone)
 	start_calc_time = RPI.original_date_now()
 	for (var i=0; i<framesAfk; i++)
 	{
-		if (i<=10) {
-			console.log(new Date(Date.now()))
-			console.log(new Date(Game.Objects.Farm.minigame.nextStep))
-		}
 		RPI.Logic()
 	}
 	end_calc_time = RPI.original_date_now()

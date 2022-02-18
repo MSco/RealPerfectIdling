@@ -14,7 +14,7 @@
 var MS = {};
 MS.Tooltip = {};
 
-MS.version = '1.1.3.16'
+MS.version = '1.1.4.0'
 
 // set MS.importSaveDate after importing a save, this is exclusively for another MSco Addon: Real Perfect Idling
 MS.importSaveDate = new Date().getTime() - Game.T*1000/Game.fps;
@@ -71,6 +71,24 @@ MS.readHeraldsFromStr=function(str)
     var spl=newstr[4].split(';');
     MS.heralds=spl[48]?parseInt(spl[48]):Game.heralds;
     MS.saveImported = true;
+}
+
+MS.readGardenFromStr=function(str)
+{
+	var splitstr=str.split('|');
+    var newstr=str
+    if (splitstr[0]<1) {}
+    else
+    {
+        newstr=newstr.split('!END!')[0];
+        newstr=b64_to_utf8(newstr);
+    }
+    newstr=newstr.split('|');
+    spl=newstr[5].split(';');//buildings
+	if (spl[2])
+	{
+		var mestr=spl[i].toString().split(',');
+	}
 }
 
 MS.getEffectDurModInWrath=function()
@@ -758,6 +776,30 @@ MS.buildGrimoireStrings = function()
 	return statsString;
 }
 
+MS.showTimeLeftMagicM = function()
+{
+	M_grimoire = Game.Objects['Wizard tower'].minigame
+	grimoire_draw_orig = M_grimoire.draw
+	M_grimoire.draw = function() {
+	    grimoire_draw_orig();
+	    if (M_grimoire.magic < M_grimoire.magicM)
+	    {
+		    magic = M_grimoire.magic
+		    frames = 0
+		    while(magic<M_grimoire.magicM) {
+		        mps=Math.max(0.002,Math.pow(magic/Math.max(M_grimoire.magicM,100),0.5))*0.002
+		        magic += mps
+		        frames += 1
+		    }
+		    frames += Game.fps
+		    
+		    minutes = Math.floor(frames/Game.fps/60)
+		    seconds = Math.floor(frames/Game.fps)%60
+		    M_grimoire.magicBarTextL.innerHTML += ' ('+(minutes>0 ? minutes + 'm ' : '') + Math.floor(frames/Game.fps)%60+'s)' ;
+		 }
+	}
+}
+
 function my_onkeydown_handler( event ) {
     switch (event.keyCode) {
         case 116 : // 'F5'
@@ -783,26 +825,13 @@ if(!statsdone && Game.sortedMods.length==0)
 	//eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('when out of focus)</label><br>\'+', 'when out of focus)</label><br>\'+\'<div class="listing"><a class="option" \'+Game.clickStr+\'="myfunc();">Real Perfect Idling</a><label>Simulate the game untilt the last Save)</label></div>\' + '))
 	
 	// Grimoire: Show time left to MagicM
-	M_grimoire = Game.Objects['Wizard tower'].minigame
-	grimoire_draw_orig = M_grimoire.draw
-	M_grimoire.draw = function() {
-	    grimoire_draw_orig();
-	    if (M_grimoire.magic < M_grimoire.magicM)
-	    {
-		    magic = M_grimoire.magic
-		    frames = 0
-		    while(magic<M_grimoire.magicM) {
-		        mps=Math.max(0.002,Math.pow(magic/Math.max(M_grimoire.magicM,100),0.5))*0.002
-		        magic += mps
-		        frames += 1
-		    }
-		    frames += Game.fps
-		    
-		    minutes = Math.floor(frames/Game.fps/60)
-		    seconds = Math.floor(frames/Game.fps)%60
-		    M_grimoire.magicBarTextL.innerHTML += ' ('+(minutes>0 ? minutes + 'm ' : '') + Math.floor(frames/Game.fps)%60+'s)' ;
-		 }
-	}
+	MS.showTimeLeftMagicM();
+	
+	// Garden: restore nextStep correctly
+	eval('Game.Objects.Farm.minigame.load='+Game.Objects.Farm.minigame.load.toString().replace("M.nextStep=parseFloat(spl2[i2++]||M.nextStep);","M.nextStep=parseFloat(spl2[i2++]||M.nextStep);M.nextStep=Date.now()+M.nextStep-Game.lastDate;"));
+	eval('Game.Objects.Farm.minigame.load='+Game.Objects.Farm.minigame.load.toString().replaceAll("M.","Game.Objects.Farm.minigame."));
+	//eval('Game.Objects.Farm.minigame.load='+Game.Objects.Farm.minigame.load.toString().replace("M.nextStep=parseFloat(spl2[i2++]||M.nextStep);","M.nextStep=parseFloat(spl2[i2++]||M.nextStep);"));
+	//console.log(Game.Objects.Farm.minigame.load.toString())
 	
 	// Replace strings in original Statistics menu
 	

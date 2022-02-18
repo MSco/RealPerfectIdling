@@ -57,6 +57,8 @@ have any suggestions.
 * Show next Lump Type
 
 ##### Changelog:
+* 1.1.4.0:
+	* ImportSave now correctly loads Farm.minigame.nextStep
 * 1.1.3.12:
 	* Grimoire: Show time left to max magic
 * 1.1.3.10:

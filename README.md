@@ -57,6 +57,8 @@ have any suggestions.
 * Show next Lump Type
 
 ##### Changelog:
+* 1.1.5.0:
+	* ImportSave saves lumps, totalLumps, currentLumpType and lumpT
 * 1.1.4.0:
 	* ImportSave now correctly loads Farm.minigame.nextStep
 * 1.1.3.12:
@@ -187,6 +189,10 @@ Following calculations are done "while game is closed":
 * Undo offline cookie calculations of Twin Gates of Transcendence
 
 ##### Changelog:
+* 2.0.3.0:
+	* Lumps are correctly simulated
+* 2.0.2.0:
+	* Garden ticks are correctly simulated
 * 2.0.0.0:
     * Full Reimplementation of the plugin. It now simulates the game using a modified version of Game.Logic() (without graphic stuff, etc)
 * 1.0.4.0:

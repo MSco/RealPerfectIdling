@@ -15,7 +15,7 @@
 /*================================================ */
 var RPI={}
 
-RPI.version = '2.0.2.1'
+RPI.version = '2.0.3.0'
 RPI.supportedVersion = 2.031
 if (RPI.supportedVersion < Game.version)
 {
@@ -87,6 +87,14 @@ RPI.undoOffline = function(framesAfk)
 	
 }
 
+RPI.undoLumps = function()
+{
+	Game.lumps=MS.lumps;
+	Game.lumpsTotal=MS.lumpsTotal;
+	Game.lumpT=MS.lumpT;
+	Game.lumpCurrentType=MS.lumpCurrentType;
+}
+
 if (!MS.RPI_idledone)
 {
 	// how to add button:
@@ -124,6 +132,7 @@ if (!MS.RPI_idledone)
 	
 	//eval('RPI.Logic='+RPI.Logic.toString().replace(/Game\.UpdateSpecial\(\);[a-zA-Z0-9\s\{\}\(\)\[\]\.\=\+\-\*\/\%;\,\'\"\!\|\&\>\<\?\:\\]*Game\.UpdateTicker\(\);/, ""))
 	//eval('RPI.Logic='+RPI.Logic.toString().replace("me.minigame.logic();", "{}"))
+	RPI.undoLumps();
 	
 	RPI.undoOffline(framesAfk)
 	

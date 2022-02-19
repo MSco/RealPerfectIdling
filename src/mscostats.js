@@ -14,7 +14,7 @@
 var MS = {};
 MS.Tooltip = {};
 
-MS.version = '1.1.4.0'
+MS.version = '1.1.5.0'
 
 // set MS.importSaveDate after importing a save, this is exclusively for another MSco Addon: Real Perfect Idling
 MS.importSaveDate = new Date().getTime() - Game.T*1000/Game.fps;
@@ -36,6 +36,7 @@ Game.ImportSaveCode = function(save)
     	var str=unescape(save);
     	MS.readPledgeFromStr(str);
     	MS.readHeraldsFromStr(str);
+    	MS.readLumpsFromStr(str);
     }
     
     console.log('MS.importSaveDate: ' + MS.importSaveDate);
@@ -73,7 +74,7 @@ MS.readHeraldsFromStr=function(str)
     MS.saveImported = true;
 }
 
-MS.readGardenFromStr=function(str)
+MS.readLumpsFromStr=function(str)
 {
 	var splitstr=str.split('|');
     var newstr=str
@@ -84,12 +85,35 @@ MS.readGardenFromStr=function(str)
         newstr=b64_to_utf8(newstr);
     }
     newstr=newstr.split('|');
-    spl=newstr[5].split(';');//buildings
-	if (spl[2])
-	{
-		var mestr=spl[i].toString().split(',');
-	}
+    spl=newstr[4].split(';');//cookies and lots of other stuff
+	MS.lumps=spl[42]?parseFloat(spl[42]):-1;
+	MS.lumpsTotal=spl[43]?parseFloat(spl[43]):-1;
+	MS.lumpT=spl[44]?parseInt(spl[44]):Date.now();
+	MS.lumpCurrentType=spl[46]?parseInt(spl[46]):0;
+	
+	console.log("Save lumps:" + MS.lumps)
+	console.log("Save lumpsTotal:" + MS.lumpsTotal)
+	console.log("Save lumpT:" + new Date(MS.lumpT))
+	console.log("Save lumpCurrentType:" + MS.lumpCurrentType)
 }
+
+//MS.harvestLumps = Game.harvestLumps;
+//Game.harvestLumps=function(amount,silent)
+//{
+//	lumpsBefore = Game.lumps;
+//	MS.harvestLumps(amount,silent);
+//	console.log("lumps harvested:" + Game.lumps-lumpsBefore)
+//	console.log("lumps:" + Game.lumps)
+//	console.log("lumpsTotal:" + Game.lumpsTotal)
+//	console.log("lumpT:" + new Date(Game.lumpT))
+//}
+//
+//MS.computeLumpType = Game.computeLumpType;
+//Game.computeLumpType = function()
+//{
+//	MS.computeLumpType();
+//	console.log("lumpCurrentType after harvest:" + Game.lumpCurrentType)
+//}
 
 MS.getEffectDurModInWrath=function()
 {

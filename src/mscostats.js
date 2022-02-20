@@ -14,7 +14,7 @@
 var MS = {};
 MS.Tooltip = {};
 
-MS.version = '1.1.5.0'
+MS.version = '1.1.5.1'
 
 // set MS.importSaveDate after importing a save, this is exclusively for another MSco Addon: Real Perfect Idling
 MS.importSaveDate = new Date().getTime() - Game.T*1000/Game.fps;
@@ -97,23 +97,17 @@ MS.readLumpsFromStr=function(str)
 	console.log("Save lumpCurrentType:" + MS.lumpCurrentType)
 }
 
-//MS.harvestLumps = Game.harvestLumps;
-//Game.harvestLumps=function(amount,silent)
-//{
-//	lumpsBefore = Game.lumps;
-//	MS.harvestLumps(amount,silent);
-//	console.log("lumps harvested:" + Game.lumps-lumpsBefore)
-//	console.log("lumps:" + Game.lumps)
-//	console.log("lumpsTotal:" + Game.lumpsTotal)
-//	console.log("lumpT:" + new Date(Game.lumpT))
-//}
-//
-//MS.computeLumpType = Game.computeLumpType;
-//Game.computeLumpType = function()
-//{
-//	MS.computeLumpType();
-//	console.log("lumpCurrentType after harvest:" + Game.lumpCurrentType)
-//}
+MS.harvestLumps = Game.harvestLumps;
+Game.harvestLumps=function(amount,silent)
+{
+	lumpsBefore = Game.lumps;
+	console.log("lumpCurrentType before harvest:" + Game.lumpCurrentType)
+	MS.harvestLumps(amount,silent);
+	console.log("lumps harvested:" + Game.lumps-lumpsBefore)
+	console.log("lumps:" + Game.lumps)
+	console.log("lumpsTotal:" + Game.lumpsTotal)
+	console.log("lumpT:" + new Date(Game.lumpT))
+}
 
 MS.getEffectDurModInWrath=function()
 {

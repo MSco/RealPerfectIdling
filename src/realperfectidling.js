@@ -15,7 +15,7 @@
 /*================================================ */
 var RPI={}
 
-RPI.version = '2.0.3.0'
+RPI.version = '2.0.3.1'
 RPI.supportedVersion = 2.031
 if (RPI.supportedVersion < Game.version)
 {
@@ -148,6 +148,7 @@ if (!MS.RPI_idledone)
 	frames_calc_time = Math.floor(calc_time/1000*Game.fps)
 	console.log("Calculation time: " + Game.sayTime(frames_calc_time))
 	
+	Game.harvestLumps = MS.harvestLumps;
 	RPI.unlock_functions();
 	Date.now = RPI.original_date_now 
 	MS.RPI_idledone=1;

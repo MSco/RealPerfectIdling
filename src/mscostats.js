@@ -21,8 +21,15 @@ MS.importSaveDate = new Date().getTime() - Game.T*1000/Game.fps;
 MS.saveImported = false;
 MS.pledgeT = 0;
 MS.heralds = 0;
+// swaps
 MS.swaps = 0;
 MS.swapT = 0;
+// lumps
+MS.lumps=0;
+MS.lumpsTotal=0;
+MS.lumpT=0;
+MS.lumpCurrentType=0;
+
 MS.offlineEarned = 0;
 MS.RPI_idledone = 0;
 //MS.lastLumpsGained = 0

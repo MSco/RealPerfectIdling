@@ -15,7 +15,7 @@
 /*================================================ */
 var RPI={}
 
-RPI.version = '2.0.3.1'
+RPI.version = '2.0.4.0'
 RPI.supportedVersion = 2.031
 if (RPI.supportedVersion < Game.version)
 {
@@ -112,6 +112,10 @@ if (!MS.RPI_idledone)
 
 	RPI.original_date_now = Date.now
 	Date.now = RPI.now
+	
+	// Set Pantheon swaps
+	Game.Objects.Temple.minigame.swaps=MS.swaps
+	Game.Objects.Temple.minigame.swapT=MS.swapT
 
 	RPI.lock_functions();
 

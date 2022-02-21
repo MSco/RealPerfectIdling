@@ -14,13 +14,15 @@
 var MS = {};
 MS.Tooltip = {};
 
-MS.version = '1.1.5.1'
+MS.version = '1.1.6.0'
 
 // set MS.importSaveDate after importing a save, this is exclusively for another MSco Addon: Real Perfect Idling
 MS.importSaveDate = new Date().getTime() - Game.T*1000/Game.fps;
 MS.saveImported = false;
 MS.pledgeT = 0;
 MS.heralds = 0;
+MS.swaps = 0;
+MS.swapT = 0;
 MS.offlineEarned = 0;
 MS.RPI_idledone = 0;
 //MS.lastLumpsGained = 0
@@ -37,6 +39,7 @@ Game.ImportSaveCode = function(save)
     	MS.readPledgeFromStr(str);
     	MS.readHeraldsFromStr(str);
     	MS.readLumpsFromStr(str);
+    	MS.readSwapsFromStr(str);
     }
     
     console.log('MS.importSaveDate: ' + MS.importSaveDate);
@@ -95,6 +98,30 @@ MS.readLumpsFromStr=function(str)
 	console.log("Save lumpsTotal:" + MS.lumpsTotal)
 	console.log("Save lumpT:" + new Date(MS.lumpT))
 	console.log("Save lumpCurrentType:" + MS.lumpCurrentType)
+}
+
+MS.readSwapsFromStr=function(str)
+{
+	var splitstr=str.split('|');
+    var newstr=str
+    if (splitstr[0]<1) {}
+    else
+    {
+        newstr=newstr.split('!END!')[0];
+        newstr=b64_to_utf8(newstr);
+    }
+    newstr=newstr.split('|');
+	spl=newstr[5].split(';');//buildings
+	if (spl[6])
+	{
+		var mestr=spl[6].toString().split(',');
+        spl=mestr[4].split(' ');
+        MS.swaps=parseFloat(spl[1]||3);
+        MS.swapT=parseFloat(spl[2]||Date.now());
+	}
+	
+	console.log("Swaps:" + MS.swaps)
+	console.log("SwapT:" + new Date(MS.swapT))
 }
 
 MS.harvestLumps = Game.harvestLumps;

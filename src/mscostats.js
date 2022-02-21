@@ -14,7 +14,7 @@
 var MS = {};
 MS.Tooltip = {};
 
-MS.version = '1.1.6.0'
+MS.version = '1.1.6.1'
 
 // set MS.importSaveDate after importing a save, this is exclusively for another MSco Addon: Real Perfect Idling
 MS.importSaveDate = new Date().getTime() - Game.T*1000/Game.fps;
@@ -158,6 +158,18 @@ MS.getEffectDurModInWrath=function()
     /*else*/ 
     effectDurMod*=Game.eff('wrathCookieEffDur');
     return effectDurMod;
+}
+
+MS.buildNumberLegend = function(max)
+{
+	legend_str = ''
+	for (var i=3; i<=max; i+=3)
+	{
+		legend_str += '1e' + i + ' = ' + Beautify(eval('1e'+i)) + '\n'
+	}
+	legend_str += '"'
+	
+	return legend_str;
 }
 
 Game.sayTime = function(time,detail)
@@ -562,7 +574,8 @@ MS.maxElderFrenzy = function()
 	return moni;
 }
 
-MS.Tooltip.HCsWantedThisAscension = '"Enter the amount of Heavenly Chips you want to earn this ascension."'
+
+MS.Tooltip.HCsWantedThisAscension = '"Enter the amount of Heavenly Chips you want to earn this ascension.\n\n' + MS.buildNumberLegend(21)
 MS.Tooltip.neededCookiesForHC = '"The cookies you will have to bake (all time) to earn the desired amount of Heavenly Chips."'
 MS.HCsWantedThisAscension = 0;
 MS.neededCookiesForHC = function(HC)
@@ -623,19 +636,8 @@ MS.PriceForBuildingAmount = function(inputFieldValue, i)
 
 MS.cookiesWanted = []
 MS.Tooltip.cookiesWanted = []
-MS.Tooltip.numberLegend = '1e3 = thousand\n' +
-			  '1e6 = million\n' +
-			  '1e9 = billion\n' +
-			  '1e12 = trillion\n' +
-			  '1e15 = quadrillion\n' +
-			  '1e18 = quintillion\n' +
-			  '1e21 = sextillion\n' +
-			  '1e24 = septillion\n' +
-			  '1e27 = octillion\n' +
-			  '1e30 = nonillion\n' +
-			  '1e33 = decillion\n' +
-			  '1e36 = undecillion\n' +
-			  '1e39 = duodecillion\n"';
+MS.Tooltip.numberLegend = MS.buildNumberLegend(63);
+
 MS.Tooltip.cookiesWanted[0] = '"The amount of cookies you want to have in your bank incl. wrinklers.\n\n' + MS.Tooltip.numberLegend;
 MS.Tooltip.cookiesWanted[1] = '"The amount of cookies you want to have baked this game, incl. wrinklers and using\n'
 				+'chocolate egg after selling all buildings with dragon aura Earth Shatterer.\n\n' + MS.Tooltip.numberLegend;

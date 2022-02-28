@@ -14,7 +14,7 @@
 var MS = {};
 MS.Tooltip = {};
 
-MS.version = '1.1.6.1'
+MS.version = '1.1.6.2'
 
 // set MS.importSaveDate after importing a save, this is exclusively for another MSco Addon: Real Perfect Idling
 MS.importSaveDate = new Date().getTime() - Game.T*1000/Game.fps;
@@ -713,8 +713,10 @@ MS.priceForNextDragonLevel = function()
 }
 
 MS.grimoire_choices_init = { // 'name of golden cookie buff' : [], max_choices_to_find
-		'click frenzy' : [[], 16],
 		'building special' : [[], 16],
+		'click frenzy' : [[], 16],
+		'building special + click frenzy' : [[], 8],
+		'click frenzy + building special' : [[], 8],
 //		'cookie storm' : [[], 16],
 		'free sugar lump' : [[], 2]
 	}
@@ -731,6 +733,7 @@ MS.check_grimoire = function()
 	
 	found_all = 0
 	num_choices = Object.keys(MS.grimoire_choices).length
+	last_choice = ""
 	
 	while (!(found_all == num_choices))
 	{
@@ -759,13 +762,26 @@ MS.check_grimoire = function()
 				found = MS.grimoire_choices[c][0].length
 				max = MS.grimoire_choices[c][1]
 				
-				if (found<max && choice==c)
+				if (found<max)
 				{
-	        		MS.grimoire_choices[c][0].push(cg_spellCastTotal)
-	        		if (found+1 == max)
-	        			found_all += 1
+					if (choice==c)
+					{
+		        		MS.grimoire_choices[c][0].push(cg_spellCastTotal)
+		        		if (found+1 == max)
+		        			found_all += 1
+        			}
+        			else if((spl=c.split(' + ')).length>1 && choice==spl[1])
+	        		{
+						if (spl[0] == last_choice)
+		        		{
+							MS.grimoire_choices[c][0].push(cg_spellCastTotal-1)
+							if (found+1 == max)
+		        				found_all += 1
+						}
+	        		}
         		}
 			}
+			last_choice = choice
 		} 
 		else 
 		{
@@ -810,7 +826,7 @@ MS.buildGrimoireStrings = function()
 	statsString = ''
 	for (var choice in MS.grimoire_choices_init)
 	{
-		statsString += ' + \'<tr><td class="listing"><b>Next '+camelize(choice)+':</b> </td>\''
+		statsString += ' + \'<tr><td class="listing"><b>'+camelize(choice)+':</b> </td>\''
 		col_width = 4
 		for (var i=0; i<MS.grimoire_choices_init[choice][1]; i++)
 		{

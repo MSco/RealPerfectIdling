@@ -14,7 +14,7 @@
 var MS = {};
 MS.Tooltip = {};
 
-MS.version = '1.1.6.2'
+MS.version = '1.1.6.3'
 
 // set MS.importSaveDate after importing a save, this is exclusively for another MSco Addon: Real Perfect Idling
 MS.importSaveDate = new Date().getTime() - Game.T*1000/Game.fps;
@@ -717,7 +717,9 @@ MS.grimoire_choices_init = { // 'name of golden cookie buff' : [], max_choices_t
 		'click frenzy' : [[], 16],
 		'building special + click frenzy' : [[], 8],
 		'click frenzy + building special' : [[], 8],
-//		'cookie storm' : [[], 16],
+		'building special + building special + click frenzy' : [[], 2],
+		'building special + click frenzy + building special' : [[], 2],
+		'click frenzy + building special + building special' : [[], 2],
 		'free sugar lump' : [[], 2]
 	}
 MS.grimoire_choices = {}
@@ -733,7 +735,13 @@ MS.check_grimoire = function()
 	
 	found_all = 0
 	num_choices = Object.keys(MS.grimoire_choices).length
-	last_choice = ""
+	
+	// [current choice, previous choice, pre-previous choice]
+	max_elems = 1
+	for (var key in MS.grimoire_choices_init)
+		max_elems = Math.max(max_elems, key.split(' + ').length)
+		
+	choice_array = Array(max_elems).fill("")
 	
 	while (!(found_all == num_choices))
 	{
@@ -756,32 +764,8 @@ MS.check_grimoire = function()
 	        //if (Math.random()<0.2) choices.push('clot','cursed finger','ruin cookies');
 	        if (Math.random()<0.15) choices=['cookie storm drop'];
 	        if (Math.random()<0.0001) choices.push('free sugar lump');
-	        choice = choose(choices)
-	        for (var c in MS.grimoire_choices)
-	        {
-				found = MS.grimoire_choices[c][0].length
-				max = MS.grimoire_choices[c][1]
-				
-				if (found<max)
-				{
-					if (choice==c)
-					{
-		        		MS.grimoire_choices[c][0].push(cg_spellCastTotal)
-		        		if (found+1 == max)
-		        			found_all += 1
-        			}
-        			else if((spl=c.split(' + ')).length>1 && choice==spl[1])
-	        		{
-						if (spl[0] == last_choice)
-		        		{
-							MS.grimoire_choices[c][0].push(cg_spellCastTotal-1)
-							if (found+1 == max)
-		        				found_all += 1
-						}
-	        		}
-        		}
-			}
-			last_choice = choice
+	        
+	        choice_array[0] = choose(choices)
 		} 
 		else 
 		{
@@ -794,20 +778,41 @@ MS.check_grimoire = function()
 	        if (Math.random()<0.1) choices.push('cursed finger','blood frenzy');
 	        if (Math.random()<0.003) choices.push('free sugar lump');
 	        if (Math.random()<0.1) choices=['blab'];
-	        choice = choose(choices)
-	        for (var c in MS.grimoire_choices)
-	        {
-				found = MS.grimoire_choices[c][0].length
-				max = MS.grimoire_choices[c][1]
+	        choice_array[0] = choose(choices)
+		}
+		
+		for (var c in MS.grimoire_choices)
+        {
+			found = MS.grimoire_choices[c][0].length
+			max = MS.grimoire_choices[c][1]
+			
+			if (found<max)
+			{
+				spl = c.split(' + ')
+				num_elems = spl.length
 				
-				if (found<max && choice==c)
+				index = num_elems-1
+				combo_found = 1
+				for (var i=0; i<num_elems; i++)
 				{
-		        	MS.grimoire_choices[c][0].push(cg_spellCastTotal)
+					if (choice_array[i] != spl[num_elems-1-i])
+					{
+						combo_found = 0
+						break;
+					}
+				}
+				if (combo_found)
+				{
+					MS.grimoire_choices[c][0].push(cg_spellCastTotal-index)
 	        		if (found+1 == max)
 	        			found_all += 1
-	        	}
-			}
+				}
+    		}
 		}
+		
+		for (var i=choice_array.length-1; i>0; i--)
+			choice_array[i] = choice_array[i-1]
+
 	    Math.seedrandom();
 	    cg_spellCastTotal++;
 	}
@@ -826,7 +831,14 @@ MS.buildGrimoireStrings = function()
 	statsString = ''
 	for (var choice in MS.grimoire_choices_init)
 	{
-		statsString += ' + \'<tr><td class="listing"><b>'+camelize(choice)+':</b> </td>\''
+		choice_str = camelize(choice)
+		spl = choice_str.split(' + ')
+		if (spl.length>1)
+		{
+			choice_str = choice_str.replaceAll('Building Special', 'B. Spec.')
+			choice_str = choice_str.replaceAll('Click Frenzy', 'Click Fr.')
+		}
+		statsString += ' + \'<tr><td class="listing"><b>'+choice_str+':</b> </td>\''
 		col_width = 4
 		for (var i=0; i<MS.grimoire_choices_init[choice][1]; i++)
 		{
@@ -1077,18 +1089,13 @@ if(!statsdone && Game.sortedMods.length==0)
 	Game.UpdateMenu();
 	
 	// reset grimoire stats after cast spell
-	updatemenuorig = Game.UpdateMenu;
-	Game.UpdateMenu = function() {
-		updatemenuorig(); 
-		castSpellOrig = Game.ObjectsById[7].minigame.castSpell;
-		Game.ObjectsById[7].minigame.castSpell = function(spell,obj)
-		{
-			retval = castSpellOrig(spell,obj);
-		 	MS.grimoire_choices = {};
-		 	return retval;
-		} 
-		Game.UpdateMenu = updatemenuorig; 
-	}
+	castSpellOrig = Game.ObjectsById[7].minigame.castSpell;
+	Game.ObjectsById[7].minigame.castSpell = function(spell,obj)
+	{
+		retval = castSpellOrig(spell,obj);
+	 	MS.grimoire_choices = {};
+	 	return retval;
+	} 
 	
 	// reset grimoire stats after ascend intro
 	updateAscendIntroOrig = Game.UpdateAscendIntro;

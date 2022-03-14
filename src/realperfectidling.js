@@ -15,8 +15,8 @@
 /*================================================ */
 var RPI={}
 
-RPI.version = '2.0.4.0'
-RPI.supportedVersion = 2.031
+RPI.version = '2.0.4.1'
+RPI.supportedVersion = 2.045
 if (RPI.supportedVersion < Game.version)
 {
 	Game.Notify('Unsupported version','MSco\'s Real Perfect Idling has not been tested on this version of Cookie Clicker. Continue on your own risk!',[3,5],6);
@@ -127,7 +127,14 @@ if (!MS.RPI_idledone)
 
 	// rewrite Game.Logic	
 	RPI.Logic = Game.Logic;
+	
+	/****/
+	// live version
 	eval('RPI.Logic='+RPI.Logic.toString().replace("Game.bounds=Game.l.getBoundingClientRect();", ""))
+	// beta
+	eval('RPI.Logic='+RPI.Logic.toString().replace("Game.bounds=Game.l.getBounds()", ""))
+	/****/
+	
 	eval('RPI.Logic='+RPI.Logic.toString().replace(/if \(Game.prefs.wobbly\)[a-zA-Z0-9\s\{\}\(\)\[\]\.\=\+\-\*\/\%;\,\'\"\!\|\&\>\<\?\:\\]*Game\.mousePointer=0;/, ""))
 	eval('RPI.Logic='+RPI.Logic.toString().replace(/if \(\!Game\.promptOn\)[a-zA-Z0-9\s\{\}\(\)\[\]\.\=\+\-\*\/\%;\,\'\"\!\|\&\>\<\?\:\\]*\/\/handle cookies/, "\/\/handle cookies"))
 	eval('RPI.Logic='+RPI.Logic.toString().replace(/l\(\'.*;/g, "{}"))

@@ -14,7 +14,7 @@
 var MS = {};
 MS.Tooltip = {};
 
-MS.version = '1.1.6.3'
+MS.version = '1.1.6.4'
 
 // set MS.importSaveDate after importing a save, this is exclusively for another MSco Addon: Real Perfect Idling
 MS.importSaveDate = new Date().getTime() - Game.T*1000/Game.fps;
@@ -66,6 +66,8 @@ MS.readPledgeFromStr=function(str)
 	var spl=newstr[4].split(';');
 	MS.pledgeT=spl[11]?parseInt(spl[11]):0;
 	MS.saveImported = true;
+    
+	console.log("Save pledgeT:" + Game.sayTime(MS.pledgeT))
 }
 
 MS.readHeraldsFromStr=function(str)
@@ -82,6 +84,8 @@ MS.readHeraldsFromStr=function(str)
     var spl=newstr[4].split(';');
     MS.heralds=spl[48]?parseInt(spl[48]):Game.heralds;
     MS.saveImported = true;
+    
+	console.log("Save heralds:" + MS.heralds)
 }
 
 MS.readLumpsFromStr=function(str)
@@ -100,6 +104,7 @@ MS.readLumpsFromStr=function(str)
 	MS.lumpsTotal=spl[43]?parseFloat(spl[43]):-1;
 	MS.lumpT=spl[44]?parseInt(spl[44]):Date.now();
 	MS.lumpCurrentType=spl[46]?parseInt(spl[46]):0;
+	MS.saveImported = true;
 	
 	console.log("Save lumps:" + MS.lumps)
 	console.log("Save lumpsTotal:" + MS.lumpsTotal)
@@ -134,13 +139,15 @@ MS.readSwapsFromStr=function(str)
 MS.harvestLumps = Game.harvestLumps;
 Game.harvestLumps=function(amount,silent)
 {
+	console.log("-----")
+	console.log("Starting harvestLumps on: "+new Date(Date.now()))
 	lumpsBefore = Game.lumps;
 	console.log("lumpCurrentType before harvest:" + Game.lumpCurrentType)
 	MS.harvestLumps(amount,silent);
-	console.log("lumps harvested:" + Game.lumps-lumpsBefore)
+	console.log("lumps harvested:" + (Game.lumps-lumpsBefore))
 	console.log("lumps:" + Game.lumps)
-	console.log("lumpsTotal:" + Game.lumpsTotal)
 	console.log("lumpT:" + new Date(Game.lumpT))
+	console.log("-----")
 }
 
 MS.getEffectDurModInWrath=function()

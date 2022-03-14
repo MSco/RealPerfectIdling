@@ -36,7 +36,7 @@ MS.RPI_idledone = 0;
 MS.importSaveCodeOrignal = Game.ImportSaveCode;
 Game.ImportSaveCode = function(save)
 {
-    MS.importSaveCodeOrignal(save);
+    retval = MS.importSaveCodeOrignal(save);
     MS.importSaveDate = new Date().getTime();
     MS.RPI_idledone = 0
     
@@ -50,6 +50,7 @@ Game.ImportSaveCode = function(save)
     }
     
     console.log('MS.importSaveDate: ' + MS.importSaveDate);
+    return retval;
 }
 
 MS.readPledgeFromStr=function(str)

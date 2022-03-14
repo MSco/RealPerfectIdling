@@ -15,7 +15,7 @@
 /*================================================ */
 var RPI={}
 
-RPI.version = '2.0.4.1'
+RPI.version = '2.0.4.2'
 RPI.supportedVersion = 2.045
 if (RPI.supportedVersion < Game.version)
 {

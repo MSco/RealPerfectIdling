@@ -14,7 +14,7 @@
 var MS = {};
 MS.Tooltip = {};
 
-MS.version = '1.1.6.5'
+MS.version = '1.1.7.0'
 
 // set MS.importSaveDate after importing a save, this is exclusively for another MSco Addon: Real Perfect Idling
 MS.importSaveDate = new Date().getTime() - Game.T*1000/Game.fps;
@@ -890,6 +890,11 @@ MS.showTimeLeftMagicM = function()
 	}
 }
 
+MS.replaceLumpTooltip = function()
+{
+	eval('Game.lumpTooltip='+Game.lumpTooltip.toString().replace('This sugar lump is still growing and will take <b>\'+Game.sayTime(((Game.lumpMatureAge-age)/1000+1)*Game.fps,-1)', 'This sugar lump is still growing and will take <b>\'+Game.sayTime(((Game.lumpMatureAge-age)/1000+1)*Game.fps,-1)+\' (\'+new Date(Date.now()+(Game.lumpMatureAge-age)).toLocaleString().split(\', \')[1]+\')\''))
+}
+
 function my_onkeydown_handler( event ) {
     switch (event.keyCode) {
         case 116 : // 'F5'
@@ -916,6 +921,8 @@ if(!statsdone && Game.sortedMods.length==0)
 	
 	// Grimoire: Show time left to MagicM
 	MS.showTimeLeftMagicM();
+	
+	MS.replaceLumpTooltip();
 	
 	// Garden: restore nextStep correctly
 	eval('Game.Objects.Farm.minigame.load='+Game.Objects.Farm.minigame.load.toString().replace("M.nextStep=parseFloat(spl2[i2++]||M.nextStep);","M.nextStep=parseFloat(spl2[i2++]||M.nextStep);M.nextStep=Date.now()+M.nextStep-Game.lastDate;"));

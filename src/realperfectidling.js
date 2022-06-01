@@ -16,7 +16,7 @@
 var RPI={}
 
 RPI.version = '2.0.4.2'
-RPI.supportedVersion = 2.045
+RPI.supportedVersion = 2.048
 if (RPI.supportedVersion < Game.version)
 {
 	Game.Notify('Unsupported version','MSco\'s Real Perfect Idling has not been tested on this version of Cookie Clicker. Continue on your own risk!',[3,5],6);

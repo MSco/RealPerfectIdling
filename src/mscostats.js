@@ -14,7 +14,7 @@
 var MS = {};
 MS.Tooltip = {};
 
-MS.version = '1.1.7.1'
+MS.version = '1.1.7.2'
 
 // set MS.importSaveDate after importing a save, this is exclusively for another MSco Addon: Real Perfect Idling
 MS.importSaveDate = new Date().getTime() - Game.T*1000/Game.fps;
@@ -872,7 +872,7 @@ MS.showTimeLeftMagicM = function()
 	grimoire_draw_orig = M_grimoire.draw
 	M_grimoire.draw = function() {
 	    grimoire_draw_orig();
-	    if (M_grimoire.magic < M_grimoire.magicM)
+	    if (M_grimoire.magic < M_grimoire.magicM && Game.drawT % 5 === 0)
 	    {
 		    magic = M_grimoire.magic
 		    frames = 0
@@ -892,7 +892,7 @@ MS.showTimeLeftMagicM = function()
 
 MS.replaceLumpTooltip = function()
 {
-	eval('Game.lumpTooltip='+Game.lumpTooltip.toString().replace('"This sugar lump is still growing and will take <b>\%1</b> to reach maturity.",Game.sayTime(((Game.lumpMatureAge-age)/1000+1)*Game.fps,-1)', '"This sugar lump is still growing and will take <b>%1 (%2)</b> to reach maturity.",[Game.sayTime(((Game.lumpMatureAge-age)/1000+1)*Game.fps,-1), new Date(Date.now()+(Game.lumpMatureAge-age)).toLocaleString().split(\', \')[1]]'))
+	eval('Game.lumpTooltip='+Game.lumpTooltip.toString().replace('"This sugar lump is still growing and will take <b>\%1</b> to reach maturity.",Game.sayTime(((Game.lumpMatureAge-age)/1000+1)*Game.fps,-1)', '"This sugar lump is still growing and will take <b>\"+Game.sayTime(((Game.lumpMatureAge-age)/1000+1)*Game.fps,-1)+\" (\"+new Date(Date.now()+(Game.lumpMatureAge-age)).toLocaleString().split(\', \')[1]+\")</b> to reach maturity."'))
 }
 
 function my_onkeydown_handler( event ) {
@@ -920,9 +920,9 @@ if(!statsdone && Game.sortedMods.length==0)
 	//eval('Game.UpdateMenu='+Game.UpdateMenu.toString().replace('when out of focus)</label><br>\'+', 'when out of focus)</label><br>\'+\'<div class="listing"><a class="option" \'+Game.clickStr+\'="myfunc();">Real Perfect Idling</a><label>Simulate the game untilt the last Save)</label></div>\' + '))
 	
 	// Grimoire: Show time left to MagicM
-	//MS.showTimeLeftMagicM();
+	MS.showTimeLeftMagicM();
 	
-	//MS.replaceLumpTooltip();
+	MS.replaceLumpTooltip();
 	
 	// Garden: restore nextStep correctly
 	eval('Game.Objects.Farm.minigame.load='+Game.Objects.Farm.minigame.load.toString().replace("M.nextStep=parseFloat(spl2[i2++]||M.nextStep);","M.nextStep=parseFloat(spl2[i2++]||M.nextStep);M.nextStep=Date.now()+M.nextStep-Game.lastDate;"));

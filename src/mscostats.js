@@ -14,7 +14,7 @@
 var MS = {};
 MS.Tooltip = {};
 
-MS.version = '1.1.7.2'
+MS.version = '1.1.7.3'
 
 // set MS.importSaveDate after importing a save, this is exclusively for another MSco Addon: Real Perfect Idling
 MS.importSaveDate = new Date().getTime() - Game.T*1000/Game.fps;
@@ -885,14 +885,14 @@ MS.showTimeLeftMagicM = function()
 		    
 		    minutes = Math.floor(frames/Game.fps/60)
 		    seconds = Math.floor(frames/Game.fps)%60
-		    M_grimoire.magicBarTextL.innerHTML += ' ('+(minutes>0 ? minutes + 'm ' : '') + Math.floor(frames/Game.fps)%60+'s)' ;
+		    M_grimoire.magicBarTextL.innerHTML += ' ('+(minutes>0 ? minutes + 'm ' : '') + Math.floor(frames/Game.fps)%60+'s, '+ new Date(Date.now()+frames*1000/Game.fps).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})+')' ;
 		 }
 	}
 }
 
 MS.replaceLumpTooltip = function()
 {
-	eval('Game.lumpTooltip='+Game.lumpTooltip.toString().replace('"This sugar lump is still growing and will take <b>\%1</b> to reach maturity.",Game.sayTime(((Game.lumpMatureAge-age)/1000+1)*Game.fps,-1)', '"This sugar lump is still growing and will take <b>\"+Game.sayTime(((Game.lumpMatureAge-age)/1000+1)*Game.fps,-1)+\" (\"+new Date(Date.now()+(Game.lumpMatureAge-age)).toLocaleString().split(\', \')[1]+\")</b> to reach maturity."'))
+	eval('Game.lumpTooltip='+Game.lumpTooltip.toString().replace('"This sugar lump is still growing and will take <b>\%1</b> to reach maturity.",Game.sayTime(((Game.lumpMatureAge-age)/1000+1)*Game.fps,-1)', '"This sugar lump is still growing and will take <b>\"+Game.sayTime(((Game.lumpMatureAge-age)/1000+1)*Game.fps,-1)+\" (\"+new Date(Date.now()+(Game.lumpMatureAge-age)).toLocaleTimeString([], {weekday: \'short\', hour: \'2-digit\', minute:\'2-digit\'})+\")</b> to reach maturity."'))
 }
 
 function my_onkeydown_handler( event ) {
